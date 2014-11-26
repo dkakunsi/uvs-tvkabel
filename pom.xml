@@ -27,7 +27,7 @@
   </build>
   
   <properties>
-    <hibernate.version>4.0.1.FINAL</hibernate.version>
+    <hibernate.version>4.0.1.Final</hibernate.version>
     <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
   	<spring.version>4.0.7.RELEASE</spring.version>
   	<spring-security.version>3.2.5.RELEASE</spring-security.version>
