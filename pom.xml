@@ -38,6 +38,7 @@
   	<mysql.version>5.1.26</mysql.version>
   	<aspectj.version>1.8.2</aspectj.version>
 	<junit.version>4.11</junit.version>
+  	<servlet.version>3.1.0</servlet.version>
 	<jstl.version>1.2</jstl.version>
 	<taglibs.version>1.1.2</taglibs.version>
 	<slf4j.version>1.7.7</slf4j.version>
@@ -112,6 +113,11 @@
 	</dependency>
 
 	<!-- Dependencies for web and mvc -->    
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>javax.servlet-api</artifactId>
+		<version>${servlet.version}</version>
+	</dependency>
     <dependency>
         <groupId>org.springframework</groupId>
 		<artifactId>spring-web</artifactId>
