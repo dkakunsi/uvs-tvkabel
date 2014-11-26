@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD tiles Configuration 3.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="cover_template" template="/WEB-INF/views/cover/layouts/cover_template.jsp">
+	</definition>
+	
+	<definition name="cover_login" extends="cover_template">
+		<put-attribute name="content" value="/WEB-INF/views/cover/tiles/login.jsp" />
+	</definition>
+
+	<definition name="cover_daftar" extends="cover_template">
+		<put-attribute name="content">
+			<definition template="/WEB-INF/views/cover/tiles/register.jsp">
+				<put-attribute name="kota_datalist" value="/WEB-INF/views/dashboard/datalists/kota.jsp" />
+				<put-attribute name="kecamatan_datalist" value="/WEB-INF/views/dashboard/datalists/kecamatan.jsp" />
+				<put-attribute name="kelurahan_datalist" value="/WEB-INF/views/dashboard/datalists/kelurahan.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+
+	<definition name="cover_contact" extends="cover_template">
+		<put-attribute name="content" value="/WEB-INF/views/cover/tiles/contact.jsp" />
+	</definition>
+
+	<definition name="cover_message" extends="cover_template">
+		<put-attribute name="content" value="/WEB-INF/views/cover/tiles/message.jsp" />
+	</definition>
+</tiles-definitions>

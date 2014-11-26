@@ -1,0 +1,15 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<bean id="pdfException" class="com.unitedvision.tvkabel.web.document.pdf.ExceptionPdfView" />
+
+	<bean id="pdfKartu" class="com.unitedvision.tvkabel.web.document.pdf.KartuPelangganPdfView" />
+
+	<bean id="pdfHari" class="com.unitedvision.tvkabel.web.document.pdf.HariPdfView" />
+	<bean id="pdfBulan" class="com.unitedvision.tvkabel.web.document.pdf.BulanPdfView" />
+	<bean id="pdfTahun" class="com.unitedvision.tvkabel.web.document.pdf.TahunPdfView" />
+	<bean id="pdfTunggakan" class="com.unitedvision.tvkabel.web.document.pdf.TunggakanPdfView" />
+	<bean id="pdfAlamat" class="com.unitedvision.tvkabel.web.document.pdf.AlamatPdfView" />
+</beans>

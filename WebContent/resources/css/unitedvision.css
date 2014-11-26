@@ -1,0 +1,12 @@
+.btn-transclute {
+	border-color: rgb(255, 255, 255); color: rgb(51, 51, 51); background-color: rgb(255, 255, 255); width: 150px;
+}
+.btn-transclute:hover {
+	border-color: rgb(173, 173, 173); color: rgb(51, 51, 51); background-color: rgb(230, 230, 230);
+}
+th.center {
+	text-align: center;
+}
+thead.center {
+	text-align: center;
+}
