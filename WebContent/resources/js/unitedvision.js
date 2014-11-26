@@ -8,7 +8,8 @@
  * 
  * Version: 3.0.3
  */
-var target = 'https://uvision.whelastic.net/tvkabel/api';
+var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
+//var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
 	alert('Error : ' + textStatus + ' - ' + errorThrown);
 }
