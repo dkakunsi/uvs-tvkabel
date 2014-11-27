@@ -49,6 +49,9 @@ public class LoginController extends AbstractController {
 			Authentication authentication = authenticationProvider.authenticate(token);
 			persistAuthentication(authentication);
 			
+			HttpSession session = request.getSession(true);
+			session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+
 			return PegawaiRestResult.create("Berhasil!", getPegawai().toModel());
 		} catch (AuthenticationException e) {
 			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
