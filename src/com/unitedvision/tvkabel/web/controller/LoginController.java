@@ -9,7 +9,6 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,9 +49,6 @@ public class LoginController extends AbstractController {
 			Authentication authentication = authenticationProvider.authenticate(token);
 			persistAuthentication(authentication);
 			
-			HttpSession session = req.getSession(true);
-			session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-
 			return PegawaiRestResult.create("Berhasil!", getPegawai().toModel());
 		} catch (AuthenticationException e) {
 			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));

@@ -48,9 +48,9 @@ public class PegawaiController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/kode/{kode}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPegawaiRestResult getByKode(@PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
-		List<? extends Pegawai> list = pegawaiService.getByKode(getPerusahaan(), kode, page);
+	@RequestMapping(value = "/perusahaan/{perusahaan}/kode/{kode}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPegawaiRestResult getByKode(@PathVariable Integer perusahaan, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
+		List<? extends Pegawai> list = pegawaiService.getByKode(getPerusahaan(perusahaan), kode, page);
 		long total = pegawaiService.countByKode(getPerusahaan(), kode);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		

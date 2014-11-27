@@ -8,7 +8,9 @@ import com.unitedvision.tvkabel.core.domain.Pelanggan;
 import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
+import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 import com.unitedvision.tvkabel.web.security.SpringAuthenticationBasedAuthorizationProvider;
 
@@ -19,9 +21,15 @@ public abstract class AbstractController {
 	protected PelangganService pelangganService;
 	@Autowired
 	protected PegawaiService pegawaiService;
+	@Autowired
+	protected PerusahaanService perusahaanService;
 	
 	protected Perusahaan getPerusahaan() throws UnauthenticatedAccessException {
 		return  authorizationProvider.getPerusahaan();
+	}
+	
+	protected Perusahaan getPerusahaan(int idPerusahaan) throws EntityNotExistException {
+		return perusahaanService.getOne(idPerusahaan);
 	}
 	
 	protected Pegawai getPegawai() {
