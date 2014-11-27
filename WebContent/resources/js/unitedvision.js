@@ -188,28 +188,28 @@ function loadPelangganById(id, success, error) {
 	load(target + '/pelanggan/id/' + id, success, error);
 }
 function loadPelangganByKode(kode, success, error) {
-	load(target + '/pelanggan/kode/' + kode, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode, success, error);
 }
 function loadListPelangganByKode(kode, page, success, error) {
-	load(target + '/pelanggan/kode/' + kode + '/page/' + page, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/page/' + page, success, error);
 }
 function loadListPelangganByKodeAndStatus(kode, status, page, success, error) {
-	load(target + '/pelanggan/kode/' + kode + '/status/' + status + '/page/' + page, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/status/' + status + '/page/' + page, success, error);
 }
 function loadPelangganByNama(nama, success, error) {
-	load(target + '/pelanggan/nama/' + nama, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama, success, error);
 }
 function loadListPelangganByNama(nama, page, success, error) {
-	load(target + '/pelanggan/nama/' + nama + '/page/' + page, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/page/' + page, success, error);
 }
 function loadListPelangganByNamaAndStatus(nama, status, page, success, error) {
-	load(target + '/pelanggan/nama/' + nama + '/status/' + status + '/page/' + page, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/status/' + status + '/page/' + page, success, error);
 }
 function loadListPelangganByStatus(status, page, success, error) {
-	load(target + '/pelanggan/status/' + status + '/page/' + page, success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status + '/page/' + page, success, error);
 }
 function loadAllPelanggan(success, error) {
-	load(target + '/pelanggan', success, error);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan(), success, error);
 }
 function savePembayaran(data, success, error) {
 	save(target + '/pembayaran/master', data, 'POST', success, error);
@@ -221,10 +221,10 @@ function deletePembayaran(id, success, error) {
 	save(target + '/pembayaran/master', id, 'DELETE', success, error);
 }
 function loadTagihanByKode(kode, success, error) {
-	load(target + '/pembayaran/pelanggan/kode/' + kode + '/payable', success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/kode/' + kode + '/payable', success, error);
 }
 function loadTagihanByNama(nama, success, error) {
-	load(target + '/pembayaran/pelanggan/nama/' + nama + '/payable', success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/nama/' + nama + '/payable', success, error);
 }
 function loadTagihanById(id, success, error) {
 	load(target + '/pembayaran/pelanggan/id/' + id + '/payable', success, error);
@@ -233,16 +233,16 @@ function loadPembayaranById(id, success, error) {
 	load(target + '/pembayaran/' + id, success, error);
 }
 function loadListPembayaranByKodePegawai(kode, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/pegawai/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pegawai/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
 }
 function loadListPembayaranByNamaPegawai(nama, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/pegawai/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pegawai/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
 }
 function loadListPembayaranByKodePelanggan(kode, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/pelanggan/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
 }
 function loadListPembayaranByNamaPelanggan(nama, tanggalAwal, tanggalAkhir, page, success, error) {
-	load(target + '/pembayaran/pelanggan/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
+	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pelanggan/nama/' + nama + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
 }
 function loadAllKota(success, error) {
 	load(target + '/alamat/kota', success, error);

@@ -42,9 +42,9 @@ public class PerusahaanController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/location/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
-	public @ResponseBody RestResult setMapLocation(@PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
-		Perusahaan perusahaan = getPerusahaan();
+	@RequestMapping(value = "/id/{id}/location/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
+	public @ResponseBody RestResult setMapLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
+		Perusahaan perusahaan = getPerusahaan(id);
 		
 		try {
 			perusahaanService.setMapLocation(perusahaan, latitude, longitude);
@@ -73,11 +73,6 @@ public class PerusahaanController extends AbstractController {
 		return ListPerusahaanRestResult.create("Berhasil!", PerusahaanModel.createListModel(list));
 	}
 	
-	@RequestMapping (value = "/active", method = RequestMethod.GET)
-	public @ResponseBody PerusahaanRestResult getActive() throws UnauthenticatedAccessException {
-		return PerusahaanRestResult.create("Berhasil!", getPerusahaan().toModel());
-	}
-	
 	@RequestMapping (value = "/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody PerusahaanRestResult getByKode(@PathVariable String kode) throws UnauthenticatedAccessException {
 		try {
@@ -100,22 +95,16 @@ public class PerusahaanController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/{idPerusahaan}/rekap", method = RequestMethod.GET)
-	public @ResponseBody RekapPerusahaanRestResult getRekapPerusahaan(@PathVariable Integer idPerusahaan) {
+	@RequestMapping(value = "/{id}/rekap", method = RequestMethod.GET)
+	public @ResponseBody RekapPerusahaanRestResult getRekapPerusahaan(@PathVariable Integer id) {
 		try {
-			Perusahaan perusahaan = perusahaanService.getOne(idPerusahaan);
+			Perusahaan perusahaan = perusahaanService.getOne(id);
 
 			return RekapPerusahaanRestResult.create("Berhasil!", createRekapPerusahaan(perusahaan));
 		} catch (EntityNotExistException e) {
 			return RekapPerusahaanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
 	}
-	
-	@RequestMapping(value = "/active/rekap", method = RequestMethod.GET)
-	public @ResponseBody RekapPerusahaanRestResult getRekapPerusahaanActive() throws UnauthenticatedAccessException {
-		return RekapPerusahaanRestResult.create("Berhasil!", createRekapPerusahaan(getPerusahaan()));
-	}
-	
 	private PerusahaanModel.Rekap createRekapPerusahaan(Perusahaan perusahaan) {
 		long estimasiPemasukanBulanan = perusahaanService.countEstimasiPemasukanBulanan(perusahaan);
 		long estimasiTagihanBulanan = perusahaanService.countEstimasiTagihanBulanan(perusahaan);

@@ -37,29 +37,29 @@ public class PelangganController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult getAll(@PathVariable String status) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/status/{status}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getAll(@PathVariable Integer perusahaan, @PathVariable String status) throws ApplicationException {
 		final Status _status = StatusUtil.getPelangganStatus(status);
-		List<? extends Pelanggan> list = pelangganService.get(getPerusahaan(), _status);
+		List<? extends Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), _status);
 		
 		return ListPelangganRestResult.create("Berhasil!", PelangganModel.createListModel(list));
 	}
 	
-	@RequestMapping(value = "/status/{status}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult get(@PathVariable String status, @PathVariable Integer page) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/status/{status}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult get(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable Integer page) throws ApplicationException {
 		final Status _status = StatusUtil.getPelangganStatus(status);
-		List<? extends Pelanggan> list = pelangganService.get(getPerusahaan(), _status, page);
-		long total = pelangganService.count(getPerusahaan(), _status);
+		List<? extends Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), _status, page);
+		long total = pelangganService.count(getPerusahaan(perusahaan), _status);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		
 		return ListPelangganRestResult.create("Berhasil!", 
 				PelangganModel.createListModel(list), page, total, count);
 	}
 
-	@RequestMapping(value = "/kode/{kode}", method = RequestMethod.GET)
-	public @ResponseBody PelangganRestResult getByKode(@PathVariable String kode) {
+	@RequestMapping(value = "/perusahaan/{idPerusahaan}/kode/{kode}", method = RequestMethod.GET)
+	public @ResponseBody PelangganRestResult getByKode(@PathVariable Integer idPerusahaan, @PathVariable String kode) {
 		try {
-			final Perusahaan perusahaan = getPerusahaan();
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			PelangganModel pelangganModel = pelangganService.getOneByKode(perusahaan, kode).toModel();
 
 			return PelangganRestResult.create("Berhasil!", pelangganModel);
@@ -68,29 +68,29 @@ public class PelangganController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/kode/{kode}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult getByKode(@PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
-		List<? extends Pelanggan> list = pelangganService.getByKode(getPerusahaan(), kode, page);
-		long total = pelangganService.countByKode(getPerusahaan(), kode);
+	@RequestMapping(value = "/perusahaan/{perusahaan}/kode/{kode}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByKode(@PathVariable Integer perusahaan, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
+		List<? extends Pelanggan> list = pelangganService.getByKode(getPerusahaan(perusahaan), kode, page);
+		long total = pelangganService.countByKode(getPerusahaan(perusahaan), kode);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		
 		return ListPelangganRestResult.create("Berhasil!", PelangganModel.createListModel(list), page, total, count);
 	}
 	
-	@RequestMapping(value = "/kode/{kode}/status/{status}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult getByKode(@PathVariable String status, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/kode/{kode}/status/{status}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByKode(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
 		Status _status = StatusUtil.getPelangganStatus(status);
-		List<? extends Pelanggan> list = pelangganService.getByKode(getPerusahaan(), _status, kode, page);
-		long total = pelangganService.countByKode(getPerusahaan(), _status, kode);
+		List<? extends Pelanggan> list = pelangganService.getByKode(getPerusahaan(perusahaan), _status, kode, page);
+		long total = pelangganService.countByKode(getPerusahaan(perusahaan), _status, kode);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		
 		return ListPelangganRestResult.create("Berhasil!", PelangganModel.createListModel(list), page, total, count);
 	}
 	
-	@RequestMapping(value = "/nama/{nama:.+}", method = RequestMethod.GET)
-	public @ResponseBody PelangganRestResult getByNama(@PathVariable String nama) {
+	@RequestMapping(value = "/perusahaan/{idPerusahaan}/nama/{nama:.+}", method = RequestMethod.GET)
+	public @ResponseBody PelangganRestResult getByNama(@PathVariable Integer idPerusahaan, @PathVariable String nama) {
 		try {
-			final Perusahaan perusahaan = getPerusahaan();
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			PelangganModel pelangganModel = pelangganService.getOneByNama(perusahaan, nama).toModel();
 
 			return PelangganRestResult.create("Berhasil!", pelangganModel);
@@ -99,20 +99,20 @@ public class PelangganController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = "/nama/{nama:.+}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult getByNama(@PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
-		List<? extends Pelanggan> list = pelangganService.getByNama(getPerusahaan(), nama, page);
-		long total = pelangganService.countByNama(getPerusahaan(), nama);
+	@RequestMapping(value = "/perusahaan/{perusahaan}/nama/{nama:.+}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByNama(@PathVariable Integer perusahaan, @PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
+		List<? extends Pelanggan> list = pelangganService.getByNama(getPerusahaan(perusahaan), nama, page);
+		long total = pelangganService.countByNama(getPerusahaan(perusahaan), nama);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		
 		return ListPelangganRestResult.create("Berhasil!", PelangganModel.createListModel(list), page, total, count);
 	}
 
-	@RequestMapping(value = "/nama/{nama:.+}/status/{status}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPelangganRestResult getByNama(@PathVariable String status, @PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/nama/{nama:.+}/status/{status}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByNama(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
 		Status _status = StatusUtil.getPelangganStatus(status);
-		List<? extends Pelanggan> list = pelangganService.getByNama(getPerusahaan(), _status, nama, page);
-		long total = pelangganService.countByNama(getPerusahaan(), _status, nama);
+		List<? extends Pelanggan> list = pelangganService.getByNama(getPerusahaan(perusahaan), _status, nama, page);
+		long total = pelangganService.countByNama(getPerusahaan(perusahaan), _status, nama);
 		long count = PageSizeUtil.getCounter(page, list.size());
 		
 		return ListPelangganRestResult.create("Berhasil!", PelangganModel.createListModel(list), page, total, count);
@@ -183,11 +183,11 @@ public class PelangganController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = "/master", method = RequestMethod.POST)
-	public @ResponseBody RestResult simpanPelanggan(@RequestBody PelangganModel model) {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/master", method = RequestMethod.POST)
+	public @ResponseBody RestResult simpanPelanggan(@PathVariable Integer perusahaan, @RequestBody PelangganModel model) {
 		String message;
 		try {
-			model.setPerusahaan(getPerusahaan());
+			model.setPerusahaan(getPerusahaan(perusahaan));
 			pelangganService.save(model);
 
 			message = "Berhasil!";

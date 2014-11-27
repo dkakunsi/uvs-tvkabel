@@ -45,10 +45,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/pegawai/kode/{kode}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPembayaranRestResult getByKodePegawai(@PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pegawai/kode/{kode}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPembayaranRestResult getByKodePegawai(@PathVariable Integer perusahaan, @PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) throws ApplicationException {
 		try {
-			final Pegawai pegawai = pegawaiService.getOneByKode(getPerusahaan(), kode);
+			final Pegawai pegawai = pegawaiService.getOneByKode(getPerusahaan(perusahaan), kode);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
 			List<PembayaranModel> list = getByPegawai(pegawai, awal, akhir, page);
@@ -61,10 +61,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = "/pegawai/nama/{nama}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPembayaranRestResult getByNamaPegawai(@PathVariable String nama, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) throws ApplicationException {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pegawai/nama/{nama}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPembayaranRestResult getByNamaPegawai(@PathVariable Integer perusahaan, @PathVariable String nama, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) throws ApplicationException {
 		try {
-			final Pegawai pegawai = pegawaiService.getOneByNama(getPerusahaan(), nama);
+			final Pegawai pegawai = pegawaiService.getOneByNama(getPerusahaan(perusahaan), nama);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
 			List<PembayaranModel> list = getByPegawai(pegawai, awal, akhir, page);
@@ -77,10 +77,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/pelanggan/kode/{kode}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPembayaranRestResult getByKodePelanggan(@PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pelanggan/kode/{kode}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPembayaranRestResult getByKodePelanggan(@PathVariable Integer perusahaan, @PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) {
 		try {
-			final Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(), kode);
+			final Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(perusahaan), kode);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
 			List<PembayaranModel> list = getByPelanggan(pelanggan, awal, akhir, page);
@@ -93,10 +93,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 
-	@RequestMapping(value = "/pelanggan/nama/{nama}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
-	public @ResponseBody ListPembayaranRestResult getByNamaPelanggan(@PathVariable String nama, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pelanggan/nama/{nama}/awal/{tanggalAwal}/akhir/{tanggalAkhir}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPembayaranRestResult getByNamaPelanggan(@PathVariable Integer perusahaan, @PathVariable String nama, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, @PathVariable Integer page) {
 		try {
-			final Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(), nama);
+			final Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(perusahaan), nama);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
 			List<PembayaranModel> list = getByPelanggan(pelanggan, awal, akhir, page);
@@ -109,10 +109,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/pelanggan/kode/{kode}/payable", method = RequestMethod.GET)
-	public @ResponseBody TagihanRestResult getPayableTagihanByKode(@PathVariable String kode) {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pelanggan/kode/{kode}/payable", method = RequestMethod.GET)
+	public @ResponseBody TagihanRestResult getPayableTagihanByKode(@PathVariable Integer perusahaan, @PathVariable String kode) {
 		try {
-			Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(), kode);
+			Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(perusahaan), kode);
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
 			return TagihanRestResult.create("Berhasil!", tagihan.toModel());
@@ -121,10 +121,10 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/pelanggan/nama/{nama}/payable", method = RequestMethod.GET)
-	public @ResponseBody TagihanRestResult getPayableTagihanByNama(@PathVariable String nama) {
+	@RequestMapping(value = "/perusahaan/{perusahaan}/pelanggan/nama/{nama}/payable", method = RequestMethod.GET)
+	public @ResponseBody TagihanRestResult getPayableTagihanByNama(@PathVariable Integer perusahaan, @PathVariable String nama) {
 		try {
-			Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(), nama);
+			Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(perusahaan), nama);
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
 			return TagihanRestResult.create("Berhasil!", tagihan.toModel());

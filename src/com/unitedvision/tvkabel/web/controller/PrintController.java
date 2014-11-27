@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,6 @@ import com.unitedvision.tvkabel.core.service.KelurahanService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
 import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
 import com.unitedvision.tvkabel.util.DateUtil;
@@ -61,11 +61,11 @@ public class PrintController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/rekap/bulan", method = RequestMethod.POST)
-	public ModelAndView printBulan(@RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
+	@RequestMapping(value = "/rekap/bulan/{idPerusahaan}", method = RequestMethod.POST)
+	public ModelAndView printBulan(@PathVariable Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
 			Map<String, Object> model) {
 		try {
-			List<PembayaranEntity> list = createListRekapBulanan(jenis, tahun, bulan);
+			List<PembayaranEntity> list = createListRekapBulanan(idPerusahaan, jenis, tahun, bulan);
 
 			model.put("listPembayaran", list);
 			model.put("jenis", jenis);
@@ -81,8 +81,8 @@ public class PrintController extends AbstractController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<PembayaranEntity> createListRekapBulanan(String jenis, int tahun, String bulan) throws UnauthenticatedAccessException {
-		final Perusahaan perusahaan = getPerusahaan();
+	private List<PembayaranEntity> createListRekapBulanan(int idPerusahaan, String jenis, int tahun, String bulan) throws ApplicationException {
+		final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 		final Month month = Month.valueOf(bulan.toUpperCase());
 
 		if (jenis.equals("tagihan"))
@@ -91,10 +91,10 @@ public class PrintController extends AbstractController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/tahun", method = RequestMethod.POST)
-	public ModelAndView printTahun(@RequestParam Integer tahun, Map<String, Object> model) {
+	@RequestMapping(value = "/rekap/tahun/{idPerusahaan}", method = RequestMethod.POST)
+	public ModelAndView printTahun(@PathVariable Integer idPerusahaan, @RequestParam Integer tahun, Map<String, Object> model) {
 		try {
-			final Perusahaan perusahaan = getPerusahaan();
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 
 			List<PelangganEntity> list = (List<PelangganEntity>)rekapService.rekapTahunan(perusahaan, tahun);
 			model.put("rekap", PelangganModel.rekapPembayaran(list));
@@ -109,11 +109,11 @@ public class PrintController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/tunggakan", method = RequestMethod.POST)
-	public ModelAndView printTunggakan(@RequestParam("status") String s, @RequestParam Integer tunggakan,
+	@RequestMapping(value = "/rekap/tunggakan/{idPerusahaan}", method = RequestMethod.POST)
+	public ModelAndView printTunggakan(@PathVariable Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakan,
 			Map<String, Object> model) {
 		try {
-			final Perusahaan perusahaan = getPerusahaan();
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			Status status = createStatus(s);
 			
 			List<PelangganEntity> list = (List<PelangganEntity>)rekapService.rekapTunggakan(perusahaan, status, tunggakan);
@@ -130,11 +130,11 @@ public class PrintController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/alamat", method = RequestMethod.POST)
-	public ModelAndView printAlamat(@RequestParam("status") String s, @RequestParam("kelurahan") String k, @RequestParam Integer lingkungan,
+	@RequestMapping(value = "/rekap/alamat/{idPerusahaan}", method = RequestMethod.POST)
+	public ModelAndView printAlamat(@PathVariable Integer idPerusahaan, @RequestParam("status") String s, @RequestParam("kelurahan") String k, @RequestParam Integer lingkungan,
 			Map<String, Object> model) {
 		try {
-			final Perusahaan perusahaan = getPerusahaan();
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			Status status = createStatus(s);
 			List<PelangganEntity> list = null;
 			Kelurahan kelurahan = kelurahanService.getOneByNama(k);

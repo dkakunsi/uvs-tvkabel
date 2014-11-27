@@ -103,9 +103,4 @@ public class PegawaiController extends AbstractController {
 			return RestResult.create(e.getMessage());
 		}
 	}
-	
-	@RequestMapping(value = "/active", method = RequestMethod.GET)
-	public @ResponseBody PegawaiRestResult getActive() {
-		return PegawaiRestResult.create("Berhasil!", getPegawai().toModel());
-	}
 }
