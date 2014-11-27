@@ -74,7 +74,7 @@ function login(username, password) {
 }
 function logout() {
 	$.ajax({
-		type: 'GET',
+		type: 'POST',
 		url: target + '/logout',
 		username: getUsername(),
 		password: getPassword(),
