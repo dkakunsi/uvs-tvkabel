@@ -1,7 +1,5 @@
 package com.unitedvision.tvkabel.web.security;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -10,19 +8,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.unitedvision.tvkabel.core.domain.Kredensi.Role;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	@Resource(name = "authService")
-	private UserDetailsService userDetailsService;
+	@Autowired
+	private CustomAuthenticationProvider authenticationProvider;
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		auth.authenticationProvider(authenticationProvider);
 	}
 
 	@Configuration
