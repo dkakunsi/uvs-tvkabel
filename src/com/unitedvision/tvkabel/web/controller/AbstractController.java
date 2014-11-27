@@ -1,8 +1,6 @@
 package com.unitedvision.tvkabel.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
 import com.unitedvision.tvkabel.core.domain.Pegawai;
@@ -23,15 +21,11 @@ public abstract class AbstractController {
 	protected PegawaiService pegawaiService;
 	
 	protected Perusahaan getPerusahaan() throws UnauthenticatedAccessException {
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		return  authorizationProvider.getPerusahaan(authentication);
+		return  authorizationProvider.getPerusahaan();
 	}
 	
 	protected Pegawai getPegawai() {
-		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		return  authorizationProvider.getPegawai(authentication);
+		return  authorizationProvider.getPegawai();
 	}
 	
 	protected Status createStatus(String s) {

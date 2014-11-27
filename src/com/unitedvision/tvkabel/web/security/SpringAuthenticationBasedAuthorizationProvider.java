@@ -2,6 +2,7 @@ package com.unitedvision.tvkabel.web.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.unitedvision.tvkabel.core.domain.Operator;
@@ -10,7 +11,6 @@ import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.domain.Kredensi.Role;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.web.model.PegawaiModel;
 
 /**
  * Class that provides authentication mechanism based on Spring's {@code Authentication} class.
@@ -19,6 +19,13 @@ import com.unitedvision.tvkabel.web.model.PegawaiModel;
  */
 @Component
 public class SpringAuthenticationBasedAuthorizationProvider extends AuthorizationProvider {
+	public Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	public CustomUser getUserDetails() {
+		return (CustomUser) getAuthentication().getPrincipal();
+	}
 
 	/**
 	 * Returns user's role depends on {@code Authentication}.<br />
@@ -68,12 +75,8 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 	 * @param authentication
 	 * @return user in {@code Operator} type.
 	 */
-	public Operator getOperator(final Authentication authentication) {
-		Object principal = authentication.getPrincipal();
-		
-		if (principal instanceof String)
-			return PegawaiModel.createGuest();
-		return ((CustomUser)principal).getOperator();
+	public Operator getOperator() {
+		return getUserDetails().getOperator();
 	}
 	
 	/**
@@ -81,8 +84,8 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 	 * @param authentication
 	 * @return user in {@code Pegawai} type.
 	 */
-	public Pegawai getPegawai(final Authentication authentication) {
-		return (Pegawai)getOperator(authentication);
+	public Pegawai getPegawai() {
+		return (Pegawai)getOperator();
 	}
 	
 	/**
@@ -91,9 +94,9 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 	 * @return user's company.
 	 * @throws ApplicationException 
 	 */
-	public Perusahaan getPerusahaan(final Authentication authentication) throws UnauthenticatedAccessException {
+	public Perusahaan getPerusahaan() throws UnauthenticatedAccessException {
 		try {
-			return getOperator(authentication).getPerusahaan().toEntity();
+			return getOperator().getPerusahaan();
 		} catch(NullPointerException e) {
 			throw new UnauthenticatedAccessException(e.getMessage());
 		}
