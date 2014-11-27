@@ -66,6 +66,10 @@ public class PegawaiModel extends CodableModel implements Pegawai {
 	public void setPerusahaan(Perusahaan perusahaan) {
 		this.perusahaan = perusahaan;
 	}
+	
+	public PerusahaanModel getPerusahaanModel() {
+		return perusahaan.toModel();
+	}
 
 	@Override
 	public int getId() {
