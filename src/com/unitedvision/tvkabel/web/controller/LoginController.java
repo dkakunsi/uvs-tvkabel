@@ -49,7 +49,7 @@ public class LoginController extends AbstractController {
 			Authentication authentication = authenticationProvider.authenticate(token);
 			persistAuthentication(authentication);
 			
-			HttpSession session = request.getSession(true);
+			HttpSession session = req.getSession(true);
 			session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
 			return PegawaiRestResult.create("Berhasil!", getPegawai().toModel());
