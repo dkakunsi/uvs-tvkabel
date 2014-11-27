@@ -23,7 +23,6 @@ public class SecurityConfig {
 	}
 
 	@Configuration
-	@Order(1)
 	public static class WebApiSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
@@ -41,6 +40,7 @@ public class SecurityConfig {
 	}
 	
 	@Configuration
+	@Order(1)
 	public static class WebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 		@Override
 		public void configure(WebSecurity web) throws Exception {
