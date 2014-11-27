@@ -33,10 +33,10 @@ public class SecurityConfig {
 			.csrf().disable()
 	        .authorizeRequests()
 	        	.antMatchers("/api/**").hasRole(Role.OPERATOR.name())
-	        	.antMatchers("/api/**/master").hasRole(Role.OWNER.name())
+	        	.antMatchers("/**/master").hasRole(Role.OWNER.name())
 	        	.antMatchers("/api/alamat/**").permitAll()
-	        	.antMatchers("/api/**/registrasi").permitAll()
-	        	.antMatchers("/login").permitAll()
+	        	.antMatchers("/**/registrasi").permitAll()
+	        	.antMatchers("/api/login").permitAll()
 	            .and()
 	        .httpBasic();
 		}
@@ -57,6 +57,7 @@ public class SecurityConfig {
 			.csrf().disable()
 	        .authorizeRequests()
 				.antMatchers("/admin").hasRole(Role.ADMIN.name())
+	        	.antMatchers("/login").permitAll()
 	            .and()
 	        .formLogin()
 	        	.loginPage("/login").permitAll()
