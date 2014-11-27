@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,7 @@ import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.web.model.PegawaiModel;
 import com.unitedvision.tvkabel.web.rest.PegawaiRestResult;
 import com.unitedvision.tvkabel.web.rest.RestResult;
+import com.unitedvision.tvkabel.web.rest.LoginRestRequest;
 
 @Controller
 public class PageController extends AbstractController {
@@ -48,10 +50,10 @@ public class PageController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
-	public @ResponseBody PegawaiRestResult loginApi(@RequestParam String username, @RequestParam String password) throws UnauthenticatedAccessException {
+	public @ResponseBody PegawaiRestResult loginApi(@RequestBody LoginRestRequest request) throws UnauthenticatedAccessException {
 		try {
-			Pegawai pegawai = pegawaiService.getOneByUsername(username);
-			if (pegawai.authenticate(password))
+			Pegawai pegawai = pegawaiService.getOneByUsername(request.getUsername());
+			if (pegawai.authenticate(request.getPassword()))
 				return PegawaiRestResult.create("Berhasil!", pegawai.toModel());
 			throw new UnauthenticatedAccessException("Operator could not be authenticated");
 		} catch (EntityNotExistException e) {

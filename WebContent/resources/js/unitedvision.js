@@ -6,7 +6,7 @@
  * Manado, Indonesia.
  * deddy.kakunsi@gmail.com
  * 
- * Version: 3.0.3
+ * Version: 3.0.*
  */
 var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
 //var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
@@ -37,41 +37,19 @@ function getPerusahaan() {
 	return operator.perusahaan;
 }
 function login(username, password) {
-    $.ajax({
-        type: 'POST',
-        url: target + '/login',
-        username: username,
-        password: password,
-        contentType: 'application/json',
-        async: false,
-        success: function (result) {
-            setUsername(username);
-            setPassword(password);
-            var setActivePegawaiAsOperator = function (result) {
-                setOperator(result.model);
-            }
-            loadActivePegawai(setActivePegawaiAsOperator, errorMessage);
-
-            alert('Berhasil Login');
-            window.location.href = "dashboard.html";
-        },
-        error: errorMessage
-    });
-}
-function loginWithData(username, password) {
 	var data = {
 		username: username,
 		password: password
 	};
-	
-    $.ajax({
+
+	$.ajax({
         type: 'POST',
         url: target + '/login',
         username: username,
         password: password,
         contentType: 'application/json',
         async: false,
-        data: data,
+		data: JSON.stringify(data),
         success: function (result) {
             setUsername(username);
             setPassword(password);
