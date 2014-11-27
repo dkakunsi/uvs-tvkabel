@@ -43,7 +43,7 @@ public class LoginController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/api/login", method = RequestMethod.POST)
-	public @ResponseBody PegawaiRestResult loginApi(@RequestBody LoginRestRequest request) throws UnauthenticatedAccessException {
+	public @ResponseBody PegawaiRestResult loginApi(@RequestBody LoginRestRequest request, HttpServletRequest req) throws UnauthenticatedAccessException {
 		try {
 			Authentication token = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 			Authentication authentication = authenticationProvider.authenticate(token);
