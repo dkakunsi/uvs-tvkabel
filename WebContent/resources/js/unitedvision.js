@@ -27,10 +27,11 @@ function setPassword(password) {
 	localStorage.setItem('password', password);
 }
 function getOperator() {
-	return localStorage.getItem('operator');
+    var operator = localStorage.getItem('operator');
+    return JSON.parse(operator);
 }
 function setOperator(operator) {
-	localStorage.setItem('operator', operator);
+	localStorage.setItem('operator', JSON.stringify(operator));
 }
 function getPerusahaan() {
 	var operator = getOperator();
@@ -43,26 +44,23 @@ function login(username, password) {
 	};
 
 	$.ajax({
-        type: 'POST',
-        url: target + '/login',
-        username: username,
-        password: password,
-        contentType: 'application/json',
-        async: false,
-		data: JSON.stringify(data),
-        success: function (result) {
-            setUsername(username);
-            setPassword(password);
-            var setActivePegawaiAsOperator = function (result) {
-                setOperator(result.model);
-            }
-            loadActivePegawai(setActivePegawaiAsOperator, errorMessage);
+	    type: 'POST',
+	    url: target + '/login',
+	    username: username,
+	    password: password,
+	    contentType: 'application/json',
+	    async: false,
+	    data: JSON.stringify(data),
+	    success: function (result) {
+	        setUsername(username);
+	        setPassword(password);
+	        setOperator(result.model);
 
-            alert('Berhasil Login');
-            window.location.href = "dashboard.html";
-        },
-        error: errorMessage
-    });
+	        alert('Berhasil Login - ' + result.model.nama + '-' + result.model.perusahaanModel.nama);
+	        window.location.href = "dashboard.html";
+	    },
+	    error: errorMessage
+	});
 }
 function logout() {
 	$.ajax({
@@ -262,7 +260,7 @@ function loadListKelurahanByKecamatan(kecamatan, success, error) {
 var aktif_icon = 'images/aktif.png';
 var berhenti_icon = 'images/berhenti.png';
 var putus_icon = 'images/putus.png';
-var studio_icon = 'mages/studio.png';
+var studio_icon = 'images/studio.png';
 var warning_icon = 'images/warning.png';
 var unitedvision_icon = 'images/unitedvision.png';
 
@@ -277,6 +275,8 @@ function getMap() {
 	var perusahaan = getPerusahaan();
 	var lat = perusahaan.latitude;
     var lng = perusahaan.longitude;
+	//var lat = 1.502444; //debug purposes
+    //var lng = 124.915389; //debug purposes
     var location = new google.maps.LatLng(lat, lng);
 
     var mapOptions = {
