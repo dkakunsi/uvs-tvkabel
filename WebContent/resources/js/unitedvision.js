@@ -41,6 +41,12 @@ function getIdPerusahaan() {
 	var perusahaan = getPerusahaan();
 	return perusahaan.id;
 }
+function isLogin() {
+	var operator = getOperator();
+	if (operator === '' || operator === undefined || operator === null)
+		return false;
+	return true;
+}
 function login(username, password) {
 	var data = {
 		username: username,
