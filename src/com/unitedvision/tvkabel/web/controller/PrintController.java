@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,12 +38,12 @@ public class PrintController extends AbstractController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/rekap/hari", method = RequestMethod.POST)
-	public ModelAndView printHari(@RequestParam String tanggal, @RequestParam String searchBy, @RequestParam String query,
+	public ModelAndView printHari(@RequestParam Integer idPerusahaan, @RequestParam String tanggal, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
 		try {
 			List<PelangganEntity> list = null;
 			Date hari = DateUtil.getDate(tanggal);
-			Pegawai pegawai = createPegawai(searchBy, query);
+			Pegawai pegawai = createPegawai(searchBy, query, idPerusahaan);
 
 			list = (List<PelangganEntity>)rekapService.rekapHarian(pegawai.toEntity(), hari);
 
@@ -61,8 +60,8 @@ public class PrintController extends AbstractController {
 		}
 	}
 	
-	@RequestMapping(value = "/rekap/bulan/{idPerusahaan}", method = RequestMethod.POST)
-	public ModelAndView printBulan(@PathVariable Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
+	@RequestMapping(value = "/rekap/bulan", method = RequestMethod.POST)
+	public ModelAndView printBulan(@RequestParam Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
 			Map<String, Object> model) {
 		try {
 			List<PembayaranEntity> list = createListRekapBulanan(idPerusahaan, jenis, tahun, bulan);
@@ -91,8 +90,8 @@ public class PrintController extends AbstractController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/tahun/{idPerusahaan}", method = RequestMethod.POST)
-	public ModelAndView printTahun(@PathVariable Integer idPerusahaan, @RequestParam Integer tahun, Map<String, Object> model) {
+	@RequestMapping(value = "/rekap/tahun/", method = RequestMethod.POST)
+	public ModelAndView printTahun(@RequestParam Integer idPerusahaan, @RequestParam Integer tahun, Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 
@@ -109,8 +108,8 @@ public class PrintController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/tunggakan/{idPerusahaan}", method = RequestMethod.POST)
-	public ModelAndView printTunggakan(@PathVariable Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakan,
+	@RequestMapping(value = "/rekap/tunggakan", method = RequestMethod.POST)
+	public ModelAndView printTunggakan(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakan,
 			Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
@@ -130,8 +129,8 @@ public class PrintController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/alamat/{idPerusahaan}", method = RequestMethod.POST)
-	public ModelAndView printAlamat(@PathVariable Integer idPerusahaan, @RequestParam("status") String s, @RequestParam("kelurahan") String k, @RequestParam Integer lingkungan,
+	@RequestMapping(value = "/rekap/alamat", method = RequestMethod.POST)
+	public ModelAndView printAlamat(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam("kelurahan") String k, @RequestParam Integer lingkungan,
 			Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
@@ -154,10 +153,10 @@ public class PrintController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/pelanggan/kartu", method = RequestMethod.POST)
-	public ModelAndView printKartuPelanggan(@RequestParam Integer pembayaran, @RequestParam String searchBy, @RequestParam String query,
+	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam Integer pembayaran, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
 		try {
-			Pelanggan pelanggan = createPelanggan(searchBy, query);
+			Pelanggan pelanggan = createPelanggan(searchBy, query, idPerusahaan);
 			
 			model.put("pembayaran", pembayaran);
 			model.put("pelanggan", pelangganService.cetakKartu(pelanggan));
