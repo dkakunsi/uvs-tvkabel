@@ -37,6 +37,10 @@ function getPerusahaan() {
 	var operator = getOperator();
 	return operator.perusahaanModel;
 }
+function getIdPerusahaan() {
+	var perusahaan = getPerusahaan();
+	return perusahaan.id;
+}
 function login(username, password) {
 	var data = {
 		username: username,
@@ -133,7 +137,7 @@ function registrasiPerusahaan(data, success, error) {
 	save(target + '/perusahaan/registrasi', data, 'POST', success, error);
 }
 function savePegawai(data, success, error) {
-	save(target + '/pegawai/master', data, 'POST', success, error);
+	save(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/master', data, 'POST', success, error);
 }
 function deletePegawai(id, success, error) {
 	save(target + '/pegawai/removed/master', id, 'POST', success, error);
@@ -145,19 +149,19 @@ function loadPegawaiById(id, success, error) {
 	load(target + '/pegawai/id/' + id, success, error);
 }
 function loadPegawaiByKode(kode, success, error) {
-	load(target + '/pegawai/kode/' + kode, success, error);
+	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/kode/' + kode, success, error);
 }
 function loadPegawaiByNama(nama, success, error) {
-	load(target + '/pegawai/nama/' + nama, success, error);
+	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/nama/' + nama, success, error);
 }
 function loadListPegawaiByKode(kode, page, success, error) {
-	load(target + '/pegawai/kode/' + kode + '/page/' + page, success, error)
+	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/kode/' + kode + '/page/' + page, success, error)
 }
 function loadListPegawaiByNama(nama, page, success, error) {
-	load(target + '/pegawai/nama/' + nama + '/page/' + page, success, error);
+	load(target + '/pegawai/perusahaan/' + getIdPerusahaan() + '/nama/' + nama + '/page/' + page, success, error);
 }
 function loadAllPegawai(success, error) {
-	load(target + '/pegawai', success, error);
+	load(target + '/pegawai/perusahaan/' + getIdPerusahaan(), success, error);
 }
 function savePelanggan(data, success, error) {
 	save(target + '/pelanggan/master', data, 'POST', success, error);
