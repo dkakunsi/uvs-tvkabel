@@ -210,4 +210,15 @@ public class PegawaiModel extends CodableModel implements Pegawai {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean authenticate(String password) {
+		return staticAuthentication(this, password);
+	}
+	
+	public static boolean staticAuthentication(Operator operator, String password) {
+		if (operator.getPassword().equals(password))
+			return true;
+		return false;
+	}
 }

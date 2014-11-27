@@ -439,4 +439,9 @@ public final class PegawaiEntity extends CodableEntity implements Pegawai {
 			return null;
 		}
 	}
+
+	@Override
+	public boolean authenticate(String password) {
+		return PegawaiModel.staticAuthentication(this, password);
+	}
 }

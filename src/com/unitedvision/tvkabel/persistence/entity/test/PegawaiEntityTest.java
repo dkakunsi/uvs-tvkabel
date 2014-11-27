@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.unitedvision.tvkabel.core.domain.Kredensi.Role;
 import com.unitedvision.tvkabel.core.domain.Pegawai.Status;
 import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
@@ -12,6 +13,7 @@ import com.unitedvision.tvkabel.exception.StatusChangeException;
 import com.unitedvision.tvkabel.persistence.entity.AlamatValue;
 import com.unitedvision.tvkabel.persistence.entity.KelurahanEntity;
 import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity;
+import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity.KredensiValue;
 import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
 
 public class PegawaiEntityTest {
@@ -82,5 +84,14 @@ public class PegawaiEntityTest {
 		assertEquals(Status.AKTIF, pegawaiEntity.getStatus());
 		assertEquals(0, pegawaiEntity.getId());
 		assertEquals("COM1PG2", pegawaiEntity.getKode());
+	}
+	
+	@Test
+	public void testAuthenticate() {
+		String password = "password";
+		KredensiValue kredensi = new KredensiValue(true, "username", "password", Role.OPERATOR);
+		PegawaiEntity entity = new PegawaiEntity(null, "Test", kredensi, Status.AKTIF);
+		
+		assertEquals(true, entity.authenticate(password));
 	}
 }

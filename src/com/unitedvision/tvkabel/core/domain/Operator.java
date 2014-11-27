@@ -38,4 +38,11 @@ public interface Operator {
 	 * @return domain
 	 */
 	Pegawai toDomain();
+
+	/**
+	 * Authenticate operator.
+	 * @param password
+	 * @return true if operator is authenticated, otherwise false.
+	 */
+	boolean authenticate(String password);
 }
