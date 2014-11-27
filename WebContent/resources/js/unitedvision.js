@@ -34,7 +34,7 @@ function setOperator(operator) {
 }
 function getPerusahaan() {
 	var operator = getOperator();
-	return operator.perusahaan;
+	return operator.perusahaanModel;
 }
 function login(username, password) {
 	var data = {
