@@ -216,6 +216,10 @@ public class PegawaiModel extends CodableModel implements Pegawai {
 		return staticAuthentication(this, password);
 	}
 	
+	public static PegawaiModel createGuest() {
+		return new PegawaiModel(0, 0, "GUEST", "GUEST", Role.GUEST, "guest", "guest", Status.AKTIF);
+	}
+	
 	public static boolean staticAuthentication(Operator operator, String password) {
 		if (operator.getPassword().equals(password))
 			return true;

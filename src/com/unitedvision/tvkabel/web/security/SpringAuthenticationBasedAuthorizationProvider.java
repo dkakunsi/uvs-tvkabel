@@ -10,6 +10,7 @@ import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.domain.Kredensi.Role;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
+import com.unitedvision.tvkabel.web.model.PegawaiModel;
 
 /**
  * Class that provides authentication mechanism based on Spring's {@code Authentication} class.
@@ -71,7 +72,7 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 		Object principal = authentication.getPrincipal();
 		
 		if (principal instanceof String)
-			return createGuest();
+			return PegawaiModel.createGuest();
 		return ((CustomUser)principal).getOperator();
 	}
 	
