@@ -10,10 +10,23 @@
  */
 var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
 //var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
+var myApp = function () {
+    var pleaseWaitDiv = $('<div class="modal fade" id="pleaseWaitDialog" role="dialog"><div class="modal-dialog"><div class="modal-content modal-cover"><div class="modal-header"><h1 class="modal-title">Loading</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div><div class="modal-footer"></div></div><!-- /.modal-content --></div><!-- /.modal-dialog --></div><!-- /.modal -->');
+    return {
+        showPleaseWait: function () {
+            pleaseWaitDiv.modal('show');
+        },
+        hidePleaseWait: function () {
+            pleaseWaitDiv.modal('hide');
+        }
+    };
+} ();
+OnBeforeAjaxRequest = function () {
+    myApp.showPleaseWait();
+};
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
-	alert('Error : ' + textStatus + ' - ' + errorThrown);
-	alert(xhr.status);
-	alert(xhr.responseText);
+    myApp.hidePleaseWait();
+    alert('Error : ' + textStatus + ' - ' + errorThrown);
 }
 
 function getUsername() {
@@ -56,23 +69,24 @@ function login(username, password) {
 	};
 
 	$.ajax({
+	    beforeSend: OnBeforeAjaxRequest,
 	    type: 'POST',
 	    url: target + '/login',
 	    username: username,
 	    password: password,
 	    contentType: 'application/json',
-        xhrFields: {
-            withCredentials: true
-        },
-	    async: false,
+	    xhrFields: {
+	        withCredentials: true
+	    },
 	    data: JSON.stringify(data),
 	    success: function (result) {
+	        myApp.hidePleaseWait();
 	        if (result.message === 'Berhasil!') {
 	            setUsername(username);
 	            setPassword(password);
 	            setOperator(result.model);
 
-	            alert('Berhasil Login - ' + result.model.nama + '-' + result.model.perusahaanModel.nama);
+	            alert('Berhasil Login - Selamat Datang ' + result.model.nama + ' dari ' + result.model.perusahaanModel.nama);
 	            window.location.href = "dashboard.html";
 	        } else {
 	            alert(result.message);
@@ -82,26 +96,26 @@ function login(username, password) {
 	});
 }
 function logout() {
-	$.ajax({
-		type: 'POST',
-		url: target + '/logout',
-		username: getUsername(),
-		password: getPassword(),
+    $.ajax({
+        type: 'POST',
+        beforeSend: OnBeforeAjaxRequest,
+        url: target + '/logout',
+        username: getUsername(),
+        password: getPassword(),
+        contentType: 'application/json',
         xhrFields: {
             withCredentials: true
         },
-		contentType: 'application/json',
-		success: function(result) {
-			setUsername('');
-			setPassword('');
-			setOperator('');
+        success: function (result) {
+            myApp.hidePleaseWait();
+            setUsername('');
+            setPassword('');
+            setOperator('');
 
-			alert('Berhasil Logout');
-		},
-		error: function() {
-			alert('Kombinasi Username/Password tidak ditemukan');
-		}
-	});
+            alert('Berhasil Logout');
+        },
+        error: errorMessage
+    });
 }
 function process(url, data, method, success, error) {
 	var _username = getUsername();
@@ -109,16 +123,16 @@ function process(url, data, method, success, error) {
 	
 	if (_username !== '' || password !== '') {
 		$.ajax({
+            beforeSend: OnBeforeAjaxRequest,
 			type: method,
 			url: url,
 			username: _username,
 			password: _password,
-			xhrFields: {
-				withCredentials: true
-			},
 			contentType: 'application/json',
+            xhrFields: {
+                withCredentials: true
+            },
 			processData: false,
-			async: false,
 			data: JSON.stringify(data),
 			success: success,
 			error: error
