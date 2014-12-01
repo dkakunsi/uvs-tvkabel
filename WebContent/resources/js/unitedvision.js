@@ -12,6 +12,8 @@ var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
 //var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
 	alert('Error : ' + textStatus + ' - ' + errorThrown);
+	alert(xhr.status);
+	alert(xhr.responseText);
 }
 
 function getUsername() {
@@ -59,15 +61,22 @@ function login(username, password) {
 	    username: username,
 	    password: password,
 	    contentType: 'application/json',
+        xhrFields: {
+            withCredentials: true
+        },
 	    async: false,
 	    data: JSON.stringify(data),
 	    success: function (result) {
-	        setUsername(username);
-	        setPassword(password);
-	        setOperator(result.model);
+	        if (result.message === 'Berhasil!') {
+	            setUsername(username);
+	            setPassword(password);
+	            setOperator(result.model);
 
-	        alert('Berhasil Login - ' + result.model.nama + '-' + result.model.perusahaanModel.nama);
-	        window.location.href = "dashboard.html";
+	            alert('Berhasil Login - ' + result.model.nama + '-' + result.model.perusahaanModel.nama);
+	            window.location.href = "dashboard.html";
+	        } else {
+	            alert(result.message);
+	        }
 	    },
 	    error: errorMessage
 	});
@@ -78,6 +87,9 @@ function logout() {
 		url: target + '/logout',
 		username: getUsername(),
 		password: getPassword(),
+        xhrFields: {
+            withCredentials: true
+        },
 		contentType: 'application/json',
 		success: function(result) {
 			setUsername('');
@@ -101,6 +113,9 @@ function process(url, data, method, success, error) {
 			url: url,
 			username: _username,
 			password: _password,
+			xhrFields: {
+				withCredentials: true
+			},
 			contentType: 'application/json',
 			processData: false,
 			async: false,
