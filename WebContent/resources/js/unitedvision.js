@@ -199,7 +199,7 @@ function loadAllPegawai(success, error) {
 	load(target + '/pegawai/perusahaan/' + getIdPerusahaan(), success, error);
 }
 function savePelanggan(data, success, error) {
-	save(target + '/pelanggan/master', data, 'POST', success, error);
+	save(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/master', data, 'POST', success, error);
 }
 function updateTunggakan(id, data, success, error) {
 	save(target + '/pelanggan/' + id + '/tunggakan/master', data, 'PUT', success, error);
