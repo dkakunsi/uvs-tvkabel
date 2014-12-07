@@ -321,8 +321,6 @@ function getMap() {
 	var perusahaan = getPerusahaan();
 	var lat = perusahaan.latitude;
     var lng = perusahaan.longitude;
-	//var lat = 1.502444; //debug purposes
-    //var lng = 124.915389; //debug purposes
     var location = new google.maps.LatLng(lat, lng);
 
     var mapOptions = {
@@ -330,7 +328,7 @@ function getMap() {
 		zoom: 16
 	};
 
-	return new google.maps.Map( $('#map-canvas'), mapOptions );
+	return new google.maps.Map( $('#map-canvas')[0], mapOptions );
 }
 function setMarker(map, location, image, title) {
 	var marker = new google.maps.Marker({
