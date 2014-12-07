@@ -35,6 +35,7 @@ var errorMessage = function (jqXHR, textStatus, errorThrown) {
     myApp.hidePleaseWait();
     alert('Error : ' + textStatus + ' - ' + errorThrown);
 }
+var emptyFunction = function () { }
 
 function getUsername() {
 	return localStorage.getItem('username');
@@ -103,7 +104,14 @@ function login(username, password) {
 	});
 }
 function logout() {
-    $.ajax({
+    setUsername('');
+    setPassword('');
+    setOperator('');
+	myApp.hidePleaseWait();
+
+	// This is alternate version of logout (client logout)
+	// The service still have bug, it always return HTTP 500 (Internal Server Error)
+	/*  $.ajax({
         type: 'POST',
         beforeSend: OnBeforeAjaxRequest,
         url: target + '/logout',
@@ -115,14 +123,10 @@ function logout() {
         },
         success: function (result) {
             myApp.hidePleaseWait();
-            setUsername('');
-            setPassword('');
-            setOperator('');
-
             alert('Berhasil Logout');
         },
         error: errorMessage
-    });
+    }); */
 }
 function process(url, data, method, success, error) {
 	var _username = getUsername();
@@ -154,6 +158,29 @@ function save(url, data, method, success, error) {
 function load(url, success, error) {
 	process(url, '', 'GET', success, error);
 }
+function submitPost(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
 function savePerusahaan(data, success, error) {
 	save(target + '/perusahaan/master', data, 'POST', success, error);
 }
@@ -166,8 +193,8 @@ function loadPerusahaanByKode(kode, success, error) {
 function loadActivePerusahaan(success, error) {
 	load(target + '/perusahaan/active', success, error);
 }
-function loadRekapPerusahaan(perusahaan, success, error) {
-	load(target + '/perusahaan/' + perusahaan + '/rekap', success, error);
+function loadRekapPerusahaan(success, error) {
+	load(target + '/perusahaan/' + getIdPerusahaan() + '/rekap', success, error);
 }
 function loadRekapAktifPerusahaan(success, error) {
 	load(target + '/perusahaan/active/rekap', success, error);
@@ -272,7 +299,7 @@ function loadTagihanById(id, success, error) {
 	load(target + '/pembayaran/pelanggan/id/' + id + '/payable', success, error);
 }
 function loadPembayaranById(id, success, error) {
-	load(target + '/pembayaran/' + id, success, error);
+	load(target + '/pembayaran/id/' + id, success, error);
 }
 function loadListPembayaranByKodePegawai(kode, tanggalAwal, tanggalAkhir, page, success, error) {
 	load(target + '/pembayaran/perusahaan/' + getIdPerusahaan() + '/pegawai/kode/' + kode + '/awal/' + tanggalAwal + '/akhir/' + tanggalAkhir + '/page/' + page, success, error);
@@ -300,6 +327,26 @@ function loadAllKelurahan(success, error) {
 }
 function loadListKelurahanByKecamatan(kecamatan, success, error) {
 	load(target + '/kelurahan/kecamatan/' + kecamatan, success, error);
+}
+
+//REKAP Library
+function rekapAlamat(data) {
+    submitPost(target + '/print/rekap/alamat', data);
+}
+function rekapTunggakan(data) {
+    submitPost(target + '/print/rekap/tunggakan', data);
+}
+function kartuPelanggan(data) {
+    submitPost(target + '/print/pelanggan/kartu', data);    
+}
+function rekapHari(data) {
+    submitPost(target + '/print/rekap/hari', data);    
+}
+function rekapBulan(data) {
+    submitPost(target + '/print/rekap/bulan', data);    
+}
+function rekapTahun(data) {
+    submitPost(target + '/print/rekap/tahun', data);    
 }
 
 //MAPS Library
@@ -372,30 +419,32 @@ function loadPelangganMap(status) {
 	        		
 			setMarker(map, pelanggan_location, icon, nama);
 		}
+        myApp.hidePleaseWait();
 	}
 
-	load(target + '/pelanggan/status/' + status, success, errorMessage);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status, success, errorMessage);
 }
 function tampilkanPeta(query) {
-	var success = function(result){
-		alert(result.message);
-		var map = getMap();
+    var success = function (result) {
+        alert(result.message);
+        var map = getMap();
 
-		setUnitedVisionMap(map);
-		setPerusahaanMap(map);
+        setUnitedVisionMap(map);
+        setPerusahaanMap(map);
 
-		var model = result.model;
-		var lat = model.latitude;
-		var lng = model.longitude;
+        var model = result.model;
+        var lat = model.latitude;
+        var lng = model.longitude;
 
-		if (lat != 0 && lng != 0) {
-			var icon = getIcon(model.status.toLowerCase());
-			var nama = model.nama;
-			var pelanggan_location = new google.maps.LatLng(lat, lng);
-					        		
-			setMarker(map, pelanggan_location, icon, nama);
-		}
-	}
+        if (lat != 0 && lng != 0) {
+            var icon = getIcon(model.status.toLowerCase());
+            var nama = model.nama;
+            var pelanggan_location = new google.maps.LatLng(lat, lng);
+
+            setMarker(map, pelanggan_location, icon, nama);
+        }
+        myApp.hidePleaseWait();
+    }
 	
-	load(target + '/pelanggan/nama/' + query, success, errorMessage);
+	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + query, success, errorMessage);
 }

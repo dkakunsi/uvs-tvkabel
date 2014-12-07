@@ -90,7 +90,7 @@ public class PrintController extends AbstractController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/rekap/tahun/", method = RequestMethod.POST)
+	@RequestMapping(value = "/rekap/tahun", method = RequestMethod.POST)
 	public ModelAndView printTahun(@RequestParam Integer idPerusahaan, @RequestParam Integer tahun, Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
