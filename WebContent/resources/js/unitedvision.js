@@ -10,26 +10,9 @@
  */
 var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
 //var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
-
-// Please Wait (loading) modal definition.
-// call myApp.showPleaseWait() to show it,
-// and myApp.hidePleaseWait() to hide it.
-var myApp = function () {
-    var pleaseWaitDiv = $('<div class="modal fade" id="pleaseWaitDialog" role="dialog"><div class="modal-dialog"><div class="modal-content modal-cover"><div class="modal-header"><h1 class="modal-title">Loading</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div><div class="modal-footer"></div></div><!-- /.modal-content --></div><!-- /.modal-dialog --></div><!-- /.modal -->');
-    return {
-        showPleaseWait: function () {
-            pleaseWaitDiv.modal('show');
-        },
-        hidePleaseWait: function () {
-            pleaseWaitDiv.modal('hide');
-        }
-    };
-} ();
-// OnBeforeAjaxRequest is used to show please wait (loading modal)
-// don't forget to hide it in every success and error callback
-OnBeforeAjaxRequest = function () {
-    myApp.showPleaseWait();
-};
+// Please wait variable.
+// This will/must be set from apps specific javascipt.
+var myApp;
 // Default error callback
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
     myApp.hidePleaseWait();
@@ -77,7 +60,8 @@ function login(username, password) {
 	};
 
 	$.ajax({
-	    beforeSend: OnBeforeAjaxRequest,
+	    beforeSend: myApp.showPleaseWait(),
+		complete: myApp.hidePleaseWait(),
 	    type: 'POST',
 	    url: target + '/login',
 	    username: username,
@@ -401,7 +385,7 @@ function setPerusahaanMap(map) {
 function loadPelangganMap(status) {
 	var success = function(result){
 		var map = getMap();
-		var icon = getIcon(status);
+		var icon = getIcon(status.toLowerCase());
         		
 		setUnitedVisionMap(map);
 		setPerusahaanMap(map);
