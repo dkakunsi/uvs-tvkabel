@@ -15,7 +15,6 @@ var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
 var myApp;
 // Default error callback
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
-    myApp.hidePleaseWait();
     alert('Error : ' + textStatus + ' - ' + errorThrown);
 }
 var emptyFunction = function () { }
@@ -72,7 +71,6 @@ function login(username, password) {
 	    },
 	    data: JSON.stringify(data),
 	    success: function (result) {
-	        myApp.hidePleaseWait();
 	        if (result.message === 'Berhasil!') {
 	            setUsername(username);
 	            setPassword(password);
@@ -88,6 +86,7 @@ function login(username, password) {
 	});
 }
 function logout() {
+	myApp.showPleaseWait();
     setUsername('');
     setPassword('');
     setOperator('');
@@ -118,7 +117,8 @@ function process(url, data, method, success, error) {
 	
 	if (_username !== '' || password !== '') {
 		$.ajax({
-            beforeSend: OnBeforeAjaxRequest,
+			beforeSend: myApp.showPleaseWait(),
+			complete: myApp.hidePleaseWait(),
 			type: method,
 			url: url,
 			username: _username,
@@ -403,7 +403,6 @@ function loadPelangganMap(status) {
 	        		
 			setMarker(map, pelanggan_location, icon, nama);
 		}
-        myApp.hidePleaseWait();
 	}
 
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status, success, errorMessage);
@@ -427,7 +426,6 @@ function tampilkanPeta(query) {
 
             setMarker(map, pelanggan_location, icon, nama);
         }
-        myApp.hidePleaseWait();
     }
 	
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/nama/' + query, success, errorMessage);
