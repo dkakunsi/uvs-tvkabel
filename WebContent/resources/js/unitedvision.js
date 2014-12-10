@@ -17,19 +17,12 @@ var myApp;
 var errorMessage = function (jqXHR, textStatus, errorThrown) {
     alert('Error : ' + textStatus + ' - ' + errorThrown);
 }
-var emptyFunction = function () { }
-
-function getUsername() {
-	return localStorage.getItem('username');
+// Default callback
+var emptyFunction = function () {
+	// do nothing
 }
-function setUsername(username) {
-	localStorage.setItem('username', username);
-}
-function getPassword() {
-	return localStorage.getItem('password');
-}
-function setPassword(password) {
-	localStorage.setItem('password', password);
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 function getOperator() {
     var operator = localStorage.getItem('operator');
@@ -37,6 +30,22 @@ function getOperator() {
 }
 function setOperator(operator) {
 	localStorage.setItem('operator', JSON.stringify(operator));
+	localStorage.setItem('username', operator.username);
+	localStorage.setItem('password', operator.password);
+}
+function resetOperator() {
+	var notAuthenticated = {
+		username: '',
+		password: ''
+	};
+	
+	setOperator(notAuthenticated);
+}
+function getUsername() {
+	return localStorage.getItem('username');
+}
+function getPassword() {
+	return localStorage.getItem('password');
 }
 function getPerusahaan() {
 	var operator = getOperator();
@@ -47,45 +56,14 @@ function getIdPerusahaan() {
 	return perusahaan.id;
 }
 function isLogin() {
-	var operator = getOperator();
-	if (operator === '' || operator === undefined || operator === null)
-		return false;
-	return true;
+	var condition = localStorage.getItem('login');
+	if (condition === 'true')
+	    return true;
+	return false;
 }
-/*
-function login(username, password) {
-	var data = {
-		username: username,
-		password: password
-	};
-
-	$.ajax({
-	    beforeSend: myApp.showPleaseWait(),
-		complete: myApp.hidePleaseWait(),
-	    type: 'POST',
-	    url: target + '/login',
-	    username: username,
-	    password: password,
-	    contentType: 'application/json',
-	    xhrFields: {
-	        withCredentials: true
-	    },
-	    data: JSON.stringify(data),
-	    success: function (result) {
-	        if (result.message === 'Berhasil!') {
-	            setUsername(username);
-	            setPassword(password);
-	            setOperator(result.model);
-
-	            alert('Berhasil Login - Selamat Datang ' + result.model.nama + ' dari ' + result.model.perusahaanModel.nama);
-	            window.location.href = "dashboard.html";
-	        } else {
-	            alert(result.message);
-	        }
-	    },
-	    error: errorMessage
-	});
-} */
+function setLogin(condition) {
+	localStorage.setItem('login', condition);
+}
 function login(username, password) {
 	var data = {
 		username: username,
@@ -93,8 +71,7 @@ function login(username, password) {
 	};
 	var onSuccess = function (result) {
 	    if (result.message === 'Berhasil!') {
-			setUsername(username);
-	        setPassword(password);
+			setLogin('true');
 	        setOperator(result.model);
 
 	        alert('Berhasil Login - Selamat Datang ' + result.model.nama + ' dari ' + result.model.perusahaanModel.nama);
@@ -107,10 +84,11 @@ function login(username, password) {
 }
 function logout() {
 	myApp.showPleaseWait();
-    setUsername('');
-    setPassword('');
-    setOperator('');
+	setLogin('false');
+	resetOperator();
 	myApp.hidePleaseWait();
+	window.location.href = 'index.html';
+	alert('Berhasil Logout');
 
 	// This is alternate version of logout (client logout)
 	// The service still have bug, it always return HTTP 500 (Internal Server Error)
@@ -134,31 +112,30 @@ function logout() {
 function process(url, data, method, success, error) {
 	var _username = getUsername();
 	var _password = getPassword();
-	var onBeforeSend = function(jqXHR, settings) {
-		myApp.showPleaseWait()
-	};
-	var onComplete = function(jqXHR, textStatus) {
-		myApp.hidePleaseWait();
-	};
 	
 	if (_username !== '' || password !== '') {
-		$.ajax({
-			type: method,
-			url: url,
-			username: _username,
-			password: _password,
-			contentType: 'application/json',
-			crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-			processData: false,
-			beforeSend: onBeforeSend(),
-			data: JSON.stringify(data),
-			success: success,
-			error: error,
-			complete: onComplete()
-		});
+	    var promise = $.ajax({
+	        type: method,
+	        url: url,
+	        username: _username,
+	        password: _password,
+	        contentType: 'application/json',
+	        crossDomain: true,
+	        xhrFields: {
+	            withCredentials: true
+	        },
+	        processData: false,
+	        data: JSON.stringify(data),
+	        beforeSend: function (jqXHR, settings) {
+	            myApp.showPleaseWait()
+	        }
+	    });
+		
+	    promise.done(success);
+	    promise.fail(error);
+	    promise.always(function (jqXHR, textStatus) {
+	        myApp.hidePleaseWait();
+	    });
 	} else {
 		window.location.href = 'index.html';
 	}
@@ -410,27 +387,28 @@ function setPerusahaanMap(map) {
 	}
 }
 function loadPelangganMap(status) {
-	var success = function(result){
-		var map = getMap();
-		var icon = getIcon(status.toLowerCase());
-        		
-		setUnitedVisionMap(map);
-		setPerusahaanMap(map);
+    var success = function (result) {
+        var map = getMap();
+        var icon = getIcon(status.toLowerCase());
 
-		var index;
-		for	(index = 0; index < result.length; index++) {
-			var lat = result[index].alamat.latitude;
-			var lng = result[index].alamat.longitude;
+        setUnitedVisionMap(map);
+        setPerusahaanMap(map);
 
-			if (lat == 0 && lng == 0)
-				continue;
+        var list = result.listModel;
+        var index;
+        for (index = 0; index < list.length; index++) {
+            var lat = list[index].latitude;
+            var lng = list[index].longitude;
 
-			var nama = result[index].nama;
-			var pelanggan_location = new google.maps.LatLng(lat, lng);
-	        		
-			setMarker(map, pelanggan_location, icon, nama);
-		}
-	}
+            if (lat == 0 && lng == 0)
+                continue;
+
+            var nama = list[index].nama;
+            var pelanggan_location = new google.maps.LatLng(lat, lng);
+
+            setMarker(map, pelanggan_location, icon, nama);
+        }
+    }
 
 	load(target + '/pelanggan/perusahaan/' + getIdPerusahaan() + '/status/' + status, success, errorMessage);
 }
