@@ -121,9 +121,6 @@ function process(url, data, method, success, error) {
 	        password: _password,
 	        contentType: 'application/json',
 	        crossDomain: true,
-	        xhrFields: {
-	            withCredentials: true
-	        },
 	        processData: false,
 	        data: JSON.stringify(data),
 	        beforeSend: function (jqXHR, settings) {
