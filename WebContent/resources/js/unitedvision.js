@@ -124,6 +124,7 @@ function process(url, data, method, success, error) {
 	        processData: false,
 	        data: JSON.stringify(data),
 	        beforeSend: function (jqXHR, settings) {
+				jqXHR.setRequestHeader('Origin', 'https://uvs-t001.whelastic.net');
 	            myApp.showPleaseWait()
 	        }
 	    });
