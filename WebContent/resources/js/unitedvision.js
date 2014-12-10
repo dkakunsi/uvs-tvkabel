@@ -225,7 +225,7 @@ function updateTunggakan(id, data, success, error) {
 	save(target + '/pelanggan/' + id + '/tunggakan/master', data, 'PUT', success, error);
 }
 function setPelangganMapLocation(id, latitude, longitude, success, error) {
-	save(target + '/' + id + '/location/' + latitude + '/' + longitude, '', "PUT", success, error);
+	save(target + '/pelanggan/' + id + '/location/' + latitude + '/' + longitude, '', "PUT", success, error);
 }
 function activatePelanggan(id, success, error) {
 	save(target + '/pelanggan/activated/master', id, 'PUT', success, error);
