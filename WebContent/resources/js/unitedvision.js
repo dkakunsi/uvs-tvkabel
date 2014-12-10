@@ -52,6 +52,7 @@ function isLogin() {
 		return false;
 	return true;
 }
+/*
 function login(username, password) {
 	var data = {
 		username: username,
@@ -84,6 +85,25 @@ function login(username, password) {
 	    },
 	    error: errorMessage
 	});
+} */
+function login(username, password) {
+	var data = {
+		username: username,
+		password: password
+	};
+	var onSuccess = function (result) {
+	    if (result.message === 'Berhasil!') {
+			setUsername(username);
+	        setPassword(password);
+	        setOperator(result.model);
+
+	        alert('Berhasil Login - Selamat Datang ' + result.model.nama + ' dari ' + result.model.perusahaanModel.nama);
+	        window.location.href = "dashboard.html";
+		} else {
+			alert(result.message);
+	    }
+	};
+	process(target + '/login', data, 'POST', onSuccess, errorMessage);
 }
 function logout() {
 	myApp.showPleaseWait();
@@ -114,26 +134,33 @@ function logout() {
 function process(url, data, method, success, error) {
 	var _username = getUsername();
 	var _password = getPassword();
+	var onBeforeSend = function(jqXHR, settings) {
+		myApp.showPleaseWait()
+	};
+	var onComplete = function(jqXHR, textStatus) {
+		myApp.hidePleaseWait();
+	};
 	
 	if (_username !== '' || password !== '') {
 		$.ajax({
-			beforeSend: myApp.showPleaseWait(),
-			complete: myApp.hidePleaseWait(),
 			type: method,
 			url: url,
 			username: _username,
 			password: _password,
 			contentType: 'application/json',
+			crossDomain: true,
             xhrFields: {
                 withCredentials: true
             },
 			processData: false,
+			beforeSend: onBeforeSend(),
 			data: JSON.stringify(data),
 			success: success,
-			error: error
+			error: error,
+			complete: onComplete()
 		});
 	} else {
-		
+		window.location.href = 'index.html';
 	}
 }
 function save(url, data, method, success, error) {
