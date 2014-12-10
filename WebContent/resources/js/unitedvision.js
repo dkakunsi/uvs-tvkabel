@@ -112,7 +112,6 @@ function logout() {
 function process(url, data, method, success, error) {
 	var _username = getUsername();
 	var _password = getPassword();
-	$.support.cors = true;
 	
 	if (_username !== '' || password !== '') {
 	    var promise = $.ajax({
