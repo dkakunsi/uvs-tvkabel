@@ -304,4 +304,13 @@ public class PelangganServiceImpl implements PelangganService {
 
 		return pelanggan;
 	}
+
+	@Override
+	public List<Pelanggan> cetakKartu(List<Pelanggan> listPelanggan) {
+		for (Pelanggan pelanggan : listPelanggan) {
+			cetakKartu(pelanggan);
+		}
+
+		return listPelanggan;
+	}
 }

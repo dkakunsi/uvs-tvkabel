@@ -24,24 +24,23 @@ import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private Perusahaan perusahaan;
-	private Pelanggan pelanggan;
+	private List<Pelanggan> listPelanggan;
 	private boolean contained;
 	private float[] columnWidths = {4f, 4f, 4f, 4f};
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setPelanggan((Pelanggan)model.get("pelanggan"));
+		setPelanggan((List<Pelanggan>)model.get("pelanggan"));
 		setContained((int)model.get("pembayaran"));
 
 		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
-		
-		Paragraph paragraph = new Paragraph();
-		createTitle(paragraph);
-		createHeadTable(paragraph);
-		createPembayaranTable(paragraph);
-		doc.add(paragraph);
+
+		for (Pelanggan pelanggan : listPelanggan) {
+			createPage(doc, pelanggan);
+		}
 	}
 	
 	public void setContained(boolean bool) {
@@ -56,9 +55,19 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		}
 	}
 	
-	public void setPelanggan(Pelanggan pelanggan) {
-		this.pelanggan = pelanggan;
-		this.perusahaan = this.pelanggan.getPerusahaan();
+	public void setPelanggan(List<Pelanggan> listPelanggan) {
+		this.listPelanggan = listPelanggan;
+		this.perusahaan = this.listPelanggan.get(0).getPerusahaan();
+	}
+	
+	protected void createPage(Document doc, Pelanggan pelanggan) throws DocumentException {
+		doc.newPage();
+
+		Paragraph paragraph = new Paragraph();
+		createTitle(paragraph);
+		createHeadTable(paragraph, pelanggan);
+		createPembayaranTable(paragraph, pelanggan);
+		doc.add(paragraph);
 	}
 	
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
@@ -68,7 +77,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 	}
 	
-	private void createHeadTable(Paragraph paragraph) throws DocumentException {
+	private void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(90f);
 		
@@ -103,7 +112,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		addEmptyLine(paragraph, 1);
 	}
 
-	private void createPembayaranTable(Paragraph paragraph) {
+	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(90f);
 		
@@ -113,7 +122,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Penagih", align, 1, fontHeader, Rectangle.BOX);
 
 		if (contained) {
-			setContainedTable(table, align, fontHeader, fontContent);
+			setContainedTable(table, align, fontHeader, fontContent, pelanggan);
 		} else {
 			insertEmptyCell(table, align, fontContent, 1);
 		}
@@ -121,7 +130,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		paragraph.add(table);
 	}
 	
-	private void setContainedTable(PdfPTable table, int align, Font fontHeader, Font fontContent) {
+	private void setContainedTable(PdfPTable table, int align, Font fontHeader, Font fontContent, Pelanggan pelanggan) {
 		List<PembayaranEntity> list = ((PelangganEntity)pelanggan).getListPembayaran();
 		int i = 1;
 		for (PembayaranEntity p : list) {

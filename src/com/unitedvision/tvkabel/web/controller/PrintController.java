@@ -168,4 +168,23 @@ public class PrintController extends AbstractController {
 			return new ModelAndView("pdfException", model);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/pelanggan/kartu/aktif", method = RequestMethod.POST)
+	public ModelAndView printKartuPelangganAktif(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer pembayaran,
+			Map<String, Object> model) {
+		try {
+			Status status = createStatus(s);
+			List<Pelanggan> listPelanggan = (List<Pelanggan>) pelangganService.get(getPerusahaan(idPerusahaan), status);
+			
+			model.put("pembayaran", pembayaran);
+			model.put("pelanggan", pelangganService.cetakKartu(listPelanggan));
+
+			return new ModelAndView("pdfKartu", model);
+		} catch(ApplicationException e) {
+			model.put("message", e.getMessage());
+
+			return new ModelAndView("pdfException", model);
+		}
+	}
 }
