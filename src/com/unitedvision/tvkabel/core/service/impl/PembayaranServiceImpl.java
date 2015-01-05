@@ -60,7 +60,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 		entity.generateKode();
 		entity = pembayaranRepository.save(entity);
-		updateTunggakan(entity);
+		updateTunggakan(entity.getPelanggan());
 		
 		return entity;
 	}
@@ -95,15 +95,20 @@ public class PembayaranServiceImpl implements PembayaranService {
 			validator.validate(entity);
 
 		entity = pembayaranRepository.save(entity);
-		updateTunggakan(entity);
+		updateTunggakan(entity.getPelanggan());
 		
 		return entity;
 	}
 	
-	private void updateTunggakan(Pembayaran domain) {
-		Pelanggan pelanggan = domain.getPelanggan();
-		pelanggan.countTunggakan(domain);
-
+	private void updateTunggakan(Pelanggan pelanggan) {
+		Pembayaran pembayaranTerakhir;
+		try {
+			pembayaranTerakhir = getLast(pelanggan);
+		} catch (EntityNotExistException e) {
+			pembayaranTerakhir = null;
+		}
+		
+		pelanggan.countTunggakan(pembayaranTerakhir);
 		pelangganRepository.save(pelanggan.toEntity());
 	}
 
@@ -112,6 +117,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	public void delete(Pembayaran domain) {
 		domain = pembayaranRepository.findOne(domain.getId());
 		pembayaranRepository.delete(domain.toEntity());
+		updateTunggakan(domain.getPelanggan());
 	}
 
 	@Override
