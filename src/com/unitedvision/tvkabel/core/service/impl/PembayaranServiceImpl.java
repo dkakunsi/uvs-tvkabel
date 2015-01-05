@@ -83,21 +83,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	@Transactional(readOnly = false)
 	public Pembayaran save(Pembayaran domain) throws ApplicationException {
-		PembayaranEntity entity = domain.toEntity();
-		
-		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
-		entity.setPelanggan(pelanggan);
-
-		Pegawai pegawai = pegawaiRepository.findOne(entity.getIdPegawai());
-		entity.setPegawai(pegawai);
-
-		if (entity.isNew())
-			validator.validate(entity);
-
-		entity = pembayaranRepository.save(entity);
-		updateTunggakan(entity.getPelanggan());
-		
-		return entity;
+		return pay(domain);
 	}
 	
 	private void updateTunggakan(Pelanggan pelanggan) {
@@ -191,11 +177,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public PembayaranEntity getLast(Pelanggan pelanggan) throws EntityNotExistException {
-		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan.toEntity());
-	}
-
-	@Override
 	public long count(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
 		return pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan.toEntity(), tanggalMulai, tanggalAkhir);
 	}
@@ -213,6 +194,11 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	public long count(Perusahaan perusahaan, Tagihan tagihan) {
 		return pembayaranRepository.countByPegawai_PerusahaanAndTagihan(perusahaan.toEntity(), tagihan.toEntity());
+	}
+
+	@Override
+	public PembayaranEntity getLast(Pelanggan pelanggan) throws EntityNotExistException {
+		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan.toEntity());
 	}
 
 	@Override
