@@ -325,6 +325,9 @@ function rekapTunggakan(data) {
 function kartuPelanggan(data) {
     submitPost(target + '/print/pelanggan/kartu', data);    
 }
+function kartuPelangganAktif(data) {
+    submitPost(target + '/print/pelanggan/kartu/aktif', data);
+}
 function rekapHari(data) {
     submitPost(target + '/print/rekap/hari', data);    
 }
