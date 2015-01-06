@@ -95,8 +95,11 @@ public class PelangganModel extends CodableModel implements Pelanggan {
 		this.kode = pelangganEntity.getKode();
 		this.nama = pelangganEntity.getNama();
 		this.profesi = pelangganEntity.getProfesi();
+		this.idKota = pelangganEntity.getKota().getId();
 		this.namaKota = pelangganEntity.getKota().getNama();
+		this.idKecamatan = pelangganEntity.getKecamatan().getId();
 		this.namaKecamatan = pelangganEntity.getKecamatan().getNama();
+		this.idKelurahan = pelangganEntity.getKelurahan().getId();
 		this.namaKelurahan = pelangganEntity.getKelurahan().getNama();
 		this.lingkungan = pelangganEntity.getLingkungan();
 		this.detailAlamat = pelangganEntity.getDetailAlamat();
