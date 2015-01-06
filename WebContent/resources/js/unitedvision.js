@@ -312,7 +312,7 @@ function loadAllKelurahan(success, error) {
 	load(target + '/alamat/kelurahan', success, error);
 }
 function loadListKelurahanByKecamatan(kecamatan, success, error) {
-	load(target + '/kelurahan/kecamatan/' + kecamatan, success, error);
+	load(target + '/alamat/kelurahan/kecamatan/' + kecamatan, success, error);
 }
 
 //REKAP Library
