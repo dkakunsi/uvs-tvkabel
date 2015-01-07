@@ -25,13 +25,6 @@ import com.unitedvision.tvkabel.core.ApplicationConfig;
 @ComponentScan("com.unitedvision.tvkabel.persistence")
 @Import(ApplicationConfig.class)
 public class SpringDataJpaConfig {
-	private static final String HOST = "mysql29099-uvision-test.whelastic.net"; //Testing Server
-	//private static final String HOST = "mysql-uvision.whelastic.net"; //Production Server
-	private static final String PROPERTY_NAME_DATABASE_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String PROPERTY_NAME_DATABASE_URL = String.format("jdbc:mysql://%s:3306/unitedvision_tvkabel", HOST);
-    private static final String PROPERTY_NAME_DATABASE_USERNAME = "uv_tvk";
-    private static final String PROPERTY_NAME_DATABASE_PASSWORD = "tvkabel001";
-    private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.unitedvision.tvkabel.persistence.entity";
     
     @Bean
     public HibernateJpaVendorAdapter jpaVendorAdapter() {
@@ -47,10 +40,10 @@ public class SpringDataJpaConfig {
     public DataSource dataSource() {
     	DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-    	dataSource.setDriverClassName(PROPERTY_NAME_DATABASE_DRIVER);
-    	dataSource.setUrl(PROPERTY_NAME_DATABASE_URL);
-    	dataSource.setUsername(PROPERTY_NAME_DATABASE_USERNAME);
-    	dataSource.setPassword(PROPERTY_NAME_DATABASE_PASSWORD);
+    	dataSource.setDriverClassName(DbConnectionConfig.PROPERTY_NAME_DATABASE_DRIVER);
+    	dataSource.setUrl(DbConnectionConfig.PROPERTY_NAME_DATABASE_URL);
+    	dataSource.setUsername(DbConnectionConfig.PROPERTY_NAME_DATABASE_USERNAME);
+    	dataSource.setPassword(DbConnectionConfig.PROPERTY_NAME_DATABASE_PASSWORD);
     	
     	return dataSource;
     }
@@ -58,7 +51,7 @@ public class SpringDataJpaConfig {
     @Bean
     public EntityManagerFactory entityManagerFactory() {
     	LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-    	entityManagerFactoryBean.setPackagesToScan(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN);
+    	entityManagerFactoryBean.setPackagesToScan(DbConnectionConfig.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN);
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProvider(persistenceProvider());
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
