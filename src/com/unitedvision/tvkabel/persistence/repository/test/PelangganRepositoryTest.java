@@ -42,7 +42,6 @@ public class PelangganRepositoryTest {
 	private KelurahanRepository kelurahanRepository;
 	
 	@Test
-	@Ignore
 	public void testCountEstimasi() {
 		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
 		long hasil = pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaanEntity, Status.AKTIF);
@@ -51,16 +50,30 @@ public class PelangganRepositoryTest {
 	}
 
 	@Test
-	@Ignore
+	public void testCountEstimasiWhenNoData() {
+		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
+		long hasil = pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaanEntity, Status.AKTIF);
+		
+		assertEquals(0, hasil);
+	}
+
+	@Test
 	public void countAkumulasi() {
 		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
 		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity);
 
 		assertNotEquals(0, hasil);
 	}
+
+	@Test
+	public void countAkumulasiWhenNoData() {
+		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
+		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity);
+
+		assertEquals(0, hasil);
+	}
 	
 	@Test
-	@Ignore
 	public void testGetByTanggalCont() {
 		int tanggal = 12;
 		
