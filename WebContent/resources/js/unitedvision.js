@@ -8,8 +8,8 @@
  * 
  * Version: 3.0.*
  */
-//var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
-var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
+var target = 'https://uvision-test.whelastic.net/tvkabel/api'; //Testing Server
+//var target = 'https://uvision.whelastic.net/tvkabel/api'; //Production Server
 // Please wait variable.
 // This will/must be set from apps specific javascipt.
 var myApp;

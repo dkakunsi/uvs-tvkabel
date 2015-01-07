@@ -25,8 +25,8 @@ import com.unitedvision.tvkabel.core.ApplicationConfig;
 @ComponentScan("com.unitedvision.tvkabel.persistence")
 @Import(ApplicationConfig.class)
 public class SpringDataJpaConfig {
-	//private static final String HOST = "mysql29099-uvision-test.whelastic.net"; //Testing Server
-	private static final String HOST = "mysql-uvision.whelastic.net"; //Production Server
+	private static final String HOST = "mysql29099-uvision-test.whelastic.net"; //Testing Server
+	//private static final String HOST = "mysql-uvision.whelastic.net"; //Production Server
 	private static final String PROPERTY_NAME_DATABASE_DRIVER = "com.mysql.jdbc.Driver";
     private static final String PROPERTY_NAME_DATABASE_URL = String.format("jdbc:mysql://%s:3306/unitedvision_tvkabel", HOST);
     private static final String PROPERTY_NAME_DATABASE_USERNAME = "uv_tvk";
