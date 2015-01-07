@@ -1,3 +1,4 @@
 /build/
 /target/
 /settings/Jelastic_Eclipse_Plugin.prefs
+/src/com/unitedvision/tvkabel/persistence/DbConnectionConfig.java
