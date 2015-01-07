@@ -56,6 +56,17 @@ public class PembayaranRepositoryTest {
 	}
 
 	@Test
+	public void testCountPemasukanBulanBerjalanWhenNoData() {
+		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
+		Date tanggalAwal = DateUtil.getFirstDate();
+		Date tanggalAkhir = DateUtil.getLastDate();
+		
+		long hasil = pembayaranRepository.countPemasukanBulanBerjalan(perusahaanEntity, tanggalAwal, tanggalAkhir);
+
+		assertEquals(0, hasil);
+	}
+
+	@Test
 	public void testFindByPelangganAndTagihan_TahunAndTagihan_BulanBetweenDifferentYear() {
 		PelangganEntity pelangganEntity = pelangganRepository.findOne(55);
 		int tahun1 = 2013;

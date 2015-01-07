@@ -15,7 +15,7 @@ import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
 import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity.TagihanValue;
 
 public interface PembayaranRepository extends JpaRepository<PembayaranEntity, Integer> {
-	String countPemasukanBulanBerjalan = "SELECT SUM(p.jumlahBayar) FROM PembayaranEntity p WHERE p.pegawai.perusahaan = ?1 AND p.tanggalBayar BETWEEN ?2 AND ?3";
+	String countPemasukanBulanBerjalan = "SELECT COALESCE(SUM(p.jumlahBayar), 0) FROM PembayaranEntity p WHERE p.pegawai.perusahaan = ?1 AND p.tanggalBayar BETWEEN ?2 AND ?3";
 
 	PembayaranEntity findFirstByPelangganOrderByIdDesc(PelangganEntity pelangganEntity);
 
