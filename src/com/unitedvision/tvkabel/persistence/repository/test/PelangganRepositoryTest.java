@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.core.domain.Pelanggan;
 import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
@@ -60,7 +61,7 @@ public class PelangganRepositoryTest {
 	@Test
 	public void countAkumulasi() {
 		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
-		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity);
+		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity, Pelanggan.Status.AKTIF);
 
 		assertNotEquals(0, hasil);
 	}
@@ -68,7 +69,7 @@ public class PelangganRepositoryTest {
 	@Test
 	public void countAkumulasiWhenNoData() {
 		PerusahaanEntity perusahaanEntity = perusahaanRepository.getOne(17);
-		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity);
+		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaanEntity, Pelanggan.Status.AKTIF);
 
 		assertEquals(0, hasil);
 	}

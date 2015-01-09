@@ -29,6 +29,9 @@ import com.unitedvision.tvkabel.persistence.entity.AlamatValue;
 import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
 import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
 import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.util.CodeUtil;
+import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 
@@ -39,6 +42,8 @@ public class PelangganServiceImpl implements PelangganService {
 	private PelangganRepository pelangganRepository;
 	@Autowired
 	private PembayaranService pembayaranService;
+	@Autowired
+	private PerusahaanRepository perusahaanRepository;
 	@Autowired
 	private Validator validator;
 
@@ -312,5 +317,25 @@ public class PelangganServiceImpl implements PelangganService {
 		}
 
 		return listPelanggan;
+	}
+
+	@Override
+	public void resetKode(int idPerusahaan) {
+		Perusahaan perusahaan = perusahaanRepository.findOne(idPerusahaan);
+		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+
+		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
+		for (Pelanggan pelanggan : listPelanggan) {
+			String generatedKode = codeGenerator.createKode(pelanggan);
+			
+			if (!(pelanggan.getKode().equals(generatedKode))) {
+				try {
+					pelanggan.setKode(generatedKode);
+					pelangganRepository.save(pelanggan.toEntity());
+					
+					codeGenerator.increase(pelanggan.getNamaKelurahan(), pelanggan.getLingkungan());
+				} catch (Exception e) { }
+			}
+		}
 	}
 }

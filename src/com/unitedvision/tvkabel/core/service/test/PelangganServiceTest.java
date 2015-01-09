@@ -275,4 +275,14 @@ public class PelangganServiceTest {
 		assertNotEquals(0, list.size());
 	}
 	
+	@Test
+	public void testResetKode() throws EntityNotExistException {
+		pelangganService.resetKode(17);
+		
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		assertEquals("WS05001", pelanggan.getKode());
+
+		Pelanggan pelanggan2 = pelangganService.getOne(36);
+		assertEquals("PLG0002", pelanggan2.getKode());
+	}
 }
