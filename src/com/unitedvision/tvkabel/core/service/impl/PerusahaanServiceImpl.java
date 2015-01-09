@@ -144,7 +144,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	
 	@Override
 	public long countTotalAkumulasiTunggakan(Perusahaan perusahaan) {
-		return pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan.toEntity());
+		return pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
 	}
 	
 	@Override

@@ -18,7 +18,7 @@ public interface PelangganRepository extends JpaRepository<PelangganEntity, Inte
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
 	String countByPembayaran = "SELECT count(*) FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";
 	String summerizeEstimasiPemasukanBulanan = "SELECT COALESCE(SUM(p.detail.iuran), 0) FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2";
-	String summerizeTotalEstimasiTunggakan = "SELECT COALESCE(SUM(p.detail.tunggakan * p.detail.iuran), 0) FROM PelangganEntity p WHERE p.perusahaan = ?1";
+	String summerizeTotalEstimasiTunggakan = "SELECT COALESCE(SUM(p.detail.tunggakan * p.detail.iuran), 0) FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2";
 	
 	PelangganEntity findByPerusahaanAndKode(PerusahaanEntity perusahaanEntity, String kode) throws EntityNotExistException;
 	PelangganEntity findByPerusahaanAndNama(PerusahaanEntity perusahaanEntity, String nama) throws EntityNotExistException;
@@ -58,5 +58,5 @@ public interface PelangganRepository extends JpaRepository<PelangganEntity, Inte
 	@Query (summerizeEstimasiPemasukanBulanan)
 	long sumarizeEstimasiPemasukanBulanan(PerusahaanEntity perusahaanEntity, Status status);
 	@Query (summerizeTotalEstimasiTunggakan)
-	long summarizeTotalAkumulasiTunggakan(PerusahaanEntity perusahaanEntity);
+	long summarizeTotalAkumulasiTunggakan(PerusahaanEntity perusahaanEntity, Status status);
 }
