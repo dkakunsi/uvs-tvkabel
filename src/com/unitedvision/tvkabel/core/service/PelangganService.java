@@ -51,5 +51,5 @@ public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan cetakKartu(Pelanggan pelanggan);
 	List<Pelanggan> cetakKartu(List<Pelanggan> listPelanggan);
 	
-	String resetKode(int idPerusahaan);
+	String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, int lingkungan);
 }

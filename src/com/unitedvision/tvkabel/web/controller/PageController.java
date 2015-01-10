@@ -2,6 +2,7 @@ package com.unitedvision.tvkabel.web.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +10,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.unitedvision.tvkabel.core.domain.Kelurahan;
+import com.unitedvision.tvkabel.core.domain.Perusahaan;
+import com.unitedvision.tvkabel.core.service.KelurahanService;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.web.rest.RestResult;
 
 @Controller
 public class PageController extends AbstractController {
+	@Autowired
+	private KelurahanService kelurahanService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showHome() {
 		return "redirect:/admin";
@@ -59,16 +67,23 @@ public class PageController extends AbstractController {
 		return RestResult.create(message);
 	}
 
-	@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}", method = RequestMethod.GET)
-	public @ResponseBody RestResult resetKode(@PathVariable String kode, @PathVariable Integer idPerusahaan) {
+	@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}/{idKelurahan}/{lingkungan}", method = RequestMethod.GET)
+	public @ResponseBody RestResult resetKode(@PathVariable String kode, @PathVariable Integer idPerusahaan, @PathVariable Integer idKelurahan, @PathVariable Integer lingkungan) {
 		String message;
-		
-		if (!kode.equals(CodeUtil.getKode())) {
-			message = "Gagal! Anda tidak memiliki otoritas!";
-		} else {
-			message = pelangganService.resetKode(idPerusahaan);
+
+		try {
+			Perusahaan perusahaan = perusahaanService.getOne(idPerusahaan);
+			Kelurahan kelurahan = kelurahanService.getOne(idKelurahan);
+			
+			if (!kode.equals(CodeUtil.getKode())) {
+				message = "Gagal! Anda tidak memiliki otoritas!";
+			} else {
+				message = pelangganService.resetKode(perusahaan, kelurahan, lingkungan);
+			}
+			
+			return RestResult.create(message);
+		} catch (EntityNotExistException e) {
+			return RestResult.create(e.getMessage());
 		}
-		
-		return RestResult.create(message);
 	}
 }

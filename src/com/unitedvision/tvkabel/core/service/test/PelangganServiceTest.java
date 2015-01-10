@@ -17,6 +17,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.core.domain.Kelurahan;
 import com.unitedvision.tvkabel.core.domain.Pelanggan;
 import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.KelurahanService;
@@ -280,18 +281,28 @@ public class PelangganServiceTest {
 	
 	@Test
 	public void testResetKode() throws EntityNotExistException {
-		String message = pelangganService.resetKode(17);
-
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		assertEquals("WS05001", pelanggan.getKode());
-
-		Pelanggan pelanggan3 = pelangganService.getOne(37);
-		assertNotEquals("PLG0003", pelanggan3.getKode());
-
-		Pelanggan pelanggan2 = pelangganService.getOne(36);
-		assertEquals("PLG0002", pelanggan2.getKode());
+		Perusahaan perusahaan = perusahaanService.getOne(17);
+		Kelurahan kelurahan = kelurahanService.getOne(22);
 		
-		assertEquals("", message);
+		pelangganService.resetKode(perusahaan, kelurahan, 1);
+
+		Pelanggan pelanggan = pelangganService.getOne(70);
+		assertEquals("WS01001", pelanggan.getKode());
+
+		Pelanggan pelanggan2 = pelangganService.getOne(74);
+		assertEquals("WS01002", pelanggan2.getKode());
+
+		Pelanggan pelanggan3 = pelangganService.getOne(95);
+		assertEquals("WS01003", pelanggan3.getKode());
+
+		Pelanggan pelanggan4 = pelangganService.getOne(110);
+		assertEquals("WS01004", pelanggan4.getKode());
+
+		Pelanggan pelanggan5 = pelangganService.getOne(162);
+		assertEquals("WS01005", pelanggan5.getKode());
+
+		Pelanggan pelanggan6 = pelangganService.getOne(214);
+		assertEquals("WS01010", pelanggan6.getKode());
 	}
 	
 	@Test

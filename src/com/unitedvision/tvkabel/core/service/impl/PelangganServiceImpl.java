@@ -320,9 +320,8 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public String resetKode(int idPerusahaan) {
-		Perusahaan perusahaan = perusahaanRepository.findOne(idPerusahaan);
-		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+	public String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, int lingkungan) {
+		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF, kelurahan.toEntity(), lingkungan);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 		String message = "";
@@ -330,16 +329,16 @@ public class PelangganServiceImpl implements PelangganService {
 		for (Pelanggan pelanggan : listPelanggan) {
 			String generatedKode = codeGenerator.createKode(pelanggan);
 			
-			if (!(pelanggan.getKode().equals(generatedKode))) {
-				try {
-					pelanggan.setKode(generatedKode);
-					pelangganRepository.save(pelanggan.toEntity());
-					
-					codeGenerator.increase(pelanggan.getNamaKelurahan(), pelanggan.getLingkungan());
+			try {
+				pelanggan.setKode(generatedKode);
+				pelangganRepository.save(pelanggan.toEntity());
+
+				if (generatedKode.contains("W")) {
+					codeGenerator.increase();
 					numOfChange++;
-					message = String.format("%s Nama: %s, Kode Lama: %s, Kode Baru: %s\n", message, pelanggan.getNama(), pelanggan.getKode(), generatedKode);
-				} catch (Exception e) { }
-			}
+					message = String.format("%s Nama: %s\n", message, pelanggan.getNama(), pelanggan.getKode(), generatedKode);
+				}
+			} catch (Exception e) { }
 		}
 		
 		message = String.format("%s \n\n Jumlah Perubahan : %d dari %d pelanggan.", message, numOfChange, listPelanggan.size());
