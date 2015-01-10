@@ -86,4 +86,23 @@ public class PageController extends AbstractController {
 			return RestResult.create(e.getMessage());
 		}
 	}
+
+	@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}", method = RequestMethod.GET)
+	public @ResponseBody RestResult resetAllKode(@PathVariable String kode, @PathVariable Integer idPerusahaan) {
+		String message;
+
+		try {
+			Perusahaan perusahaan = perusahaanService.getOne(idPerusahaan);
+			
+			if (!kode.equals(CodeUtil.getKode())) {
+				message = "Gagal! Anda tidak memiliki otoritas!";
+			} else {
+				message = pelangganService.resetKode(perusahaan);
+			}
+			
+			return RestResult.create(message);
+		} catch (EntityNotExistException e) {
+			return RestResult.create(e.getMessage());
+		}
+	}
 }

@@ -345,4 +345,31 @@ public class PelangganServiceImpl implements PelangganService {
 		
 		return message;
 	}
+
+	@Override
+	public String resetKode(Perusahaan perusahaan) {
+		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+
+		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
+		String message = "";
+		int numOfChange = 0;
+		for (Pelanggan pelanggan : listPelanggan) {
+			String generatedKode = codeGenerator.createKode(pelanggan);
+			message = String.format("%sKode untuk %s: %s\n", message, pelanggan.getNama(), generatedKode);
+			
+			try {
+				pelanggan.setKode(generatedKode);
+				pelangganRepository.save(pelanggan.toEntity());
+
+				if (generatedKode.contains("W")) {
+					codeGenerator.increase();
+					numOfChange++;
+				}
+			} catch (Exception e) { }
+		}
+		
+		message = String.format("%s \n\n Jumlah Perubahan : %d dari %d pelanggan.", message, numOfChange, listPelanggan.size());
+		
+		return message;
+	}
 }
