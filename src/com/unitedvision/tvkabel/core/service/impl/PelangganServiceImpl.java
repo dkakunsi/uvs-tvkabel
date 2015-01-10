@@ -169,14 +169,14 @@ public class PelangganServiceImpl implements PelangganService {
 	public List<? extends Pelanggan> getByKode(Perusahaan perusahaan, String kode, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
-		return pelangganRepository.findByPerusahaanAndKodeContaining(perusahaan.toEntity(), kode, page);
+		return pelangganRepository.findByPerusahaanAndKodeContainingOrderByKodeAsc(perusahaan.toEntity(), kode, page);
 	}
 
 	@Override
 	public List<? extends Pelanggan> getByNama(Perusahaan perusahaan, String nama, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
-		return pelangganRepository.findByPerusahaanAndNamaContaining(perusahaan.toEntity(), nama, page);
+		return pelangganRepository.findByPerusahaanAndNamaContainingOrderByKodeAsc(perusahaan.toEntity(), nama, page);
 	}
 	
 	@Override
@@ -186,52 +186,52 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public List<PelangganEntity> get(Perusahaan perusahaan, Status status) {
-		return pelangganRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), status);
+		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), status);
 	}
 
 	@Override
 	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), status, page);
+		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), status, page);
 	}
 
 	@Override
 	public List<PelangganEntity> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
-		return pelangganRepository.findByPerusahaanAndStatusAndDetail_Tunggakan(perusahaan.toEntity(), status, tunggakan);
+		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan.toEntity(), status, tunggakan);
 	}
 
 	@Override
 	public List<PelangganEntity> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndDetail_Tunggakan(perusahaan.toEntity(), status, tunggakan, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan.toEntity(), status, tunggakan, page);
 	}
 
 	@Override
 	public List<PelangganEntity> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndNamaContaining(perusahaan.toEntity(), status, nama, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(perusahaan.toEntity(), status, nama, page);
 	}
 
 	@Override
 	public List<PelangganEntity> getByKode(Perusahaan perusahaan, Status status, String kode, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndKodeContaining(perusahaan.toEntity(), status, kode, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan.toEntity(), status, kode, page);
 	}
 
 	@Override
 	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan);
+		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan);
 	}
 
 	@Override
 	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan, page);
 	}
 
 	@Override
@@ -322,7 +322,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public void resetKode(int idPerusahaan) {
 		Perusahaan perusahaan = perusahaanRepository.findOne(idPerusahaan);
-		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 		for (Pelanggan pelanggan : listPelanggan) {

@@ -110,7 +110,7 @@ public class PelangganRepositoryTest {
 		KelurahanEntity kelurahanEntity = kelurahanRepository.findByNama("Winangun 1");
 		int lingkungan = 1;
 		
-		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaanEntity, status, kelurahanEntity, lingkungan);
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaanEntity, status, kelurahanEntity, lingkungan);
 		
 		assertNotEquals(0, list.size());
 	}
@@ -133,7 +133,7 @@ public class PelangganRepositoryTest {
 		Status status = Status.AKTIF;
 		int tunggakan = 3;
 		
-		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndDetail_Tunggakan(perusahaanEntity, status, tunggakan);
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaanEntity, status, tunggakan);
 		
 		assertNotEquals(0, list.size());
 	}
@@ -178,7 +178,7 @@ public class PelangganRepositoryTest {
 		String kode = "PLG000";
 		PageRequest page = new PageRequest(0, 12);
 		
-		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndKodeContaining(perusahaanEntity, status, kode, page);
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaanEntity, status, kode, page);
 		
 		assertNotEquals(0, list.size());
 	}
