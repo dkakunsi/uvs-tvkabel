@@ -328,6 +328,7 @@ public class PelangganServiceImpl implements PelangganService {
 		int numOfChange = 0;
 		for (Pelanggan pelanggan : listPelanggan) {
 			String generatedKode = codeGenerator.createKode(pelanggan);
+			message = String.format("%sKode untuk %s: %s\n", message, pelanggan.getNama(), generatedKode);
 			
 			try {
 				pelanggan.setKode(generatedKode);
@@ -336,7 +337,6 @@ public class PelangganServiceImpl implements PelangganService {
 				if (generatedKode.contains("W")) {
 					codeGenerator.increase();
 					numOfChange++;
-					message = String.format("%s Nama: %s\n", message, pelanggan.getNama(), pelanggan.getKode(), generatedKode);
 				}
 			} catch (Exception e) { }
 		}
