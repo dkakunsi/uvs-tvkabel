@@ -23,18 +23,18 @@ public interface PelangganRepository extends JpaRepository<PelangganEntity, Inte
 	PelangganEntity findByPerusahaanAndKode(PerusahaanEntity perusahaanEntity, String kode) throws EntityNotExistException;
 	PelangganEntity findByPerusahaanAndNama(PerusahaanEntity perusahaanEntity, String nama) throws EntityNotExistException;
 
-	List<PelangganEntity> findByPerusahaanAndKodeContaining(PerusahaanEntity perusahaanEntity, String kode, Pageable page);
-	List<PelangganEntity> findByPerusahaanAndNamaContaining(PerusahaanEntity perusahaanEntity, String nama, Pageable page);
-	List<PelangganEntity> findByPerusahaanAndStatus(PerusahaanEntity perusahaanEntity, Status status);
-	List<PelangganEntity> findByPerusahaanAndStatus(PerusahaanEntity perusahaanEntity, Status status, Pageable page);
-	List<PelangganEntity> findByPerusahaanAndStatusAndNamaContaining(PerusahaanEntity perusahaanEntity, Status status, String nama, Pageable page);
-	List<PelangganEntity> findByPerusahaanAndStatusAndKodeContaining(PerusahaanEntity perusahaanEntity, Status status, String kode, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndKodeContainingOrderByKodeAsc(PerusahaanEntity perusahaanEntity, String kode, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndNamaContainingOrderByKodeAsc(PerusahaanEntity perusahaanEntity, String nama, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndStatusOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status);
+	List<PelangganEntity> findByPerusahaanAndStatusOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, String nama, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, String kode, Pageable page);
 
-	List<PelangganEntity> findByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(PerusahaanEntity perusahaanEntity, Status status, KelurahanEntity kelurahanEntity, int lingkungan);
-	List<PelangganEntity> findByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(PerusahaanEntity perusahaanEntity, Status status, KelurahanEntity kelurahanEntity, int lingkungan, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, KelurahanEntity kelurahanEntity, int lingkungan);
+	List<PelangganEntity> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, KelurahanEntity kelurahanEntity, int lingkungan, Pageable page);
 
-	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_Tunggakan(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
-	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_Tunggakan(PerusahaanEntity perusahaanEntity, Status status, int tunggakan, Pageable page);
+	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
+	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, int tunggakan, Pageable page);
 
 	long countByPerusahaanAndStatusAndNamaContaining(PerusahaanEntity perusahaanEntity, Status status, String nama);
 	long countByPerusahaanAndStatusAndKodeContaining(PerusahaanEntity perusahaanEntity, Status status, String kode);
