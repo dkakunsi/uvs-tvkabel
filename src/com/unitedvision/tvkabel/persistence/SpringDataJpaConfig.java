@@ -78,7 +78,7 @@ public class SpringDataJpaConfig {
     private Map<String, String> propertiesMap() {
         Map<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        propertiesMap.put("hibernate.show_sql", "true");
+        propertiesMap.put("hibernate.show_sql", "false");
         propertiesMap.put("hibernate.format_sql", "true");
         return propertiesMap;
     }

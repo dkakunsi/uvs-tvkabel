@@ -25,12 +25,15 @@ import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
 import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.util.DateUtil;
+import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 import com.unitedvision.tvkabel.web.model.PelangganModel;
 
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -277,12 +280,30 @@ public class PelangganServiceTest {
 	
 	@Test
 	public void testResetKode() throws EntityNotExistException {
-		pelangganService.resetKode(17);
-		
+		String message = pelangganService.resetKode(17);
+
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		assertEquals("WS05001", pelanggan.getKode());
 
+		Pelanggan pelanggan3 = pelangganService.getOne(37);
+		assertNotEquals("PLG0003", pelanggan3.getKode());
+
 		Pelanggan pelanggan2 = pelangganService.getOne(36);
 		assertEquals("PLG0002", pelanggan2.getKode());
+		
+		assertEquals("", message);
+	}
+	
+	@Test
+	public void testResetKode_Pelanggan() throws EntityNotExistException, EmptyCodeException {
+		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
+
+		Pelanggan pelanggan = pelangganService.getOne(37);
+		String generatedKode = codeGenerator.createKode(pelanggan);
+		assertNotEquals(generatedKode, pelanggan.getKode());
+		
+		pelanggan.setKode(generatedKode);
+		Pelanggan pelangganUpdated = pelangganService.getOne(37);
+		assertEquals(generatedKode, pelangganUpdated.getKode());
 	}
 }

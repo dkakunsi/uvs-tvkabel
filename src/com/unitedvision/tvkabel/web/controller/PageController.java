@@ -66,8 +66,7 @@ public class PageController extends AbstractController {
 		if (!kode.equals(CodeUtil.getKode())) {
 			message = "Gagal! Anda tidak memiliki otoritas!";
 		} else {
-			pelangganService.resetKode(idPerusahaan);
-			message = "Berhasil!";
+			message = pelangganService.resetKode(idPerusahaan);
 		}
 		
 		return RestResult.create(message);

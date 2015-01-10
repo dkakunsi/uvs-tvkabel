@@ -42,14 +42,14 @@ public class CodeUtil_CodeGeneratorTest {
 	@Test
 	public void testCreateKode() {
 		CodeUtil.CodeGenerator codeGenerator = new CodeUtil.CodeGenerator();
-		codeGenerator.setWSNumber(1, 23);
+		codeGenerator.setWSNumber(6, 23);
 		
 		KelurahanEntity kelurahanEntity = new KelurahanEntity(null, "Winangun 1");
-		AlamatValue alamatValue = new AlamatValue(kelurahanEntity, 1, "");
+		AlamatValue alamatValue = new AlamatValue(kelurahanEntity, 6, "");
 		Pelanggan pelanggan = new PelangganEntity(null, "", "", alamatValue, null, null, null);
 		
 		String generatedKode = codeGenerator.createKode(pelanggan);
 		
-		assertEquals("WS01024", generatedKode);
+		assertEquals("WS06024", generatedKode);
 	}
 }

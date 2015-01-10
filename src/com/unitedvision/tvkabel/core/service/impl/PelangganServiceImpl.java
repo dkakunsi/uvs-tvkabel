@@ -320,11 +320,13 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public void resetKode(int idPerusahaan) {
+	public String resetKode(int idPerusahaan) {
 		Perusahaan perusahaan = perusahaanRepository.findOne(idPerusahaan);
 		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
+		String message = "";
+		int numOfChange = 0;
 		for (Pelanggan pelanggan : listPelanggan) {
 			String generatedKode = codeGenerator.createKode(pelanggan);
 			
@@ -334,8 +336,14 @@ public class PelangganServiceImpl implements PelangganService {
 					pelangganRepository.save(pelanggan.toEntity());
 					
 					codeGenerator.increase(pelanggan.getNamaKelurahan(), pelanggan.getLingkungan());
+					numOfChange++;
+					message = String.format("%s Nama: %s, Kode Lama: %s, Kode Baru: %s\n", message, pelanggan.getNama(), pelanggan.getKode(), generatedKode);
 				} catch (Exception e) { }
 			}
 		}
+		
+		message = String.format("%s \n\n Jumlah Perubahan : %d dari %d pelanggan.", message, numOfChange, listPelanggan.size());
+		
+		return message;
 	}
 }
