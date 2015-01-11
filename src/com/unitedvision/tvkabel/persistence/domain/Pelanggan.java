@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.entity;
+package com.unitedvision.tvkabel.persistence.domain;
 
 import java.util.Date;
 import java.util.List;
@@ -20,10 +20,10 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 /**

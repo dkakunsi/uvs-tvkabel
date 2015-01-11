@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.entity.Kecamatan;
+import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
 
 public class ListKecamatanRestResult extends ListRestResult {
 	private List<Kecamatan> list;

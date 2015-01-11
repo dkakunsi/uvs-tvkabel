@@ -1,8 +1,8 @@
 package com.unitedvision.tvkabel.util;
 
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
 
 /**
  * Class for utilize status creation.

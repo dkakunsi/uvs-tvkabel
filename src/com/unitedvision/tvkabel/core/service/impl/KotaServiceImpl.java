@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.service.KotaService;
-import com.unitedvision.tvkabel.domain.entity.Kota;
-import com.unitedvision.tvkabel.domain.persistence.repository.KotaRepository;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.domain.Kota;
+import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
 
 @Service
 @Transactional(readOnly = true)

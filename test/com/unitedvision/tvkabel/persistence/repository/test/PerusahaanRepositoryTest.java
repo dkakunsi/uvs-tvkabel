@@ -10,9 +10,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (classes = {SpringDataJpaConfig.class})

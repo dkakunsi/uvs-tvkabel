@@ -15,16 +15,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.domain.entity.Kelurahan;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.domain.persistence.repository.KelurahanRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @RunWith (SpringJUnit4ClassRunner.class)

@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Status;
 import com.unitedvision.tvkabel.security.SpringAuthenticationBasedAuthorizationProvider;
 
 public abstract class AbstractController {

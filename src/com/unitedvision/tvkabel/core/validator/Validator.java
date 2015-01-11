@@ -6,25 +6,25 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.unitedvision.tvkabel.domain.entity.Alamat;
-import com.unitedvision.tvkabel.domain.entity.Kecamatan;
-import com.unitedvision.tvkabel.domain.entity.Kelurahan;
-import com.unitedvision.tvkabel.domain.entity.Kota;
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.domain.persistence.repository.KecamatanRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.KelurahanRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.KotaRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
+import com.unitedvision.tvkabel.persistence.domain.Alamat;
+import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
+import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
+import com.unitedvision.tvkabel.persistence.domain.Kota;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
+import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 
 @Component
 public class Validator {

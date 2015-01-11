@@ -3,12 +3,12 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.entity.Kelurahan;
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Status;
 
 public interface PelangganService extends Service<Pelanggan> {
 	void remove(Pelanggan pelanggan) throws ApplicationException;

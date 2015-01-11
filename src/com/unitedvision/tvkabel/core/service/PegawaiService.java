@@ -2,10 +2,10 @@ package com.unitedvision.tvkabel.core.service;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
 
 public interface PegawaiService extends Service<Pegawai> {
 	void remove(Pegawai entity) throws EntityNotExistException, StatusChangeException;

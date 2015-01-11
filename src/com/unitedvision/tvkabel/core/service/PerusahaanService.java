@@ -3,10 +3,10 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.entity.Operator;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.domain.Operator;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
 
 public interface PerusahaanService extends Service<Perusahaan> {
 	Perusahaan getByKode(String kode) throws EntityNotExistException;

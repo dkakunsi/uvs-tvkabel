@@ -1,12 +1,12 @@
-package com.unitedvision.tvkabel.domain.persistence.repository;
+package com.unitedvision.tvkabel.persistence.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.unitedvision.tvkabel.domain.entity.Kecamatan;
-import com.unitedvision.tvkabel.domain.entity.Kota;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
+import com.unitedvision.tvkabel.persistence.domain.Kota;
 
 public interface KecamatanRepository extends JpaRepository<Kecamatan, Integer> {
 	Kecamatan findByNama(String nama) throws EntityNotExistException;

@@ -14,20 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
-
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @RunWith (SpringJUnit4ClassRunner.class)

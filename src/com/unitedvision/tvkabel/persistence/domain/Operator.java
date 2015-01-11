@@ -1,6 +1,6 @@
-package com.unitedvision.tvkabel.domain.entity;
+package com.unitedvision.tvkabel.persistence.domain;
 
-import com.unitedvision.tvkabel.domain.entity.Pegawai.Role;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai.Role;
 
 /**
  * Operator definition.

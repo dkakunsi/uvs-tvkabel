@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.entity;
+package com.unitedvision.tvkabel.persistence.domain;
 
 import java.time.Month;
 import java.util.Date;

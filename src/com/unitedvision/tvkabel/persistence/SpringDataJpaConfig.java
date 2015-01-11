@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.persistence;
+package com.unitedvision.tvkabel.persistence;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import com.unitedvision.tvkabel.core.ApplicationConfig;
 
 @Configuration
 @EnableJpaRepositories
-@ComponentScan("com.unitedvision.tvkabel.domain")
+@ComponentScan("com.unitedvision.tvkabel.persistence")
 @Import(ApplicationConfig.class)
 public class SpringDataJpaConfig {
     

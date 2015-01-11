@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.persistence;
+package com.unitedvision.tvkabel.persistence;
 
 public class DbConnectionConfig {
 	public static final String HOST = "mysql-uvision.whelastic.net";

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.XmlViewResolver;
 
-import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 
 @Configuration
 @EnableWebMvc

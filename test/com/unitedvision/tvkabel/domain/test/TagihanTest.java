@@ -6,7 +6,7 @@ import java.time.Month;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
 
 public class TagihanTest {
 

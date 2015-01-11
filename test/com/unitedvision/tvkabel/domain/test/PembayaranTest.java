@@ -6,11 +6,11 @@ import java.time.Month;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
-import com.unitedvision.tvkabel.domain.entity.Pelanggan;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
 
 public class PembayaranTest {
 

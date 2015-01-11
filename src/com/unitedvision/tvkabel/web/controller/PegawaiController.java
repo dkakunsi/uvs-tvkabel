@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.unitedvision.tvkabel.domain.entity.Pegawai;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.domain.Pegawai;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 import com.unitedvision.tvkabel.web.rest.ListPegawaiRestResult;
 import com.unitedvision.tvkabel.web.rest.PegawaiRestResult;

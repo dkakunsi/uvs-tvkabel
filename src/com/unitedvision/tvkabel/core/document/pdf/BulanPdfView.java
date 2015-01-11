@@ -14,7 +14,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class BulanPdfView extends CustomAbstractPdfView {

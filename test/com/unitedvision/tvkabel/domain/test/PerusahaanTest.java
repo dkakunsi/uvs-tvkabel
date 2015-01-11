@@ -4,15 +4,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.entity.Alamat;
-import com.unitedvision.tvkabel.domain.entity.Kecamatan;
-import com.unitedvision.tvkabel.domain.entity.Kelurahan;
-import com.unitedvision.tvkabel.domain.entity.Kontak;
-import com.unitedvision.tvkabel.domain.entity.Kota;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan.Status;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
+import com.unitedvision.tvkabel.persistence.domain.Alamat;
+import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
+import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
+import com.unitedvision.tvkabel.persistence.domain.Kontak;
+import com.unitedvision.tvkabel.persistence.domain.Kota;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan.Status;
 
 public class PerusahaanTest {
 

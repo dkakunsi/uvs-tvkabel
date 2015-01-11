@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.entity;
+package com.unitedvision.tvkabel.persistence.domain;
 
 /**
  * Interface to compare object.

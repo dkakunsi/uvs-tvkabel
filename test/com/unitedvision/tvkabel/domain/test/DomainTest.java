@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.entity.Domain;
-import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
+import com.unitedvision.tvkabel.persistence.domain.Domain;
+import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
 
 public class DomainTest {
 	
