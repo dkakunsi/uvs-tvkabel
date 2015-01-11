@@ -75,7 +75,7 @@ public class PelangganTest {
 		
 		pelanggan.countTunggakan();
 		
-		assertEquals(10, pelanggan.getTunggakan());
+		assertEquals(12, pelanggan.getTunggakan());
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class PelangganTest {
 		
 		pelanggan.countTunggakan(pembayaranTerakhir);
 		
-		assertEquals(2, pelanggan.getTunggakan());
+		assertEquals(5, pelanggan.getTunggakan());
 	}
 	
 	@Test
@@ -118,6 +118,6 @@ public class PelangganTest {
 		
 		pelanggan.countTunggakan(tagihan);
 		
-		assertEquals(2, pelanggan.getTunggakan());
+		assertEquals(5, pelanggan.getTunggakan());
 	}
 }
