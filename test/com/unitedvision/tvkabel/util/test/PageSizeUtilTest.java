@@ -56,12 +56,12 @@ public class PageSizeUtilTest {
 
 	@Test
 	public void testGetCounter() {
-		assertEquals(27, PageSizeUtil.getCounter(lastNumber, 15));
+		assertEquals(27, PageSizeUtil.getCounter(1, 15));
 	}
 
 	@Test
 	public void testGetCounterEqualsDataPage() {
-		assertEquals(lastNumber, PageSizeUtil.getCounter(lastNumber, 12));
+		assertEquals(lastNumber, PageSizeUtil.getCounter(0, 12));
 	}
 
 	@Test
@@ -93,15 +93,11 @@ public class PageSizeUtilTest {
 	public void testGeneral() {
 		Date hari = DateUtil.getNow();
 		
-		System.out.println(hari);
-		
 		Tagihan tagihanAkhir = Tagihan.create(hari);
 		Tagihan tagihanAwal = Tagihan.create(hari);
 		tagihanAwal.substract(5);
-		System.out.println(tagihanAkhir);
-		System.out.println(tagihanAwal);
 		
-		assertEquals(Month.NOVEMBER, tagihanAkhir.getBulan());
-		assertEquals(Month.JULY, tagihanAwal.getBulan());
+		assertEquals(Month.JANUARY, tagihanAkhir.getBulan());
+		assertEquals(Month.SEPTEMBER, tagihanAwal.getBulan());
 	}
 }

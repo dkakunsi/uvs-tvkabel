@@ -13,9 +13,11 @@ import com.unitedvision.tvkabel.util.DateUtil;
 
 public class DateUtilTest {
 	private final int NOW_DATE = 11;
-	private final int NOW_MONTH = 11;
-	private final int NOW_YEAR = 2014;	
-	private final String NOW_STR = "11/11/2014";
+	private final int NOW_MONTH = 1;
+	private final Month _NOW_MONTH = Month.JANUARY;
+	private final int NOW_YEAR = 2015;	
+	private final String NOW_STR = "1/11/2015";
+	private final String NOW_STR_DELIM = "1-11-2015";
 	
 	@Test
 	public void testGetDateString() {
@@ -55,18 +57,18 @@ public class DateUtilTest {
 	public void testGetFirstDate() {
 		Date firstDate = DateUtil.getFirstDate();
 
-		assertEquals(11, DateUtil.getMonthInt(firstDate));
+		assertEquals(NOW_MONTH, DateUtil.getMonthInt(firstDate));
 		assertEquals(1, DateUtil.getDay(firstDate));
-		assertEquals(2014, DateUtil.getYear(firstDate));
+		assertEquals(NOW_YEAR, DateUtil.getYear(firstDate));
 	}
 
 	@Test
 	public void testGetLastDate() {
 		Date lastDate = DateUtil.getLastDate();
 		
-		assertEquals(11, DateUtil.getMonthInt(lastDate));
-		assertEquals(30, DateUtil.getDay(lastDate));
-		assertEquals(2014, DateUtil.getYear(lastDate));
+		assertEquals(NOW_MONTH, DateUtil.getMonthInt(lastDate));
+		assertEquals(31, DateUtil.getDay(lastDate));
+		assertEquals(NOW_YEAR, DateUtil.getYear(lastDate));
 	}
 
 	@Test
@@ -75,7 +77,7 @@ public class DateUtilTest {
 		
 		int lastDay = DateUtil.getLastDay(cal);
 
-		assertEquals(30, lastDay);
+		assertEquals(31, lastDay);
 	}
 
 	@Test
@@ -201,7 +203,7 @@ public class DateUtilTest {
 		Calendar cal = DateUtil.getCalendar();
 		int month = DateUtil.getMonthInt(cal);
 
-		assertEquals(11, month);
+		assertEquals(NOW_MONTH, month);
 	}
 
 	@Test
@@ -209,7 +211,7 @@ public class DateUtilTest {
 		Calendar cal = DateUtil.getCalendar();
 		Month month = DateUtil.getMonth(cal);
 
-		assertEquals(Month.NOVEMBER, month);
+		assertEquals(_NOW_MONTH, month);
 	}
 
 	@Test
@@ -217,7 +219,7 @@ public class DateUtilTest {
 		Date now = DateUtil.getNow();
 		int month = DateUtil.getMonthInt(now);
 
-		assertEquals(11, month);
+		assertEquals(NOW_MONTH, month);
 	}
 
 	@Test
@@ -225,7 +227,7 @@ public class DateUtilTest {
 		Date now = DateUtil.getNow();
 		Month month = DateUtil.getMonth(now);
 
-		assertEquals(Month.NOVEMBER, month);
+		assertEquals(_NOW_MONTH, month);
 	}
 
 	@Test
@@ -233,7 +235,7 @@ public class DateUtilTest {
 		Calendar cal = DateUtil.getCalendar();
 		int year = DateUtil.getYear(cal);
 		
-		assertEquals(2014, year);
+		assertEquals(NOW_YEAR, year);
 	}
 
 	@Test
@@ -241,7 +243,7 @@ public class DateUtilTest {
 		Date now = DateUtil.getNow();
 		int year = DateUtil.getYear(now);
 		
-		assertEquals(2014, year);
+		assertEquals(NOW_YEAR, year);
 	}
 
 	@Test
@@ -266,11 +268,11 @@ public class DateUtilTest {
 		
 		List<Month> listMonth = DateUtil.getMonths(now, 5);
 		
-		assertEquals(Month.JULY, listMonth.get(0));
-		assertEquals(Month.AUGUST, listMonth.get(1));
-		assertEquals(Month.SEPTEMBER, listMonth.get(2));
-		assertEquals(Month.OCTOBER, listMonth.get(3));
-		assertEquals(Month.NOVEMBER, listMonth.get(4));
+		assertEquals(Month.SEPTEMBER, listMonth.get(0));
+		assertEquals(Month.OCTOBER, listMonth.get(1));
+		assertEquals(Month.NOVEMBER, listMonth.get(2));
+		assertEquals(Month.DECEMBER, listMonth.get(3));
+		assertEquals(Month.JANUARY, listMonth.get(4));
 	}
 	
 	@Test
@@ -278,6 +280,6 @@ public class DateUtilTest {
 		Date now = DateUtil.getNow();
 		String nowStr = DateUtil.toString(now, "-");
 		
-		assertEquals("11-11-2014", nowStr);
+		assertEquals(NOW_STR_DELIM, nowStr);
 	}
 }
