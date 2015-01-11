@@ -65,14 +65,14 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
 		long jumlahBayar = pelanggan.getIuran();
-		Tagihan tagihan = new Tagihan(2014, Month.OCTOBER);
+		Tagihan tagihan = new Tagihan(2015, Month.FEBRUARY);
 
 		Pembayaran pembayaran = new Pembayaran(pelanggan, pegawai, jumlahBayar, tanggalBayar, tagihan);
-		assertEquals(1, pelanggan.getTunggakan());
+		assertEquals(0, pelanggan.getTunggakan());
 		
 		pembayaranService.pay(pembayaran);
 		Pelanggan pelangganUpdated = pelangganService.getOne(35);
-		assertEquals(3, pelangganUpdated.getTunggakan());
+		assertEquals(-1, pelangganUpdated.getTunggakan());
 	}
 	
 	@Test
@@ -80,14 +80,14 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
 		Pembayaran pembayaranTerakhir = pembayaranService.getLast(pelanggan);
-		assertEquals(2014, pembayaranTerakhir.getTahun());
-		assertEquals(Month.SEPTEMBER, pembayaranTerakhir.getBulan());
+		assertEquals(2015, pembayaranTerakhir.getTahun());
+		assertEquals(Month.JANUARY, pembayaranTerakhir.getBulan());
 		
-		assertEquals(1, pelanggan.getTunggakan());
+		assertEquals(0, pelanggan.getTunggakan());
 		pembayaranService.delete(pembayaranTerakhir);
 
 		Pelanggan pelangganDeleted = pelangganService.getOne(35);
-		assertEquals(5, pelangganDeleted.getTunggakan());
+		assertEquals(1, pelangganDeleted.getTunggakan());
 	}
 	
 	@Test
@@ -95,8 +95,8 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 		
-		assertEquals(Month.OCTOBER, tagihan.getBulan());
-		assertEquals(2014, tagihan.getTahun());
+		assertEquals(Month.FEBRUARY, tagihan.getBulan());
+		assertEquals(2015, tagihan.getTahun());
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
 		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
-		assertEquals(Month.SEPTEMBER, pembayaran.getBulan());
-		assertEquals(2014, pembayaran.getTahun());
+		assertEquals(Month.JANUARY, pembayaran.getBulan());
+		assertEquals(2015, pembayaran.getTahun());
 	}
 }

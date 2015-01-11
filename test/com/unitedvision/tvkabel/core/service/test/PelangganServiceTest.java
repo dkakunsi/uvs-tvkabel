@@ -76,9 +76,9 @@ public class PelangganServiceTest {
 
 		//Check Tanggal Mulai
 		Date date = saved.getTanggalMulai();
-		assertEquals(2014, DateUtil.getYear(date));
-		assertEquals(Month.MAY, DateUtil.getMonth(date));
-		assertEquals(1, DateUtil.getDay(date));
+		assertEquals(2015, DateUtil.getYear(date));
+		assertEquals(Month.JANUARY, DateUtil.getMonth(date));
+		assertEquals(11, DateUtil.getDay(date));
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class PelangganServiceTest {
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				alamat, kontak, detail, Status.AKTIF);
@@ -105,7 +105,7 @@ public class PelangganServiceTest {
 		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
 
 		Assert.assertEquals(Status.PUTUS, pelanggan.getStatus());
-		Assert.assertEquals(5, pelangganBanned.getTunggakan());
+		Assert.assertEquals(1, pelangganBanned.getTunggakan());
 	}
 	
 	@Test(expected = StatusChangeException.class)
@@ -114,7 +114,7 @@ public class PelangganServiceTest {
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				alamat, kontak, detail, Status.AKTIF);
@@ -132,7 +132,7 @@ public class PelangganServiceTest {
 		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
 
 		Assert.assertEquals(Status.PUTUS, pelanggan.getStatus());
-		Assert.assertEquals(5, pelangganBanned.getTunggakan());
+		Assert.assertEquals(1, pelangganBanned.getTunggakan());
 
 		//REBEND PROCESS
 		pelanggan.setStatus(Status.PUTUS);
@@ -289,6 +289,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testResetKode() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		Kelurahan kelurahan = kelurahanService.getOne(22);

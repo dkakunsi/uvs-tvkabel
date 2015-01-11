@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain.test;
+package com.unitedvision.tvkabel.persistence.entity.test;
 
 import static org.junit.Assert.*;
 
