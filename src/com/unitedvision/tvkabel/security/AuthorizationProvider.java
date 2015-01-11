@@ -2,8 +2,8 @@ package com.unitedvision.tvkabel.security;
 
 import org.springframework.stereotype.Component;
 
-import com.unitedvision.tvkabel.persistence.domain.Operator;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Role;
+import com.unitedvision.tvkabel.persistence.entity.Operator;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Role;
 
 /**
  * Class that provides authorization mechanism.

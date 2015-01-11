@@ -11,7 +11,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)

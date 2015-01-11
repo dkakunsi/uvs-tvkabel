@@ -14,10 +14,10 @@ import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Removable;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Removable;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 

@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 
 public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";

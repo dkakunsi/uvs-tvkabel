@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 

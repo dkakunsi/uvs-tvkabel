@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 
@@ -41,7 +41,7 @@ public class PegawaiRepositoryTest {
 
 	@Test (expected = EntityNotExistException.class)
 	public void testFindByUsernameAndStatusAndKredensi_RoleButRoleWasDenied() throws EntityNotExistException {
-		String username = "jefry";
+		String username = "xxxxxxxxxxx";
 		Status status = Status.AKTIF;
 		
 		pegawaiRepository.findByKredensi_UsernameAndStatus(username, status);

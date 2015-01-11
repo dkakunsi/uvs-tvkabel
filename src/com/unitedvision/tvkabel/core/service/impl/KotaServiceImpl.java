@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.service.KotaService;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.domain.Kota;
+import com.unitedvision.tvkabel.persistence.entity.Kota;
 import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
 
 @Service

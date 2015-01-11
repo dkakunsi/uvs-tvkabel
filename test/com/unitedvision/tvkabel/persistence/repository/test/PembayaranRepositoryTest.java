@@ -17,11 +17,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
 import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
@@ -56,8 +56,8 @@ public class PembayaranRepositoryTest {
 	@Test
 	public void testCountPemasukanBulanBerjalanWhenNoData() {
 		Perusahaan perusahaan = perusahaanRepository.getOne(17);
-		Date tanggalAwal = DateUtil.getFirstDate();
-		Date tanggalAkhir = DateUtil.getLastDate();
+		Date tanggalAwal = DateUtil.getDate("1/1/2020");
+		Date tanggalAkhir = DateUtil.getDate("1/1/2025");
 		
 		long hasil = pembayaranRepository.countPemasukanBulanBerjalan(perusahaan, tanggalAwal, tanggalAkhir);
 
@@ -164,8 +164,8 @@ public class PembayaranRepositoryTest {
 	@Test
 	public void testCountByPelangganAndTanggalBayarBetween() {
 		Pelanggan pelanggan = pelangganRepository.findOne(82);
-		Date tanggalAwal = DateUtil.getFirstDate();
-		Date tanggalAkhir = DateUtil.getLastDate();
+		Date tanggalAwal = DateUtil.getDate("1/1/2014");
+		Date tanggalAkhir = DateUtil.getDate("1/1/2015");
 
 		long hasil = pembayaranRepository.countByPelangganAndTanggalBayarBetween(pelanggan, tanggalAwal, tanggalAkhir);
 		

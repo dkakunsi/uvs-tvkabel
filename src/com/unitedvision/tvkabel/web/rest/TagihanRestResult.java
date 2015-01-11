@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 
 public class TagihanRestResult extends RestResult {
 	private Tagihan model;

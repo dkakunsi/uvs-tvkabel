@@ -9,16 +9,16 @@ import org.junit.Test;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.persistence.domain.Alamat;
-import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
-import com.unitedvision.tvkabel.persistence.domain.Kontak;
-import com.unitedvision.tvkabel.persistence.domain.Kota;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Detail;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.entity.Alamat;
+import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Kontak;
+import com.unitedvision.tvkabel.persistence.entity.Kota;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class PelangganTest {

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
 import com.unitedvision.tvkabel.web.rest.LoginRestRequest;
 import com.unitedvision.tvkabel.web.rest.PegawaiRestResult;

@@ -7,11 +7,11 @@ import org.junit.Test;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.persistence.domain.Alamat;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.persistence.entity.Alamat;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 
 public class PegawaiTest {
 

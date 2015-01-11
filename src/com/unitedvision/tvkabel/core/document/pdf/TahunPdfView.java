@@ -14,8 +14,8 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 
 public class TahunPdfView extends CustomAbstractPdfView {
 	private int tahun;

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.persistence.domain.Operator;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Role;
+import com.unitedvision.tvkabel.persistence.entity.Operator;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Role;
 
 /**
  * Class that provides authentication mechanism based on Spring's {@code Authentication} class.

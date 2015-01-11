@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.persistence.domain.Alamat;
-import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
-import com.unitedvision.tvkabel.persistence.domain.Kontak;
-import com.unitedvision.tvkabel.persistence.domain.Kota;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan.Status;
+import com.unitedvision.tvkabel.persistence.entity.Alamat;
+import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Kontak;
+import com.unitedvision.tvkabel.persistence.entity.Kota;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan.Status;
 
 public class PerusahaanTest {
 

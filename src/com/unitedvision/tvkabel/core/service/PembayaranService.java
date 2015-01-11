@@ -9,11 +9,11 @@ import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 
 public interface PembayaranService extends Service<Pembayaran> {
 	//This is for deprecation-marking only

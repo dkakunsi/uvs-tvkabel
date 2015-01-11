@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 
 public class PerusahaanRestResult extends RestResult {
 	private Perusahaan model;

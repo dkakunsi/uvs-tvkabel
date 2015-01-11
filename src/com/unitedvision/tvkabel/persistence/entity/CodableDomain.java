@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.persistence.domain;
+package com.unitedvision.tvkabel.persistence.entity;
 
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;

@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.persistence.domain.Alamat;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
-import com.unitedvision.tvkabel.persistence.domain.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Alamat;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.util.CodeUtil;
 
 public class CodeUtil_CodeGeneratorTest {

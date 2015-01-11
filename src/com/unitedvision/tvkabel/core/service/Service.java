@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.core.service;
 
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.domain.Domain;
+import com.unitedvision.tvkabel.persistence.entity.Domain;
 
 /**
  * Root Service.

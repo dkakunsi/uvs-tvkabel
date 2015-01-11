@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai;
-import com.unitedvision.tvkabel.persistence.domain.Perusahaan;
-import com.unitedvision.tvkabel.persistence.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 
 public interface PegawaiRepository extends JpaRepository<Pegawai, Integer> {
 	Pegawai findByPerusahaanAndStatusAndKode(Perusahaan perusahaan, Status status, String kode) throws EntityNotExistException;

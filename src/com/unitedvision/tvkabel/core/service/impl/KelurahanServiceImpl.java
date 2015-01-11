@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.tvkabel.core.service.KelurahanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.domain.Kecamatan;
-import com.unitedvision.tvkabel.persistence.domain.Kelurahan;
+import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
 
 @Service
