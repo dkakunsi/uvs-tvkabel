@@ -24,7 +24,6 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
@@ -42,7 +41,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	private Validator validator;
 
 	@Override
-	public Pembayaran pay(Pembayaran domain) throws NotPayableCustomerException, UncompatibleTypeException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
+	public Pembayaran pay(Pembayaran domain) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
 		Pembayaran entity = domain;
 		
 		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
@@ -64,7 +63,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 	
 	@Override
-	public Pembayaran updatePayment(Pembayaran domain) throws UncompatibleTypeException {
+	public Pembayaran updatePayment(Pembayaran domain) {
 		Pembayaran entity = domain;
 		
 		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());

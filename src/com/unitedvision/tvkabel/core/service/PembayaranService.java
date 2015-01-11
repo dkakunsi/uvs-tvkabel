@@ -13,7 +13,6 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
 
 public interface PembayaranService extends Service<Pembayaran> {
@@ -21,8 +20,8 @@ public interface PembayaranService extends Service<Pembayaran> {
 	@Deprecated
 	Pembayaran save(Pembayaran pembayaran) throws ApplicationException;
 	
-	Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UncompatibleTypeException, UnpaidBillException, EntityNotExistException, DataDuplicationException;
-	Pembayaran updatePayment(Pembayaran pembayaran) throws UncompatibleTypeException;
+	Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException;
+	Pembayaran updatePayment(Pembayaran pembayaran);
 
 	List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan);
 	List<Pembayaran> get(Perusahaan perusahaan, int tahun, Month bulan, int page);

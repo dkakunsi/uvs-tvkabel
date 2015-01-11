@@ -27,7 +27,6 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 import com.unitedvision.tvkabel.util.DateUtil;
@@ -47,7 +46,7 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Pelanggan save(Pelanggan domain) throws UncompatibleTypeException, DataDuplicationException {
+	public Pelanggan save(Pelanggan domain) throws DataDuplicationException {
 		domain = validator.validate(domain);
 
 		if (domain.isNew())
@@ -78,7 +77,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public void activate(Pelanggan pelanggan) throws UncompatibleTypeException, StatusChangeException, DataDuplicationException {
+	public void activate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.AKTIF))
 			throw new StatusChangeException("Tidak mengaktivasi pelanggan.<br />"
 					+ "Karena pelanggan merupakan pelanggan aktif");
@@ -91,7 +90,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void passivate(Pelanggan pelanggan) throws UncompatibleTypeException, StatusChangeException, DataDuplicationException {
+	public void passivate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.BERHENTI))
 			throw new StatusChangeException("Tidak memutuskan pelanggan.<br />"
 					+ "Karena pelanggan merupakan pelanggan berhenti");
@@ -102,7 +101,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void banned(Pelanggan pelanggan) throws UncompatibleTypeException, EntityNotExistException, StatusChangeException, DataDuplicationException {
+	public void banned(Pelanggan pelanggan) throws EntityNotExistException, StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.PUTUS))
 			throw new StatusChangeException("Tidak mem-banned pelanggan.<br />"
 					+ "Karena pelanggan merupakan pelanggan putus");

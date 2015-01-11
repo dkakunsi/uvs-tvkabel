@@ -24,7 +24,6 @@ import com.unitedvision.tvkabel.domain.Pelanggan;
 import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @Service
@@ -46,7 +45,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Perusahaan save(Perusahaan domain) throws UncompatibleTypeException {
+	public Perusahaan save(Perusahaan domain) {
 		domain = validator.validate(domain);
 		return perusahaanRepository.save(domain);
 	}
@@ -86,7 +85,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Operator regist(Perusahaan perusahaan) throws EntityNotExistException, UncompatibleTypeException {
+	public Operator regist(Perusahaan perusahaan) throws EntityNotExistException {
 		Perusahaan perusahaanEntity = perusahaan;
 		perusahaanEntity.generateKode(getAvailableId());
 		perusahaan = save(perusahaanEntity);

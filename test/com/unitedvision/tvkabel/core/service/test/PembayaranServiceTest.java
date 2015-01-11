@@ -27,7 +27,6 @@ import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
 import com.unitedvision.tvkabel.util.DateUtil;
 
@@ -61,7 +60,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, UncompatibleTypeException, DataDuplicationException {
+	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
 		Date tanggalBayar = DateUtil.getSimpleNow();
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
@@ -77,7 +76,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testDelete() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, UncompatibleTypeException, DataDuplicationException {
+	public void testDelete() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
 		Pembayaran pembayaranTerakhir = pembayaranService.getLast(pelanggan);

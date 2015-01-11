@@ -24,7 +24,6 @@ import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanReposito
 import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
 
 @Component
@@ -44,7 +43,7 @@ public class Validator {
 	@Autowired
 	private PembayaranRepository pembayaranRepository;
 
-	public Kecamatan validate(Kecamatan kecamatan) throws UncompatibleTypeException {
+	public Kecamatan validate(Kecamatan kecamatan) {
 		Kota kota = kecamatan.getKota();
 
 		try {
@@ -59,7 +58,7 @@ public class Validator {
 		return kecamatan;
 	}
 	
-	public Kelurahan validate(Kelurahan kelurahan) throws UncompatibleTypeException {
+	public Kelurahan validate(Kelurahan kelurahan) {
 		Kecamatan kecamatan = kelurahan.getKecamatan();
 		
 		try {
@@ -75,7 +74,7 @@ public class Validator {
 		return kelurahan;
 	}
 
-	public Alamat validate(Alamat alamat) throws UncompatibleTypeException {
+	public Alamat validate(Alamat alamat) {
 		Kelurahan kelurahan = alamat.getKelurahan();
 		
 		try {
@@ -91,7 +90,7 @@ public class Validator {
 		return alamat;
 	}
 	
-	public Perusahaan validate(Perusahaan perusahaan) throws UncompatibleTypeException {
+	public Perusahaan validate(Perusahaan perusahaan) {
 		Alamat alamat = perusahaan.getAlamat();
 		alamat = validate(alamat);
 		perusahaan.setAlamat((Alamat)alamat);
@@ -99,7 +98,7 @@ public class Validator {
 		return perusahaan;
 	}
 	
-	public Pelanggan validate(Pelanggan pelanggan) throws UncompatibleTypeException {
+	public Pelanggan validate(Pelanggan pelanggan) {
 		Alamat alamat = pelanggan.getAlamat();
 		alamat = validate(alamat);
 		pelanggan.setAlamat((Alamat)alamat);
@@ -113,7 +112,7 @@ public class Validator {
 	 * @return valid {@link Pegawai} object.
 	 * @throws UncompatibleTypeException
 	 */
-	public Pegawai validate(Pegawai pegawai) throws UncompatibleTypeException {
+	public Pegawai validate(Pegawai pegawai) {
 		Perusahaan perusahaan = pegawai.getPerusahaan();
 		perusahaan = validate(perusahaan);
 		pegawai.setPerusahaan(perusahaan);

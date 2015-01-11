@@ -19,7 +19,6 @@ import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 
 @Service
@@ -31,7 +30,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	private Validator validator;
 
 	@Transactional(readOnly = false)
-	public Pegawai save(Pegawai domain) throws UncompatibleTypeException, DataDuplicationException {
+	public Pegawai save(Pegawai domain) throws DataDuplicationException {
 		domain = validator.validate(domain);
 		
 		try {

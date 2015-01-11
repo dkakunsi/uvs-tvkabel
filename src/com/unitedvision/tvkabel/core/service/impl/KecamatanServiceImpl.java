@@ -12,7 +12,6 @@ import com.unitedvision.tvkabel.domain.Kecamatan;
 import com.unitedvision.tvkabel.domain.Kota;
 import com.unitedvision.tvkabel.domain.persistence.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +23,7 @@ public class KecamatanServiceImpl implements KecamatanService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Kecamatan save(Kecamatan domain) throws UncompatibleTypeException {
+	public Kecamatan save(Kecamatan domain) {
 		domain = validator.validate(domain);
 		return kecamatanRepository.save(domain);
 	}

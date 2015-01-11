@@ -13,7 +13,6 @@ import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.domain.Perusahaan.Status;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 
 public class PerusahaanTest {
 
@@ -25,7 +24,7 @@ public class PerusahaanTest {
 	}
 
 	@Test
-	public void setAlamatWorks() throws UncompatibleTypeException {
+	public void setAlamatWorks() {
 		Perusahaan perusahaan = new Perusahaan();
 
 		Kelurahan kelurahan = new Kelurahan();
