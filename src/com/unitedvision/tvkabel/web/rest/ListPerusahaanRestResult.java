@@ -2,21 +2,21 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.web.model.PerusahaanModel;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 
 public class ListPerusahaanRestResult extends ListRestResult {
-	private List<PerusahaanModel> list;
+	private List<Perusahaan> list;
 
 	protected ListPerusahaanRestResult(String message) {
 		super(message);
 	}
 	
-	private ListPerusahaanRestResult (String message, List<PerusahaanModel> list) {
+	private ListPerusahaanRestResult (String message, List<Perusahaan> list) {
 		super(message, 0, 0, 0);
 		this.list = list;
 	}
 
-	public List<PerusahaanModel> getListModel() {
+	public List<Perusahaan> getList() {
 		return list;
 	}
 	
@@ -24,7 +24,7 @@ public class ListPerusahaanRestResult extends ListRestResult {
 		return new ListPerusahaanRestResult(message);
 	}
 	
-	public static ListPerusahaanRestResult create(String message, List<PerusahaanModel> list) {
+	public static ListPerusahaanRestResult create(String message, List<Perusahaan> list) {
 		return new ListPerusahaanRestResult(message, list);
 	}
 }

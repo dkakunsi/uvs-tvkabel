@@ -10,24 +10,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Pembayaran;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
-import com.unitedvision.tvkabel.core.domain.Tagihan;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity.TagihanValue;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 
@@ -45,7 +43,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 	@Override
 	public Pembayaran pay(Pembayaran domain) throws NotPayableCustomerException, UncompatibleTypeException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
-		PembayaranEntity entity = domain.toEntity();
+		Pembayaran entity = domain;
 		
 		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
 		entity.setPelanggan(pelanggan);
@@ -67,7 +65,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	
 	@Override
 	public Pembayaran updatePayment(Pembayaran domain) throws UncompatibleTypeException {
-		PembayaranEntity entity = domain.toEntity();
+		Pembayaran entity = domain;
 		
 		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
 		entity.setPelanggan(pelanggan);
@@ -95,80 +93,80 @@ public class PembayaranServiceImpl implements PembayaranService {
 		}
 		
 		pelanggan.countTunggakan(pembayaranTerakhir);
-		pelangganRepository.save(pelanggan.toEntity());
+		pelangganRepository.save(pelanggan);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(Pembayaran domain) {
 		domain = pembayaranRepository.findOne(domain.getId());
-		pembayaranRepository.delete(domain.toEntity());
+		pembayaranRepository.delete(domain);
 		updateTunggakan(domain.getPelanggan());
 	}
 
 	@Override
-	public PembayaranEntity getOne(int id) throws EntityNotExistException {
+	public Pembayaran getOne(int id) throws EntityNotExistException {
 		return pembayaranRepository.findOne(id);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
-		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan.toEntity(), tanggalMulai, tanggalAkhir);
+	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
+		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir, int page) {
+	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan.toEntity(), tanggalMulai, tanggalAkhir, pageRequest);
+		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir, pageRequest);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) {
+	public List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pembayaranRepository.findByPegawaiAndTanggalBayarBetween(pegawai.toEntity(), tanggalMulai, tanggalAkhir, pageRequest);
+		return pembayaranRepository.findByPegawaiAndTanggalBayarBetween(pegawai, tanggalMulai, tanggalAkhir, pageRequest);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page) {
+	public List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pembayaranRepository.findByPelangganAndTanggalBayarBetween(pelanggan.toEntity(), tanggalMulai, tanggalAkhir, pageRequest);
+		return pembayaranRepository.findByPelangganAndTanggalBayarBetween(pelanggan, tanggalMulai, tanggalAkhir, pageRequest);
 	}
 	
 	@Override
-	public List<PembayaranEntity> get(Perusahaan perusahaan, Tagihan tagihan) {
-		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan.toEntity(), tagihan.toEntity());
+	public List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) {
+		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Perusahaan perusahaan, int tahun, Month bulan, int page) {
+	public List<Pembayaran> get(Perusahaan perusahaan, int tahun, Month bulan, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
-		Tagihan tagihan = new TagihanValue(tahun, bulan);
+		Tagihan tagihan = new Tagihan(tahun, bulan);
 
-		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan.toEntity(), tagihan.toEntity(), pageRequest);
+		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan, pageRequest);
 	}
 
 	@Override
-	public List<PembayaranEntity> get(Pelanggan pelanggan, int tahun) {
-		return pembayaranRepository.findByPelangganAndTagihan_Tahun(pelanggan.toEntity(), tahun);
+	public List<Pembayaran> get(Pelanggan pelanggan, int tahun) {
+		return pembayaranRepository.findByPelangganAndTagihan_Tahun(pelanggan, tahun);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PembayaranEntity> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir) {
+	public List<Pembayaran> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir) {
 		int tahunAwal = tagihanAwal.getTahun();
 		int tahunAkhir = tagihanAkhir.getTahun();
 		Month bulanAwal = tagihanAwal.getBulan();
 		Month bulanAkhir = tagihanAkhir.getBulan();
 		
-		List<PembayaranEntity> merged;
+		List<Pembayaran> merged;
 		if (tahunAwal == tahunAkhir) {
-			merged = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan.toEntity(), tahunAwal, bulanAwal, bulanAkhir);
+			merged = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan, tahunAwal, bulanAwal, bulanAkhir);
 		} else {
-			List<PembayaranEntity> part1 = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan.toEntity(), tahunAwal, bulanAwal, Month.DECEMBER);
-			List<PembayaranEntity> part2 = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan.toEntity(), tahunAkhir, Month.JANUARY, bulanAkhir);
+			List<Pembayaran> part1 = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan, tahunAwal, bulanAwal, Month.DECEMBER);
+			List<Pembayaran> part2 = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan, tahunAkhir, Month.JANUARY, bulanAkhir);
 			
 			merged = ListUtils.union(part1, part2);
 		}
@@ -178,32 +176,32 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 	@Override
 	public long count(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
-		return pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan.toEntity(), tanggalMulai, tanggalAkhir);
+		return pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir);
 	}
 
 	@Override
 	public long count(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir) {
-		return pembayaranRepository.countByPegawaiAndTanggalBayarBetween(pegawai.toEntity(), tanggalMulai, tanggalAkhir);
+		return pembayaranRepository.countByPegawaiAndTanggalBayarBetween(pegawai, tanggalMulai, tanggalAkhir);
 	}
 
 	@Override
 	public long count(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir) {
-		return pembayaranRepository.countByPelangganAndTanggalBayarBetween(pelanggan.toEntity(), tanggalMulai, tanggalAkhir);
+		return pembayaranRepository.countByPelangganAndTanggalBayarBetween(pelanggan, tanggalMulai, tanggalAkhir);
 	}
 	
 	@Override
 	public long count(Perusahaan perusahaan, Tagihan tagihan) {
-		return pembayaranRepository.countByPegawai_PerusahaanAndTagihan(perusahaan.toEntity(), tagihan.toEntity());
+		return pembayaranRepository.countByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
 	}
 
 	@Override
-	public PembayaranEntity getLast(Pelanggan pelanggan) throws EntityNotExistException {
-		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan.toEntity());
+	public Pembayaran getLast(Pelanggan pelanggan) throws EntityNotExistException {
+		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan);
 	}
 
 	@Override
 	public Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException {
-		PembayaranEntity pembayaranEntity = getLast(pelanggan);
+		Pembayaran pembayaranEntity = getLast(pelanggan);
 
 		Tagihan tagihan;
 		if (pembayaranEntity != null) {
@@ -214,7 +212,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 			int tahun = DateUtil.getYear(tanggalDaftar);
 			Month month = DateUtil.getMonth(tanggalDaftar);
 			
-			tagihan = new TagihanValue(tahun, month);
+			tagihan = new Tagihan(tahun, month);
 		}
 
 		return tagihan;

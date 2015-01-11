@@ -10,26 +10,24 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.domain.Kelurahan;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Pembayaran;
-import com.unitedvision.tvkabel.core.domain.Removable;
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.domain.Removable;
+import com.unitedvision.tvkabel.domain.Alamat;
+import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
-import com.unitedvision.tvkabel.persistence.entity.AlamatValue;
-import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 import com.unitedvision.tvkabel.util.DateUtil;
@@ -50,13 +48,13 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	@Transactional(readOnly = false)
 	public Pelanggan save(Pelanggan domain) throws UncompatibleTypeException, DataDuplicationException {
-		domain = validator.validate(domain.toEntity());
+		domain = validator.validate(domain);
 
 		if (domain.isNew())
 			domain.countTunggakan(); //secara otomatis atribut tanggalMulai digunakan sebagai tagihan awal(pertama)
 
 		try {
-			domain = pelangganRepository.save(domain.toEntity());
+			domain = pelangganRepository.save(domain);
 		} catch(PersistenceException e) {
 			throw new DataDuplicationException(e.getMessage());
 		}
@@ -68,7 +66,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Transactional(readOnly = false)
 	public void delete(Pelanggan domain) {
 		domain = pelangganRepository.findOne(domain.getId());
-		pelangganRepository.delete(domain.toEntity());
+		pelangganRepository.delete(domain);
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class PelangganServiceImpl implements PelangganService {
 		domain = pelangganRepository.findOne(domain.getId());
 		((Removable)domain).remove();
 
-		pelangganRepository.save(domain.toEntity());
+		pelangganRepository.save(domain);
 	}
 
 	@Override
@@ -117,7 +115,7 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
-		AlamatValue alamat = pelanggan.getAlamat().toEntity();
+		Alamat alamat = pelanggan.getAlamat();
 		alamat.setLatitude(latitude);;
 		alamat.setLongitude(longitude);
 		
@@ -135,7 +133,7 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public void recountTunggakan(int tanggal) throws ApplicationException {
-		List<? extends Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
+		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		
 		for (Pelanggan pelanggan : listPelanggan) {
 			Pembayaran pembayaranTerakhir = pembayaranService.getLast(pelanggan);
@@ -146,96 +144,96 @@ public class PelangganServiceImpl implements PelangganService {
 				pelanggan.countTunggakan(pembayaranTerakhir);
 			}
 			
-			pelangganRepository.save(pelanggan.toEntity());
+			pelangganRepository.save(pelanggan);
 		}
 	}
 	
 	@Override
-	public PelangganEntity getOne(int id){
+	public Pelanggan getOne(int id){
 		return pelangganRepository.findOne(id);
 	}
 
 	@Override
-	public PelangganEntity getOneByNama(Perusahaan perusahaan, String nama) throws EntityNotExistException {
-		return pelangganRepository.findByPerusahaanAndNama(perusahaan.toEntity(), nama);
+	public Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws EntityNotExistException {
+		return pelangganRepository.findByPerusahaanAndNama(perusahaan, nama);
 	}
 
 	@Override
-	public PelangganEntity getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException {
-		return pelangganRepository.findByPerusahaanAndKode(perusahaan.toEntity(), kode);
+	public Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException {
+		return pelangganRepository.findByPerusahaanAndKode(perusahaan, kode);
 	}
 
 	@Override
-	public List<? extends Pelanggan> getByKode(Perusahaan perusahaan, String kode, int pageNumber) {
+	public List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
-		return pelangganRepository.findByPerusahaanAndKodeContainingOrderByKodeAsc(perusahaan.toEntity(), kode, page);
+		return pelangganRepository.findByPerusahaanAndKodeContainingOrderByKodeAsc(perusahaan, kode, page);
 	}
 
 	@Override
-	public List<? extends Pelanggan> getByNama(Perusahaan perusahaan, String nama, int pageNumber) {
+	public List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
-		return pelangganRepository.findByPerusahaanAndNamaContainingOrderByKodeAsc(perusahaan.toEntity(), nama, page);
+		return pelangganRepository.findByPerusahaanAndNamaContainingOrderByKodeAsc(perusahaan, nama, page);
 	}
 	
 	@Override
-	public List<? extends Pelanggan> get(Status status, int tanggal) {
+	public List<Pelanggan> get(Status status, int tanggal) {
 		return pelangganRepository.findByTanggalMulai(status, tanggal);
 	}
 	
 	@Override
-	public List<PelangganEntity> get(Perusahaan perusahaan, Status status) {
-		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), status);
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status) {
+		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, status);
 	}
 
 	@Override
-	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, int pageNumber) {
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), status, page);
+		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, status, page);
 	}
 
 	@Override
-	public List<PelangganEntity> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
-		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan.toEntity(), status, tunggakan);
+	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
+		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan, status, tunggakan);
 	}
 
 	@Override
-	public List<PelangganEntity> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int pageNumber) {
+	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan.toEntity(), status, tunggakan, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan, status, tunggakan, page);
 	}
 
 	@Override
-	public List<PelangganEntity> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) {
+	public List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(perusahaan.toEntity(), status, nama, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(perusahaan, status, nama, page);
 	}
 
 	@Override
-	public List<PelangganEntity> getByKode(Perusahaan perusahaan, Status status, String kode, int pageNumber) {
+	public List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan.toEntity(), status, kode, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan, status, kode, page);
 	}
 
 	@Override
-	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan);
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
+		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
 	}
 
 	@Override
-	public List<PelangganEntity> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int pageNumber) {
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan, page);
+		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan, page);
 	}
 
 	@Override
-	public List<? extends Pelanggan> get(Pegawai pegawai, Date tanggalBayar) {
+	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) {
 		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
 		
 		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarStr);
@@ -249,7 +247,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public List<? extends Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int pageNumber) {
+	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int pageNumber) {
 		//PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
 		
@@ -258,54 +256,53 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public long count(Perusahaan perusahaan, Status status) {
-		return pelangganRepository.countByPerusahaanAndStatus(perusahaan.toEntity(), status);
+		return pelangganRepository.countByPerusahaanAndStatus(perusahaan, status);
 	}
 
 	@Override
 	public long countByKode(Perusahaan perusahaan, String kode) {
-		return pelangganRepository.countByPerusahaanAndKodeContaining(perusahaan.toEntity(), kode);
+		return pelangganRepository.countByPerusahaanAndKodeContaining(perusahaan, kode);
 	}
 
 	@Override
 	public long countByNama(Perusahaan perusahaan, String nama) {
-		return pelangganRepository.countByPerusahaanAndNamaContaining(perusahaan.toEntity(), nama);
+		return pelangganRepository.countByPerusahaanAndNamaContaining(perusahaan, nama);
 	}
 	
 	@Override
 	public long countByNama(Perusahaan perusahaan, Status status, String nama) {
-		return pelangganRepository.countByPerusahaanAndStatusAndNamaContaining(perusahaan.toEntity(), status, nama);
+		return pelangganRepository.countByPerusahaanAndStatusAndNamaContaining(perusahaan, status, nama);
 	}
 
 	@Override
 	public long countByKode(Perusahaan perusahaan, Status status, String kode) {
-		return pelangganRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan.toEntity(), status, kode);
+		return pelangganRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan, status, kode);
 	}
 
 	@Override
 	public long countByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
-		return pelangganRepository.countByPerusahaanAndStatusAndDetail_Tunggakan(perusahaan.toEntity(), status, tunggakan);
+		return pelangganRepository.countByPerusahaanAndStatusAndDetail_Tunggakan(perusahaan, status, tunggakan);
 	}
 	
 	@Override
 	public long countByTunggakanLessThan(Perusahaan perusahaan, Status status, int tunggakan) {
-		return pelangganRepository.countByPerusahaanAndStatusAndDetail_TunggakanLessThan(perusahaan.toEntity(), status, tunggakan);
+		return pelangganRepository.countByPerusahaanAndStatusAndDetail_TunggakanLessThan(perusahaan, status, tunggakan);
 	}
 	
 	@Override
 	public long countByTunggakanGreaterThan(Perusahaan perusahaan, Status status, int tunggakan) {
-		return pelangganRepository.countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(perusahaan.toEntity(), status, tunggakan);
+		return pelangganRepository.countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(perusahaan, status, tunggakan);
 	}
 
 	@Override
 	public long count(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
-		return pelangganRepository.countByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan.toEntity(), status, kelurahan.toEntity(), lingkungan);
+		return pelangganRepository.countByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan, status, kelurahan, lingkungan);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Pelanggan cetakKartu(Pelanggan pelanggan) {
 		int tahun = DateUtil.getYearNow();
-		pelanggan.setListPembayaran((List<PembayaranEntity>)pembayaranService.get(pelanggan, tahun));
+		pelanggan.setListPembayaran((List<Pembayaran>)pembayaranService.get(pelanggan, tahun));
 
 		return pelanggan;
 	}
@@ -321,7 +318,7 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, int lingkungan) {
-		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF, kelurahan.toEntity(), lingkungan);
+		List<Pelanggan> listPelanggan = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, Pelanggan.Status.AKTIF, kelurahan, lingkungan);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 		String message = "";
@@ -332,7 +329,7 @@ public class PelangganServiceImpl implements PelangganService {
 			
 			try {
 				pelanggan.setKode(generatedKode);
-				pelangganRepository.save(pelanggan.toEntity());
+				pelangganRepository.save(pelanggan);
 
 				if (generatedKode.contains("W")) {
 					codeGenerator.increase();
@@ -348,7 +345,7 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public String resetKode(Perusahaan perusahaan) {
-		List<PelangganEntity> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+		List<Pelanggan> listPelanggan = pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, Pelanggan.Status.AKTIF);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 		String message = "";
@@ -359,7 +356,7 @@ public class PelangganServiceImpl implements PelangganService {
 			
 			try {
 				pelanggan.setKode(generatedKode);
-				pelangganRepository.save(pelanggan.toEntity());
+				pelangganRepository.save(pelanggan);
 
 				if (generatedKode.contains("W")) {
 					codeGenerator.increase();

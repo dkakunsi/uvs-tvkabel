@@ -7,20 +7,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.unitedvision.tvkabel.core.domain.Kelurahan;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.core.domain.Pembayaran;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
-import com.unitedvision.tvkabel.core.domain.Tagihan;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
-import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity;
-import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity.TagihanValue;
+import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @Service
@@ -31,27 +27,27 @@ public class RekapServiceImpl implements RekapService {
 	private PembayaranService pembayaranService;
 
 	@Override
-	public List<? extends Pelanggan> rekapHarian(Pegawai pegawai, Date hari) {
-		List<? extends Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
+	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) {
+		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
 
 		return verify(listPelanggan, hari);
 	}
 	
 	@Override
-	public List<? extends Pelanggan> rekapHarian(Pegawai pegawai, Date hari, int lastNumber) {
-		List<? extends Pelanggan> listPelanggan = pelangganService.get(pegawai, hari, lastNumber);
+	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari, int lastNumber) {
+		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari, lastNumber);
 
 		return verify(listPelanggan, hari);
 	}
 	
-	private List<? extends Pelanggan> verify(List<? extends Pelanggan> list, Date hari) {
+	private List<Pelanggan> verify(List<Pelanggan> list, Date hari) {
 		final int numberOfMonth = 5;
-		Tagihan tagihanAkhir = TagihanValue.create(hari);
-		Tagihan tagihanAwal = TagihanValue.create(hari);
+		Tagihan tagihanAkhir = Tagihan.create(hari);
+		Tagihan tagihanAwal = Tagihan.create(hari);
 		tagihanAwal.substract(numberOfMonth);
 		
 		for (Pelanggan p : list) {
-			List<PembayaranEntity> listPembayaran = pembayaranService.get(p, tagihanAwal, tagihanAkhir);
+			List<Pembayaran> listPembayaran = pembayaranService.get(p, tagihanAwal, tagihanAkhir);
 			listPembayaran = verifyListPembayaran(listPembayaran, numberOfMonth);
 			p.setListPembayaran(listPembayaran);
 		}
@@ -59,7 +55,7 @@ public class RekapServiceImpl implements RekapService {
 		return list;
 	}
 	
-	private List<PembayaranEntity> verifyListPembayaran(List<PembayaranEntity> list, int counter) {
+	private List<Pembayaran> verifyListPembayaran(List<Pembayaran> list, int counter) {
 		if (list.size() == 0) {
 			for (int i = 1; i <= counter; i++)
 				list.add(createDefaultPembayaran(2014, Month.JANUARY));
@@ -72,34 +68,30 @@ public class RekapServiceImpl implements RekapService {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PembayaranEntity> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
-		return (List<PembayaranEntity>)pembayaranService.get(perusahaan, tahun, bulan, lastNumber);
+	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
+		return (List<Pembayaran>)pembayaranService.get(perusahaan, tahun, bulan, lastNumber);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PembayaranEntity> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
+	public List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
 		final Date tanggalMulai = DateUtil.getDate(tahun, bulan, 1);
 		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
 
-		return (List<PembayaranEntity>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir, lastNumber);
+		return (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir, lastNumber);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapTahunan(Perusahaan perusahaan, int tahun, int lastNumber) {
-		List<PelangganEntity> listPelanggan = (List<PelangganEntity>)pelangganService.get(perusahaan, Status.AKTIF, lastNumber);
+	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun, int lastNumber) {
+		List<Pelanggan> listPelanggan = (List<Pelanggan>)pelangganService.get(perusahaan, Status.AKTIF, lastNumber);
 
 		return rekapTahunan(listPelanggan, tahun);
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<PelangganEntity> rekapTahunan(List<PelangganEntity> list, int tahun) {
+	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
  		for (Pelanggan pelanggan : list) {
  			
- 			List<PembayaranEntity> listPembayaran = (List<PembayaranEntity>)pembayaranService.get(pelanggan, tahun);
+ 			List<Pembayaran> listPembayaran = (List<Pembayaran>)pembayaranService.get(pelanggan, tahun);
  			verifyListPembayaran(listPembayaran, tahun, pelanggan);
  			pelanggan.setListPembayaran(listPembayaran); 
  		} 
@@ -107,7 +99,7 @@ public class RekapServiceImpl implements RekapService {
  		return list; 
 	}
 	
-	private void verifyListPembayaran(List<PembayaranEntity> listPembayaran, int tahun, Pelanggan pelanggan) {
+	private void verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) {
 		if (listPembayaran.size() > 0) {
 			verifyPembayaranFirst(listPembayaran);
 			verifyPembayaranLast(listPembayaran);
@@ -120,8 +112,8 @@ public class RekapServiceImpl implements RekapService {
 	 * Set the default {@link Pembayaran} value when it is not starts from JANUARY
 	 * @param listPembayaran
 	 */
-	private void verifyPembayaranFirst(List<PembayaranEntity> listPembayaran) {
-		PembayaranEntity pembayaranEntity = listPembayaran.get(0);
+	private void verifyPembayaranFirst(List<Pembayaran> listPembayaran) {
+		Pembayaran pembayaranEntity = listPembayaran.get(0);
 		
 		if (pembayaranEntity.getBulan() != Month.JANUARY) {
 			for (int i = Month.JANUARY.getValue(); i < pembayaranEntity.getBulan().getValue(); i++) {
@@ -134,8 +126,8 @@ public class RekapServiceImpl implements RekapService {
 	 * Set the default {@link Pembayaran} value when it is not ends to DECEMBER
 	 * @param listPembayaran
 	 */
-	private void verifyPembayaranLast(List<PembayaranEntity> listPembayaran) {
-		PembayaranEntity pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
+	private void verifyPembayaranLast(List<Pembayaran> listPembayaran) {
+		Pembayaran pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
 
 		if (pembayaranEntity.getBulan() != Month.DECEMBER) {
 			for (int i = pembayaranEntity.getBulan().getValue(); i < Month.DECEMBER.getValue(); i++) {
@@ -148,70 +140,63 @@ public class RekapServiceImpl implements RekapService {
 	 * Set the default {@link Pembayaran} value when it is not found
 	 * @param listPembayaran
 	 */
-	private void verifyPembayaranEmpty(List<PembayaranEntity> listPembayaran) {
+	private void verifyPembayaranEmpty(List<Pembayaran> listPembayaran) {
 		for (int i = Month.JANUARY.getValue(); i <= Month.DECEMBER.getValue(); i++) {
 			listPembayaran.add(createDefaultPembayaran(0, Month.of(i)));
 		}
 	}
 	
-	private PembayaranEntity createDefaultPembayaran(int tahun, Month bulan) {
-		Tagihan tagihan = new TagihanValue(tahun, bulan);
+	private Pembayaran createDefaultPembayaran(int tahun, Month bulan) {
+		Tagihan tagihan = new Tagihan(tahun, bulan);
 
-		return new PembayaranEntity("default", DateUtil.getNow(), new PelangganEntity(), new PegawaiEntity(), 0, tagihan.toEntity());
+		return new Pembayaran("default", DateUtil.getNow(), new Pelanggan(), new Pegawai(), 0, tagihan);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapTahunan(Perusahaan perusahaan, int tahun) {
-		List<PelangganEntity> listPelanggan = (List<PelangganEntity>)pelangganService.get(perusahaan, Status.AKTIF);
+	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) {
+		List<Pelanggan> listPelanggan = (List<Pelanggan>)pelangganService.get(perusahaan, Status.AKTIF);
 
 		return rekapTahunan(listPelanggan, tahun);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PembayaranEntity> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
-		Tagihan tagihan = new TagihanValue(tahun, bulan);
+	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
+		Tagihan tagihan = new Tagihan(tahun, bulan);
 
-		return (List<PembayaranEntity>)pembayaranService.get(perusahaan, tagihan);
+		return (List<Pembayaran>)pembayaranService.get(perusahaan, tagihan);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PembayaranEntity> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
+	public List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
 		final Date tanggalAwal = DateUtil.getDate(tahun, bulan, 1);
 		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
 
-		return (List<PembayaranEntity>)pembayaranService.get(perusahaan, tanggalAwal, tanggalAkhir);
+		return (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalAwal, tanggalAkhir);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) {
-		return (List<PelangganEntity>)pelangganService.getByTunggakan(perusahaan, status, tunggakan);
+	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) {
+		return (List<Pelanggan>)pelangganService.getByTunggakan(perusahaan, status, tunggakan);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan, int lastNumber) {
-		return (List<PelangganEntity>)pelangganService.getByTunggakan(perusahaan, status, tunggakan, lastNumber);
+	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan, int lastNumber) {
+		return (List<Pelanggan>)pelangganService.getByTunggakan(perusahaan, status, tunggakan, lastNumber);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) {
-		return (List<PelangganEntity>)pelangganService.get(perusahaan, status, kelurahan, lingkungan);
+	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) {
+		return (List<Pelanggan>)pelangganService.get(perusahaan, status, kelurahan, lingkungan);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PelangganEntity> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan, Integer lastNumber) {
-		return (List<PelangganEntity>)pelangganService.get(perusahaan, status, kelurahan, lingkungan, lastNumber);
+	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan, Integer lastNumber) {
+		return (List<Pelanggan>)pelangganService.get(perusahaan, status, kelurahan, lingkungan, lastNumber);
 	}
 
 	@Override
 	public long countRekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
-		Tagihan tagihan = new TagihanValue(tahun, bulan);
+		Tagihan tagihan = new Tagihan(tahun, bulan);
 		
 		return pembayaranService.count(perusahaan, tagihan);
 	}

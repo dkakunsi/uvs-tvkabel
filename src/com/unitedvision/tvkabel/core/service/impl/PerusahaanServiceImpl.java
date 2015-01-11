@@ -7,27 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.domain.Kredensi;
-import com.unitedvision.tvkabel.core.domain.Kredensi.Role;
-import com.unitedvision.tvkabel.core.domain.Pegawai.Status;
-import com.unitedvision.tvkabel.core.domain.Operator;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.domain.Alamat;
+import com.unitedvision.tvkabel.domain.Operator;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pegawai.Kredensi;
+import com.unitedvision.tvkabel.domain.Pegawai.Role;
+import com.unitedvision.tvkabel.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
-import com.unitedvision.tvkabel.persistence.entity.AlamatValue;
-import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity;
-import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
-import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity.KredensiValue;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @Service
@@ -50,15 +47,15 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	@Override
 	@Transactional(readOnly = false)
 	public Perusahaan save(Perusahaan domain) throws UncompatibleTypeException {
-		domain = validator.validate(domain.toEntity());
-		return perusahaanRepository.save(domain.toEntity());
+		domain = validator.validate(domain);
+		return perusahaanRepository.save(domain);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(Perusahaan domain) {
 		domain = perusahaanRepository.findOne(domain.getId());
-		perusahaanRepository.delete(domain.toEntity());
+		perusahaanRepository.delete(domain);
 	}
 
 	@Override
@@ -72,13 +69,13 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	}
 
 	@Override
-	public List<PerusahaanEntity> getAll() {
+	public List<Perusahaan> getAll() {
 		return perusahaanRepository.findAll();
 	}
 
 	@Override
 	public void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException {
-		AlamatValue alamat = perusahaan.getAlamat().toEntity();
+		Alamat alamat = perusahaan.getAlamat();
 		alamat.setLatitude(latitude);
 		alamat.setLongitude(longitude);
 		
@@ -90,20 +87,20 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	@Override
 	@Transactional(readOnly = false)
 	public Operator regist(Perusahaan perusahaan) throws EntityNotExistException, UncompatibleTypeException {
-		PerusahaanEntity perusahaanEntity = perusahaan.toEntity();
+		Perusahaan perusahaanEntity = perusahaan;
 		perusahaanEntity.generateKode(getAvailableId());
 		perusahaan = save(perusahaanEntity);
 		
-		final Kredensi kredensi = new KredensiValue(true, perusahaan.getEmail(), "admin", Role.OWNER);
-		Pegawai pegawai = new PegawaiEntity(perusahaan.toEntity(), "OWNER", kredensi.toEntity(), Status.AKTIF);
-		pegawai.generateKode(pegawaiRepository.countByPerusahaan(perusahaan.toEntity()));
-		pegawai = pegawaiRepository.save(pegawai.toEntity());
+		final Kredensi kredensi = new Kredensi(perusahaan.getEmail(), "admin", Role.OWNER);
+		Pegawai pegawai = new Pegawai(perusahaan, "OWNER", kredensi, Status.AKTIF);
+		pegawai.generateKode(pegawaiRepository.countByPerusahaan(perusahaan));
+		pegawai = pegawaiRepository.save(pegawai);
 		
 		return pegawai.toOperator();
 	}
 	
 	private int getAvailableId() {
-		PerusahaanEntity perusahaanEntity = perusahaanRepository.findFirstByOrderByIdDesc();
+		Perusahaan perusahaanEntity = perusahaanRepository.findFirstByOrderByIdDesc();
 		
 		return perusahaanEntity.getId() + 1;
 	}
@@ -118,16 +115,16 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	
 	@Override
 	public long countTagihanBulanBerjalan(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir) {
-		long totalPembayaran = pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan.toEntity(), tanggalAwal, tanggalAkhir);
-		long totalPelangganBerhenti = pelangganRepository.countByPerusahaanAndStatus(perusahaan.toEntity(), Pelanggan.Status.BERHENTI);
-		long totalPelangganPutus = pelangganRepository.countByPerusahaanAndStatus(perusahaan.toEntity(), Pelanggan.Status.PUTUS);
+		long totalPembayaran = pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalAwal, tanggalAkhir);
+		long totalPelangganBerhenti = pelangganRepository.countByPerusahaanAndStatus(perusahaan, Pelanggan.Status.BERHENTI);
+		long totalPelangganPutus = pelangganRepository.countByPerusahaanAndStatus(perusahaan, Pelanggan.Status.PUTUS);
 
 		return (totalPembayaran * perusahaan.getIuran()) + ((totalPelangganPutus + totalPelangganBerhenti) * (perusahaan.getIuran() / 2));
 	}
 
 	@Override
 	public long countEstimasiPemasukanBulanan(Perusahaan perusahaan) {
-		return pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+		return pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaan, Pelanggan.Status.AKTIF);
 	}
 	
 	@Override
@@ -144,7 +141,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	
 	@Override
 	public long countTotalAkumulasiTunggakan(Perusahaan perusahaan) {
-		return pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan.toEntity(), Pelanggan.Status.AKTIF);
+		return pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan, Pelanggan.Status.AKTIF);
 	}
 	
 	@Override
@@ -152,6 +149,6 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 		Date tanggalAwal = DateUtil.getFirstDate();
 		Date tanggalAkhir = DateUtil.getLastDate();
 		
-		return pembayaranRepository.countPemasukanBulanBerjalan(perusahaan.toEntity(), tanggalAwal, tanggalAkhir);
+		return pembayaranRepository.countPemasukanBulanBerjalan(perusahaan, tanggalAwal, tanggalAkhir);
 	}
 }

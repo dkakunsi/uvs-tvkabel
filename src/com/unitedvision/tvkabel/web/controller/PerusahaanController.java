@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.unitedvision.tvkabel.core.domain.Operator;
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.domain.Operator;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.web.model.PerusahaanModel;
 import com.unitedvision.tvkabel.web.rest.ListPerusahaanRestResult;
 import com.unitedvision.tvkabel.web.rest.PerusahaanRestResult;
 import com.unitedvision.tvkabel.web.rest.RekapPerusahaanRestResult;
@@ -31,9 +30,9 @@ public class PerusahaanController extends AbstractController {
 	private PerusahaanService perusahaanService;
 
 	@RequestMapping(value = "/registrasi", method = RequestMethod.POST)
-	public @ResponseBody RestResult registrasi(@RequestBody PerusahaanModel perusahaanModel, Map<String, Object> model) {
+	public @ResponseBody RestResult registrasi(@RequestBody Perusahaan perusahaan, Map<String, Object> model) {
 		try {
-			final Operator op = perusahaanService.regist(perusahaanModel);
+			final Operator op = perusahaanService.regist(perusahaan);
 			model.put("operator", op);
 
 			return RestResult.create("Berhasil!");
@@ -56,7 +55,7 @@ public class PerusahaanController extends AbstractController {
 	}
 
 	@RequestMapping (value = "/master", method = RequestMethod.POST)
-	public @ResponseBody PerusahaanRestResult simpanPerusahaan(@RequestBody PerusahaanModel perusahaan) {
+	public @ResponseBody PerusahaanRestResult simpanPerusahaan(@RequestBody Perusahaan perusahaan) {
 		try {
 			perusahaanService.save(perusahaan);
 
@@ -68,9 +67,9 @@ public class PerusahaanController extends AbstractController {
 	
 	@RequestMapping (value = "", method = RequestMethod.GET)
 	public @ResponseBody ListPerusahaanRestResult getAll() {
-		List<? extends Perusahaan> list = perusahaanService.getAll();
+		List<Perusahaan> list = perusahaanService.getAll();
 		
-		return ListPerusahaanRestResult.create("Berhasil!", PerusahaanModel.createListModel(list));
+		return ListPerusahaanRestResult.create("Berhasil!", list);
 	}
 	
 	@RequestMapping (value = "/kode/{kode}", method = RequestMethod.GET)
@@ -78,7 +77,7 @@ public class PerusahaanController extends AbstractController {
 		try {
 			Perusahaan perusahaan = perusahaanService.getByKode(kode);
 
-			return PerusahaanRestResult.create("Berhasil!", perusahaan.toModel());
+			return PerusahaanRestResult.create("Berhasil!", perusahaan);
 		} catch (EntityNotExistException e) {
 			return PerusahaanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -89,7 +88,7 @@ public class PerusahaanController extends AbstractController {
 		try {
 			Perusahaan perusahaan = perusahaanService.getOne(id);
 
-			return PerusahaanRestResult.create("Berhasil!", perusahaan.toModel());
+			return PerusahaanRestResult.create("Berhasil!", perusahaan);
 		} catch (EntityNotExistException e) {
 			return PerusahaanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -105,7 +104,7 @@ public class PerusahaanController extends AbstractController {
 			return RekapPerusahaanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
 	}
-	private PerusahaanModel.Rekap createRekapPerusahaan(Perusahaan perusahaan) {
+	private Perusahaan.Rekap createRekapPerusahaan(Perusahaan perusahaan) {
 		long estimasiPemasukanBulanan = perusahaanService.countEstimasiPemasukanBulanan(perusahaan);
 		long estimasiTagihanBulanan = perusahaanService.countEstimasiTagihanBulanan(perusahaan);
 		long pemasukanBulanBerjalan = perusahaanService.countPemasukanBulanBerjalan(perusahaan);
@@ -118,6 +117,6 @@ public class PerusahaanController extends AbstractController {
 		long jumlahPelangganMenunggakWajar = pelangganService.countByTunggakan(perusahaan, Status.AKTIF, 1);
 		long jumlahPelangganMenunggakTakWajar = pelangganService.countByTunggakanGreaterThan(perusahaan, Status.AKTIF, 1);
 
-		return PerusahaanModel.createRekap(estimasiPemasukanBulanan, estimasiTagihanBulanan, pemasukanBulanBerjalan, tagihanBulanBerjalan, totalAkumulasiTunggakan, jumlahPelangganAktif, jumlahPelangganBerhenti, jumlahPelangganPutus, jumlahPelangganLunas, jumlahPelangganMenunggakWajar, jumlahPelangganMenunggakTakWajar);
+		return Perusahaan.createRekap(estimasiPemasukanBulanan, estimasiTagihanBulanan, pemasukanBulanBerjalan, tagihanBulanBerjalan, totalAkumulasiTunggakan, jumlahPelangganAktif, jumlahPelangganBerhenti, jumlahPelangganPutus, jumlahPelangganLunas, jumlahPelangganMenunggakWajar, jumlahPelangganMenunggakTakWajar);
 	}
 }

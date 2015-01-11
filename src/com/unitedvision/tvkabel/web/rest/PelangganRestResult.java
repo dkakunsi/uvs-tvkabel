@@ -1,29 +1,29 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.web.model.PelangganModel;
+import com.unitedvision.tvkabel.domain.Pelanggan;
 
 public class PelangganRestResult extends RestResult {
-	private PelangganModel pelangganModel;
+	private Pelanggan pelanggan;
 
 	private PelangganRestResult(String message) {
 		super(message);
 	}
 	
-	private PelangganRestResult(String message, PelangganModel pelangganModel) {
+	private PelangganRestResult(String message, Pelanggan pelanggan) {
 		super(message);
 		this.type = "model";
-		this.pelangganModel = pelangganModel;
+		this.pelanggan = pelanggan;
 	}
 	
-	public PelangganModel getModel() {
-		return pelangganModel;
+	public Pelanggan getModel() {
+		return pelanggan;
 	}
 
 	public static PelangganRestResult create(String message) {
 		return new PelangganRestResult(message);
 	}
 	
-	public static PelangganRestResult create(String message, PelangganModel pelangganModel) {
-		return new PelangganRestResult(message, pelangganModel);
+	public static PelangganRestResult create(String message, Pelanggan pelanggan) {
+		return new PelangganRestResult(message, pelanggan);
 	}
 }

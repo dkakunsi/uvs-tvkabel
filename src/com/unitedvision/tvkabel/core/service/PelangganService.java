@@ -3,11 +3,11 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.core.domain.Kelurahan;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 
 public interface PelangganService extends Service<Pelanggan> {
@@ -22,20 +22,20 @@ public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
 
-	List<? extends Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page);
-	List<? extends Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page);
-	List<? extends Pelanggan> get(Perusahaan perusahaan, Status status);
-	List<? extends Pelanggan> get(Perusahaan perusahaan, Status status, int page);
-	List<? extends Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
-	List<? extends Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int page);
-	List<? extends Pelanggan> get(Pegawai pegawai, Date tanggalBayar);
-	List<? extends Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int page);
-	List<? extends Pelanggan> get(Status status, int tanggal);
+	List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page);
+	List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page);
+	List<Pelanggan> get(Perusahaan perusahaan, Status status);
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page);
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int page);
+	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar);
+	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int page);
+	List<Pelanggan> get(Status status, int tanggal);
 
-	List<? extends Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
-	List<? extends Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int page);
-	List<? extends Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
-	List<? extends Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
+	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
+	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int page);
+	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
+	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
 
 	long count(Perusahaan perusahaan, Status status);
 	long count(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);

@@ -11,16 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Pembayaran;
-import com.unitedvision.tvkabel.core.domain.Tagihan;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
-import com.unitedvision.tvkabel.web.model.PembayaranModel;
 import com.unitedvision.tvkabel.web.rest.ListPembayaranRestResult;
 import com.unitedvision.tvkabel.web.rest.PembayaranRestResult;
 import com.unitedvision.tvkabel.web.rest.RestResult;
@@ -37,9 +36,9 @@ public class PembayaranController extends AbstractController {
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public @ResponseBody PembayaranRestResult getById(@PathVariable Integer id) {
 		try {
-			PembayaranModel model = pembayaranService.getOne(id).toModel();
+			Pembayaran pembayaran = pembayaranService.getOne(id);
 			
-			return PembayaranRestResult.create("Berhasil!", model);
+			return PembayaranRestResult.create("Berhasil!", pembayaran);
 		} catch (EntityNotExistException e) {
 			return PembayaranRestResult.create(e.getMessage());
 		}
@@ -51,7 +50,7 @@ public class PembayaranController extends AbstractController {
 			final Pegawai pegawai = pegawaiService.getOneByKode(getPerusahaan(perusahaan), kode);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
-			List<PembayaranModel> list = getByPegawai(pegawai, awal, akhir, page);
+			List<Pembayaran> list = getByPegawai(pegawai, awal, akhir, page);
 			long total = pembayaranService.count(pegawai, awal, akhir);
 			long count = PageSizeUtil.getCounter(page, list.size());
 			
@@ -67,7 +66,7 @@ public class PembayaranController extends AbstractController {
 			final Pegawai pegawai = pegawaiService.getOneByNama(getPerusahaan(perusahaan), nama);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
-			List<PembayaranModel> list = getByPegawai(pegawai, awal, akhir, page);
+			List<Pembayaran> list = getByPegawai(pegawai, awal, akhir, page);
 			long total = pembayaranService.count(pegawai, awal, akhir);
 			long count = PageSizeUtil.getCounter(page, list.size());
 			
@@ -83,7 +82,7 @@ public class PembayaranController extends AbstractController {
 			final Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(perusahaan), kode);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
-			List<PembayaranModel> list = getByPelanggan(pelanggan, awal, akhir, page);
+			List<Pembayaran> list = getByPelanggan(pelanggan, awal, akhir, page);
 			long total = pembayaranService.count(pelanggan, awal, akhir);
 			long count = PageSizeUtil.getCounter(page, list.size());
 			
@@ -99,7 +98,7 @@ public class PembayaranController extends AbstractController {
 			final Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(perusahaan), nama);
 			final Date awal = getTanggalAwal(tanggalAwal);
 			final Date akhir = getTanggalAkhir(tanggalAkhir);
-			List<PembayaranModel> list = getByPelanggan(pelanggan, awal, akhir, page);
+			List<Pembayaran> list = getByPelanggan(pelanggan, awal, akhir, page);
 			long total = pembayaranService.count(pelanggan, awal, akhir);
 			long count = PageSizeUtil.getCounter(page, list.size());
 			
@@ -115,7 +114,7 @@ public class PembayaranController extends AbstractController {
 			Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(perusahaan), kode);
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
-			return TagihanRestResult.create("Berhasil!", tagihan.toModel());
+			return TagihanRestResult.create("Berhasil!", tagihan);
 		} catch (ApplicationException e) {
 			return TagihanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -127,7 +126,7 @@ public class PembayaranController extends AbstractController {
 			Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(perusahaan), nama);
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
-			return TagihanRestResult.create("Berhasil!", tagihan.toModel());
+			return TagihanRestResult.create("Berhasil!", tagihan);
 		} catch (ApplicationException e) {
 			return TagihanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -139,7 +138,7 @@ public class PembayaranController extends AbstractController {
 			Pelanggan pelanggan = pelangganService.getOne(id);
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
-			return TagihanRestResult.create("Berhasil!", tagihan.toModel());
+			return TagihanRestResult.create("Berhasil!", tagihan);
 		} catch (ApplicationException e) {
 			return TagihanRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -153,7 +152,7 @@ public class PembayaranController extends AbstractController {
 			Pegawai pegawai = pegawaiService.getOne(restRequest.getIdPegawai());
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
-			Pembayaran pembayaran = new PembayaranModel(pelanggan, pegawai, restRequest.getJumlahPembayaran(), tanggalBayar, tagihan);
+			Pembayaran pembayaran = new Pembayaran(pelanggan, pegawai, restRequest.getJumlahPembayaran(), tanggalBayar, tagihan);
 			pembayaranService.pay(pembayaran);
 
 			return RestResult.create("Berhasil!");
@@ -169,7 +168,7 @@ public class PembayaranController extends AbstractController {
 			pembayaran.setPegawai(pegawaiService.getOne(restRequest.getIdPegawai()));
 			pembayaran.setJumlahBayar(restRequest.getJumlahPembayaran());
 
-			pembayaranService.updatePayment(pembayaran.toEntity());
+			pembayaranService.updatePayment(pembayaran);
 
 			return RestResult.create("Berhasil!");
 		} catch (ApplicationException e) {
@@ -190,16 +189,12 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 
-	private List<PembayaranModel> getByPegawai(Pegawai pegawai, Date awal, Date akhir, int page) {
-		List<? extends Pembayaran> list = pembayaranService.get(pegawai, awal, akhir, page);
-		
-		return PembayaranModel.createListModelPembayaran(list);
+	private List<Pembayaran> getByPegawai(Pegawai pegawai, Date awal, Date akhir, int page) {
+		return pembayaranService.get(pegawai, awal, akhir, page);
 	}
 	
-	private List<PembayaranModel> getByPelanggan(Pelanggan pelanggan, Date awal, Date akhir, int page) {
-		List<? extends Pembayaran> list = pembayaranService.get(pelanggan, awal, akhir, page);
-		
-		return PembayaranModel.createListModelPembayaran(list);
+	private List<Pembayaran> getByPelanggan(Pelanggan pelanggan, Date awal, Date akhir, int page) {
+		return pembayaranService.get(pelanggan, awal, akhir, page);
 	}
 
 	private Date getTanggalAwal(final String str) {

@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.unitedvision.tvkabel.domain.Pegawai;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.web.model.PegawaiModel;
+import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
 import com.unitedvision.tvkabel.web.rest.LoginRestRequest;
 import com.unitedvision.tvkabel.web.rest.PegawaiRestResult;
-import com.unitedvision.tvkabel.web.security.CustomAuthenticationProvider;
 
 @Controller
 public class LoginController extends AbstractController {
@@ -49,7 +49,7 @@ public class LoginController extends AbstractController {
 			Authentication authentication = authenticationProvider.authenticate(token);
 			persistAuthentication(authentication);
 			
-			return PegawaiRestResult.create("Berhasil!", getPegawai().toModel());
+			return PegawaiRestResult.create("Berhasil!", getPegawai());
 		} catch (AuthenticationException e) {
 			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
@@ -60,7 +60,7 @@ public class LoginController extends AbstractController {
 		try {
 			logoutProcess(request, response);
 			
-			return PegawaiRestResult.create("Berhasil", PegawaiModel.createGuest());
+			return PegawaiRestResult.create("Berhasil", Pegawai.createGuest());
 		} catch (IOException e) {
 			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}

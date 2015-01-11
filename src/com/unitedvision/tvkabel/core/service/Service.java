@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.core.service;
 
-import com.unitedvision.tvkabel.core.domain.Domain;
+import com.unitedvision.tvkabel.domain.Domain;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
@@ -11,7 +11,6 @@ import com.unitedvision.tvkabel.exception.EntityNotExistException;
  *
  * @param <T> any domain type
  */
-@SuppressWarnings("rawtypes")
 public interface Service<T extends Domain> {
 	/**
 	 * Save the given object to database. If it is a new object then insert it, if it is existing object then update it.

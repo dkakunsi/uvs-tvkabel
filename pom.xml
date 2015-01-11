@@ -32,7 +32,6 @@
   	<spring.version>4.0.7.RELEASE</spring.version>
   	<spring-security.version>3.2.5.RELEASE</spring-security.version>
   	<spring-data-jpa.version>1.7.1.RELEASE</spring-data-jpa.version>
-  	<tiles.version>2.2.2</tiles.version>
   	<jackson.version>2.4.2</jackson.version>
   	<itext.version>2.1.7</itext.version>
   	<mysql.version>5.1.26</mysql.version>
@@ -137,11 +136,6 @@
 		<groupId>taglibs</groupId>
 		<artifactId>standard</artifactId>
 		<version>${taglibs.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.tiles</groupId>
-		<artifactId>tiles-extras</artifactId>
-		<version>${tiles.version}</version>
 	</dependency>
     
 	<!-- Dependencies for JSON support -->

@@ -6,29 +6,26 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.unitedvision.tvkabel.core.domain.Alamat;
-import com.unitedvision.tvkabel.core.domain.Pembayaran;
-import com.unitedvision.tvkabel.core.domain.Tagihan;
+import com.unitedvision.tvkabel.domain.Alamat;
+import com.unitedvision.tvkabel.domain.Kecamatan;
+import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.Kota;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.persistence.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.KotaRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.entity.AlamatValue;
-import com.unitedvision.tvkabel.persistence.entity.KecamatanEntity;
-import com.unitedvision.tvkabel.persistence.entity.KelurahanEntity;
-import com.unitedvision.tvkabel.persistence.entity.KotaEntity;
-import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity;
-import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
-import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity.TagihanValue;
-import com.unitedvision.tvkabel.persistence.repository.KecamatanRepository;
-import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
-import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
 
 @Component
 public class Validator {
@@ -47,100 +44,100 @@ public class Validator {
 	@Autowired
 	private PembayaranRepository pembayaranRepository;
 
-	public KecamatanEntity validate(KecamatanEntity kecamatanEntity) throws UncompatibleTypeException {
-		KotaEntity kotaEntity = kecamatanEntity.getKota();
+	public Kecamatan validate(Kecamatan kecamatan) throws UncompatibleTypeException {
+		Kota kota = kecamatan.getKota();
 
 		try {
-			if (kotaEntity.isNew())
-				kotaEntity = kotaRepository.findByNama(kotaEntity.getNama());
+			if (kota.isNew())
+				kota = kotaRepository.findByNama(kota.getNama());
 		} catch (EntityNotExistException e) {
-			kotaEntity = kotaRepository.save(kotaEntity.toEntity());
+			kota = kotaRepository.save(kota);
 		}
 
-		kecamatanEntity.setKota(kotaEntity);
+		kecamatan.setKota(kota);
 
-		return kecamatanEntity;
+		return kecamatan;
 	}
 	
-	public KelurahanEntity validate(KelurahanEntity kelurahanEntity) throws UncompatibleTypeException {
-		KecamatanEntity kecamatanEntity = kelurahanEntity.getKecamatan();
+	public Kelurahan validate(Kelurahan kelurahan) throws UncompatibleTypeException {
+		Kecamatan kecamatan = kelurahan.getKecamatan();
 		
 		try {
-			if (kecamatanEntity.isNew())
-				kecamatanEntity = kecamatanRepository.findByNama(kecamatanEntity.getNama());
+			if (kecamatan.isNew())
+				kecamatan = kecamatanRepository.findByNama(kecamatan.getNama());
 		} catch (EntityNotExistException e) {
-			kecamatanEntity = validate(kecamatanEntity);
-			kecamatanEntity = kecamatanRepository.save(kecamatanEntity.toEntity());
+			kecamatan = validate(kecamatan);
+			kecamatan = kecamatanRepository.save(kecamatan);
 		}
 
-		kelurahanEntity.setKecamatan(kecamatanEntity);
+		kelurahan.setKecamatan(kecamatan);
 		
-		return kelurahanEntity;
+		return kelurahan;
 	}
 
-	public AlamatValue validate(AlamatValue alamatValue) throws UncompatibleTypeException {
-		KelurahanEntity kelurahanEntity = alamatValue.getKelurahan();
+	public Alamat validate(Alamat alamat) throws UncompatibleTypeException {
+		Kelurahan kelurahan = alamat.getKelurahan();
 		
 		try {
-			if (kelurahanEntity.isNew())
-				kelurahanEntity = kelurahanRepository.findByNama(kelurahanEntity.getNama());
+			if (kelurahan.isNew())
+				kelurahan = kelurahanRepository.findByNama(kelurahan.getNama());
 		} catch (EntityNotExistException e) {
-			kelurahanEntity = validate(kelurahanEntity);
-			kelurahanEntity = kelurahanRepository.save(kelurahanEntity.toEntity());
+			kelurahan = validate(kelurahan);
+			kelurahan = kelurahanRepository.save(kelurahan);
 		}
 
-		alamatValue.setKelurahan(kelurahanEntity);
+		alamat.setKelurahan(kelurahan);
 		
-		return alamatValue;
+		return alamat;
 	}
 	
-	public PerusahaanEntity validate(PerusahaanEntity perusahaanEntity) throws UncompatibleTypeException {
-		AlamatValue alamatValue = perusahaanEntity.getAlamat();
-		alamatValue = validate(alamatValue);
-		perusahaanEntity.setAlamat((Alamat)alamatValue);
+	public Perusahaan validate(Perusahaan perusahaan) throws UncompatibleTypeException {
+		Alamat alamat = perusahaan.getAlamat();
+		alamat = validate(alamat);
+		perusahaan.setAlamat((Alamat)alamat);
 		
-		return perusahaanEntity;
+		return perusahaan;
 	}
 	
-	public PelangganEntity validate(PelangganEntity pelangganEntity) throws UncompatibleTypeException {
-		AlamatValue alamatValue = pelangganEntity.getAlamat();
-		alamatValue = validate(alamatValue);
-		pelangganEntity.setAlamat((Alamat)alamatValue);
+	public Pelanggan validate(Pelanggan pelanggan) throws UncompatibleTypeException {
+		Alamat alamat = pelanggan.getAlamat();
+		alamat = validate(alamat);
+		pelanggan.setAlamat((Alamat)alamat);
 		
-		return pelangganEntity;
+		return pelanggan;
 	}
 
 	/**
-	 * Validates {@link PegawaiEntity} object.
-	 * @param pegawaiEntity
-	 * @return valid {@link PegawaiEntity} object.
+	 * Validates {@link Pegawai} object.
+	 * @param pegawai
+	 * @return valid {@link Pegawai} object.
 	 * @throws UncompatibleTypeException
 	 */
-	public PegawaiEntity validate(PegawaiEntity pegawaiEntity) throws UncompatibleTypeException {
-		PerusahaanEntity perusahaanEntity = pegawaiEntity.getPerusahaan();
-		perusahaanEntity = validate(perusahaanEntity);
-		pegawaiEntity.setPerusahaan(perusahaanEntity);
+	public Pegawai validate(Pegawai pegawai) throws UncompatibleTypeException {
+		Perusahaan perusahaan = pegawai.getPerusahaan();
+		perusahaan = validate(perusahaan);
+		pegawai.setPerusahaan(perusahaan);
 		
-		return pegawaiEntity;
+		return pegawai;
 	}
 
 	/**
-	 * Validates {@link PembayaranEntity} object.
-	 * @param pembayaranEntity
-	 * @return valid {@link PembayaranEntity} object.
-	 * @throws UnpaidBillException 'pembayaranEntity' is not valid due to Bill Payment error. See {@link Validator.isPreceding} method.
+	 * Validates {@link Pembayaran} object.
+	 * @param pembayaran
+	 * @return valid {@link Pembayaran} object.
+	 * @throws UnpaidBillException 'pembayaran' is not valid due to Bill Payment error. See {@link Validator.isPreceding} method.
 	 * @throws EntityNotExistException
-	 * @throws DataDuplicationException 'pembayaranEntity' is not valid due to Bill Payment error. See {@link Validator.isPaid} method.
+	 * @throws DataDuplicationException 'pembayaran' is not valid due to Bill Payment error. See {@link Validator.isPaid} method.
 	 */
-	public PembayaranEntity validate(PembayaranEntity pembayaranEntity) throws UnpaidBillException, EntityNotExistException, DataDuplicationException {
-		if (!(compareWithTanggalMulai(pembayaranEntity))) {
-			PembayaranEntity last = pembayaranRepository.findFirstByPelangganOrderByIdDesc(pembayaranEntity.getPelanggan().toEntity());
+	public Pembayaran validate(Pembayaran pembayaran) throws UnpaidBillException, EntityNotExistException, DataDuplicationException {
+		if (!(compareWithTanggalMulai(pembayaran))) {
+			Pembayaran last = pembayaranRepository.findFirstByPelangganOrderByIdDesc(pembayaran.getPelanggan());
 			
-			isPaid(pembayaranEntity, last);
-			isPreceding(pembayaranEntity, last);
+			isPaid(pembayaran, last);
+			isPreceding(pembayaran, last);
 		}
 		
-		return pembayaranEntity;
+		return pembayaran;
 	}
 
 	/**
@@ -150,17 +147,17 @@ public class Validator {
 	 */
 	private boolean compareWithTanggalMulai(Pembayaran pembayaran) {
 		Date tanggalMulai = pembayaran.getPelanggan().getTanggalMulai();
-		Tagihan tagihanAwal = TagihanValue.create(tanggalMulai);
+		Tagihan tagihanAwal = Tagihan.create(tanggalMulai);
 		Tagihan tagihan = pembayaran.getTagihan();
 		
 		return tagihan.equals(tagihanAwal);
 	}
 
 	/**
-	 * Check whether {@link TagihanValue} of 'pembayaran' has been paid or persisted in database before.
+	 * Check whether {@link Tagihan} of 'pembayaran' has been paid or persisted in database before.
 	 * @param pembayaran
 	 * @param last
-	 * @throws DataDuplicationException {@link TagihanValue} of 'pembayaran' has been paid or persisted in database before.
+	 * @throws DataDuplicationException {@link Tagihan} of 'pembayaran' has been paid or persisted in database before.
 	 */
 	private void isPaid(Pembayaran pembayaran, Pembayaran last) throws DataDuplicationException {
 		if (pembayaran.isPaid(last)) {

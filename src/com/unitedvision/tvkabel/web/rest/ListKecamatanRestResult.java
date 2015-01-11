@@ -2,21 +2,21 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.web.model.KecamatanModel;
+import com.unitedvision.tvkabel.domain.Kecamatan;
 
 public class ListKecamatanRestResult extends ListRestResult {
-	private List<KecamatanModel> list;
+	private List<Kecamatan> list;
 
 	protected ListKecamatanRestResult(String message) {
 		super(message);
 	}
 	
-	private ListKecamatanRestResult(String message, List<KecamatanModel> list) {
+	private ListKecamatanRestResult(String message, List<Kecamatan> list) {
 		super(message, 0, 0, 0);
 		this.list = list;
 	}
 
-	public List<KecamatanModel> getListModel() {
+	public List<Kecamatan> getList() {
 		return list;
 	}
 	
@@ -24,7 +24,7 @@ public class ListKecamatanRestResult extends ListRestResult {
 		return new ListKecamatanRestResult(message);
 	}
 	
-	public static ListKecamatanRestResult create(String message, List<KecamatanModel> list) {
+	public static ListKecamatanRestResult create(String message, List<Kecamatan> list) {
 		return new ListKecamatanRestResult(message, list);
 	}
 }

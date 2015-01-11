@@ -12,19 +12,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.unitedvision.tvkabel.core.domain.Kelurahan;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
 import com.unitedvision.tvkabel.core.service.KelurahanService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
+import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.Pembayaran;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
-import com.unitedvision.tvkabel.persistence.entity.PembayaranEntity;
 import com.unitedvision.tvkabel.util.DateUtil;
-import com.unitedvision.tvkabel.web.model.PelangganModel;
 
 @Controller
 @RequestMapping("/api/print")
@@ -36,18 +34,17 @@ public class PrintController extends AbstractController {
 	@Autowired
 	private PembayaranService pembayaranService;
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/rekap/hari", method = RequestMethod.POST)
 	public ModelAndView printHari(@RequestParam Integer idPerusahaan, @RequestParam String tanggal, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
 		try {
-			List<PelangganEntity> list = null;
+			List<Pelanggan> list = null;
 			Date hari = DateUtil.getDate(tanggal);
 			Pegawai pegawai = createPegawai(searchBy, query, idPerusahaan);
 
-			list = (List<PelangganEntity>)rekapService.rekapHarian(pegawai.toEntity(), hari);
+			list = rekapService.rekapHarian(pegawai, hari);
 
-			model.put("rekap", PelangganModel.rekapPembayaran(list));
+			model.put("rekap", list);
 			model.put("pegawai", pegawai.getNama());
 			model.put("tanggal", tanggal);
 			model.put("listBulan", DateUtil.getMonths(hari, 5));
@@ -64,7 +61,7 @@ public class PrintController extends AbstractController {
 	public ModelAndView printBulan(@RequestParam Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
 			Map<String, Object> model) {
 		try {
-			List<PembayaranEntity> list = createListRekapBulanan(idPerusahaan, jenis, tahun, bulan);
+			List<Pembayaran> list = createListRekapBulanan(idPerusahaan, jenis, tahun, bulan);
 
 			model.put("listPembayaran", list);
 			model.put("jenis", jenis);
@@ -79,24 +76,23 @@ public class PrintController extends AbstractController {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<PembayaranEntity> createListRekapBulanan(int idPerusahaan, String jenis, int tahun, String bulan) throws ApplicationException {
+	private List<Pembayaran> createListRekapBulanan(int idPerusahaan, String jenis, int tahun, String bulan) throws ApplicationException {
 		final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 		final Month month = Month.valueOf(bulan.toUpperCase());
 
 		if (jenis.equals("tagihan"))
-			return (List<PembayaranEntity>)rekapService.rekapTagihanBulanan(perusahaan, tahun, month);
-		return (List<PembayaranEntity>)rekapService.rekapPembayaranBulanan(perusahaan, tahun, month);
+			return (List<Pembayaran>)rekapService.rekapTagihanBulanan(perusahaan, tahun, month);
+		return (List<Pembayaran>)rekapService.rekapPembayaranBulanan(perusahaan, tahun, month);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/rekap/tahun", method = RequestMethod.POST)
 	public ModelAndView printTahun(@RequestParam Integer idPerusahaan, @RequestParam Integer tahun, Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 
-			List<PelangganEntity> list = (List<PelangganEntity>)rekapService.rekapTahunan(perusahaan, tahun);
-			model.put("rekap", PelangganModel.rekapPembayaran(list));
+			List<Pelanggan> list = rekapService.rekapTahunan(perusahaan, tahun);
+
+			model.put("rekap", list);
 			model.put("tahun", tahun);
 
 			return new ModelAndView("pdfTahun", model);
@@ -107,7 +103,6 @@ public class PrintController extends AbstractController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/rekap/tunggakan", method = RequestMethod.POST)
 	public ModelAndView printTunggakan(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakan,
 			Map<String, Object> model) {
@@ -115,7 +110,7 @@ public class PrintController extends AbstractController {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			Status status = createStatus(s);
 			
-			List<PelangganEntity> list = (List<PelangganEntity>)rekapService.rekapTunggakan(perusahaan, status, tunggakan);
+			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapTunggakan(perusahaan, status, tunggakan);
 			
 			model.put("listPelanggan", list);
 			model.put("tunggakan", tunggakan);
@@ -128,17 +123,16 @@ public class PrintController extends AbstractController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/rekap/alamat", method = RequestMethod.POST)
 	public ModelAndView printAlamat(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam("kelurahan") String k, @RequestParam Integer lingkungan,
 			Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			Status status = createStatus(s);
-			List<PelangganEntity> list = null;
+			List<Pelanggan> list = null;
 			Kelurahan kelurahan = kelurahanService.getOneByNama(k);
 			
-			list = (List<PelangganEntity>)rekapService.rekapAlamat(perusahaan, status, kelurahan, lingkungan);
+			list = (List<Pelanggan>)rekapService.rekapAlamat(perusahaan, status, kelurahan, lingkungan);
 			
 			model.put("listPelanggan", list);
 			model.put("kelurahan", k);
@@ -169,7 +163,6 @@ public class PrintController extends AbstractController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/pelanggan/kartu/aktif", method = RequestMethod.POST)
 	public ModelAndView printKartuPelangganAktif(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer pembayaran,
 			Map<String, Object> model) {

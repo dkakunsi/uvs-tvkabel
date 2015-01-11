@@ -1,21 +1,21 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.web.model.PerusahaanModel;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 
 public class PerusahaanRestResult extends RestResult {
-	private PerusahaanModel model;
+	private Perusahaan model;
 
 	private PerusahaanRestResult(String message) {
 		super(message);
 	}
 	
-	private PerusahaanRestResult(String message, PerusahaanModel model) {
+	private PerusahaanRestResult(String message, Perusahaan model) {
 		super(message);
 		this.type = "model";
 		this.model = model;
 	}
 
-	public PerusahaanModel getModel() {
+	public Perusahaan get() {
 		return model;
 	}
 	
@@ -23,7 +23,7 @@ public class PerusahaanRestResult extends RestResult {
 		return new PerusahaanRestResult(message);
 	}
 	
-	public static PerusahaanRestResult create(String message, PerusahaanModel model) {
+	public static PerusahaanRestResult create(String message, Perusahaan model) {
 		return new PerusahaanRestResult(message, model);
 	}
 }

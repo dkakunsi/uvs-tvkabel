@@ -6,14 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.domain.Kecamatan;
-import com.unitedvision.tvkabel.core.domain.Kota;
 import com.unitedvision.tvkabel.core.service.KecamatanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.domain.Kecamatan;
+import com.unitedvision.tvkabel.domain.Kota;
+import com.unitedvision.tvkabel.domain.persistence.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
-import com.unitedvision.tvkabel.persistence.entity.KecamatanEntity;
-import com.unitedvision.tvkabel.persistence.repository.KecamatanRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,29 +25,29 @@ public class KecamatanServiceImpl implements KecamatanService {
 	@Override
 	@Transactional(readOnly = false)
 	public Kecamatan save(Kecamatan domain) throws UncompatibleTypeException {
-		domain = validator.validate(domain.toEntity());
-		return kecamatanRepository.save(domain.toEntity());
+		domain = validator.validate(domain);
+		return kecamatanRepository.save(domain);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(Kecamatan domain) {
 		domain = kecamatanRepository.findOne(domain.getId());
-		kecamatanRepository.delete(domain.toEntity());
+		kecamatanRepository.delete(domain);
 	}
 
 	@Override
-	public KecamatanEntity getOne(int id) throws EntityNotExistException {
+	public Kecamatan getOne(int id) throws EntityNotExistException {
 		return kecamatanRepository.findOne(id);
 	}
 
 	@Override
-	public List<KecamatanEntity> getAll() {
+	public List<Kecamatan> getAll() {
 		return kecamatanRepository.findAll();
 	}
 
 	@Override
-	public List<KecamatanEntity> getByKota(Kota kota) {
-		return kecamatanRepository.findByKota(kota.toEntity());
+	public List<Kecamatan> getByKota(Kota kota) {
+		return kecamatanRepository.findByKota(kota);
 	}
 }

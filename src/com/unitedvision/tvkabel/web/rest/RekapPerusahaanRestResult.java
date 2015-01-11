@@ -1,20 +1,20 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.web.model.PerusahaanModel;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 
 public class RekapPerusahaanRestResult extends RestResult {
-	private PerusahaanModel.Rekap rekap;
+	private Perusahaan.Rekap rekap;
 
 	protected RekapPerusahaanRestResult(String message) {
 		super(message);
 	}
 	
-	private RekapPerusahaanRestResult(String message, PerusahaanModel.Rekap rekap) {
+	private RekapPerusahaanRestResult(String message, Perusahaan.Rekap rekap) {
 		super(message);
 		this.rekap = rekap;
 	}
 	
-	public PerusahaanModel.Rekap getRekap() {
+	public Perusahaan.Rekap getRekap() {
 		return rekap;
 	}
 
@@ -22,7 +22,7 @@ public class RekapPerusahaanRestResult extends RestResult {
 		return new RekapPerusahaanRestResult(message);
 	}
 	
-	public static RekapPerusahaanRestResult create(String message, PerusahaanModel.Rekap rekap) {
+	public static RekapPerusahaanRestResult create(String message, Perusahaan.Rekap rekap) {
 		return new RekapPerusahaanRestResult(message, rekap);
 	}
 }

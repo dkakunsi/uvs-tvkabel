@@ -1,21 +1,21 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.web.model.TagihanModel;
+import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
 
 public class TagihanRestResult extends RestResult {
-	private TagihanModel model;
+	private Tagihan model;
 
 	private TagihanRestResult(String message) {
 		super(message);
 	}
 	
-	private TagihanRestResult(String message, TagihanModel model) {
+	private TagihanRestResult(String message, Tagihan model) {
 		super(message);
 		this.type = "model";
 		this.model = model;
 	}
 	
-	public TagihanModel getModel() {
+	public Tagihan get() {
 		return model;
 	}
 
@@ -23,7 +23,7 @@ public class TagihanRestResult extends RestResult {
 		return new TagihanRestResult(message);
 	}
 	
-	public static TagihanRestResult create(String message, TagihanModel model) {
+	public static TagihanRestResult create(String message, Tagihan model) {
 		return new TagihanRestResult(message, model);
 	}
 }

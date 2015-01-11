@@ -1,29 +1,29 @@
 package com.unitedvision.tvkabel.web.rest;
 
-import com.unitedvision.tvkabel.web.model.PegawaiModel;
+import com.unitedvision.tvkabel.domain.Pegawai;
 
 public class PegawaiRestResult extends RestResult {
-	private PegawaiModel pegawaiModel;
+	private Pegawai pegawai;
 
 	private PegawaiRestResult(String message) {
 		super(message);
 	}
 	
-	private PegawaiRestResult(String message, PegawaiModel pegawaiModel) {
+	private PegawaiRestResult(String message, Pegawai pegawai) {
 		super(message);
 		this.type = "model";
-		this.pegawaiModel = pegawaiModel;
+		this.pegawai = pegawai;
 	}
 	
-	public PegawaiModel getModel() {
-		return pegawaiModel;
+	public Pegawai get() {
+		return pegawai;
 	}
 
 	public static PegawaiRestResult create(String message) {
 		return new PegawaiRestResult(message);
 	}
 	
-	public static PegawaiRestResult create(String message, PegawaiModel pegawaiModel) {
-		return new PegawaiRestResult(message, pegawaiModel);
+	public static PegawaiRestResult create(String message, Pegawai pegawai) {
+		return new PegawaiRestResult(message, pegawai);
 	}
 }

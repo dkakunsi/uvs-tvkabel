@@ -2,21 +2,21 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.web.model.KelurahanModel;
+import com.unitedvision.tvkabel.domain.Kelurahan;
 
 public class ListKelurahanRestResult extends ListRestResult {
-	private List<KelurahanModel> list;
+	private List<Kelurahan> list;
 
 	private ListKelurahanRestResult(String message) {
 		super(message);
 	}
 	
-	private ListKelurahanRestResult(String message, List<KelurahanModel> list, int page, long total, long count) {
+	private ListKelurahanRestResult(String message, List<Kelurahan> list, int page, long total, long count) {
 		super(message, page, total, count);
 		this.list = list;
 	}
 	
-	public List<KelurahanModel> getListModel() {
+	public List<Kelurahan> getList() {
 		return list;
 	}
 	
@@ -24,7 +24,7 @@ public class ListKelurahanRestResult extends ListRestResult {
 		return new ListKelurahanRestResult(message);
 	}
 	
-	public static ListKelurahanRestResult create(String message, List<KelurahanModel> list) {
+	public static ListKelurahanRestResult create(String message, List<Kelurahan> list) {
 		return new ListKelurahanRestResult(message, list, 0, 0, 0);
 	}
 }

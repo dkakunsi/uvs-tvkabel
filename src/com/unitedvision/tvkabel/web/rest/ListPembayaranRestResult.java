@@ -2,21 +2,21 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.web.model.PembayaranModel;
+import com.unitedvision.tvkabel.domain.Pembayaran;
 
 public class ListPembayaranRestResult extends ListRestResult {
-	private List<PembayaranModel> list;
+	private List<Pembayaran> list;
 
 	private ListPembayaranRestResult(String message) {
 		super(message);
 	}
 	
-	private ListPembayaranRestResult(String message, List<PembayaranModel> list, int page, long total, long count) {
+	private ListPembayaranRestResult(String message, List<Pembayaran> list, int page, long total, long count) {
 		super(message, page, total, count);
 		this.list = list;
 	}
 
-	public List<PembayaranModel> getListModel() {
+	public List<Pembayaran> getList() {
 		return list;
 	}
 	
@@ -24,7 +24,7 @@ public class ListPembayaranRestResult extends ListRestResult {
 		return new ListPembayaranRestResult(message);
 	}
 	
-	public static ListPembayaranRestResult create(String message, List<PembayaranModel> list, int page, long total, long count) {
+	public static ListPembayaranRestResult create(String message, List<Pembayaran> list, int page, long total, long count) {
 		return new ListPembayaranRestResult(message, list, page, total, count);
 	}
 }

@@ -9,18 +9,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pegawai.Status;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
-import com.unitedvision.tvkabel.core.domain.Removable;
 import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Removable;
+import com.unitedvision.tvkabel.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
 import com.unitedvision.tvkabel.exception.UncompatibleTypeException;
-import com.unitedvision.tvkabel.persistence.entity.PegawaiEntity;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
 
 @Service
@@ -33,10 +32,10 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Transactional(readOnly = false)
 	public Pegawai save(Pegawai domain) throws UncompatibleTypeException, DataDuplicationException {
-		domain = validator.validate(domain.toEntity());
+		domain = validator.validate(domain);
 		
 		try {
-			domain = pegawaiRepository.save(domain.toEntity());
+			domain = pegawaiRepository.save(domain);
 		} catch(PersistenceException e) {
 			throw new DataDuplicationException(e.getMessage());
 		}
@@ -48,7 +47,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Transactional(readOnly = false)
 	public void delete(Pegawai domain) {
 		domain = pegawaiRepository.findOne(domain.getId());
-		pegawaiRepository.delete(domain.toEntity());
+		pegawaiRepository.delete(domain);
 	}
 
 	@Override
@@ -56,67 +55,67 @@ public class PegawaiServiceImpl implements PegawaiService {
 		domain = pegawaiRepository.findOne(domain.getId());
 		((Removable)domain).remove();
 
-		pegawaiRepository.save(domain.toEntity());
+		pegawaiRepository.save(domain);
 	}
 
 	@Override
-	public PegawaiEntity getOne(int id) throws EntityNotExistException {
+	public Pegawai getOne(int id) throws EntityNotExistException {
 		return pegawaiRepository.findOne(id);
 	}
 
 	@Override
-	public List<PegawaiEntity> get(Perusahaan perusahaan) {
-		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), Status.AKTIF);
+	public List<Pegawai> get(Perusahaan perusahaan) {
+		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan, Status.AKTIF);
 	}
 
 	@Override
-	public List<PegawaiEntity> get(Perusahaan perusahaan, int page) {
+	public List<Pegawai> get(Perusahaan perusahaan, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan.toEntity(), Status.AKTIF, pageRequest);
+		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan, Status.AKTIF, pageRequest);
 	}
 
 	@Override
-	public List<PegawaiEntity> getByNama(Perusahaan perusahaan, String nama, int page) {
+	public List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pegawaiRepository.findByPerusahaanAndStatusAndNamaContaining(perusahaan.toEntity(), Status.AKTIF, nama, pageRequest);
+		return pegawaiRepository.findByPerusahaanAndStatusAndNamaContaining(perusahaan, Status.AKTIF, nama, pageRequest);
 	}
 
 	@Override
-	public List<PegawaiEntity> getByKode(Perusahaan perusahaan, String kode, int page) {
+	public List<Pegawai> getByKode(Perusahaan perusahaan, String kode, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
-		return pegawaiRepository.findByPerusahaanAndStatusAndKodeContaining(perusahaan.toEntity(), Status.AKTIF, kode, pageRequest);
+		return pegawaiRepository.findByPerusahaanAndStatusAndKodeContaining(perusahaan, Status.AKTIF, kode, pageRequest);
 	}
 
 	@Override
-	public PegawaiEntity getOneByNama(Perusahaan perusahaan, String nama) throws EntityNotExistException {
-		return pegawaiRepository.findByPerusahaanAndStatusAndNama(perusahaan.toEntity(), Status.AKTIF, nama);
+	public Pegawai getOneByNama(Perusahaan perusahaan, String nama) throws EntityNotExistException {
+		return pegawaiRepository.findByPerusahaanAndStatusAndNama(perusahaan, Status.AKTIF, nama);
 	}
 
 	@Override
-	public PegawaiEntity getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException {
-		return pegawaiRepository.findByPerusahaanAndStatusAndKode(perusahaan.toEntity(), Status.AKTIF, kode);
+	public Pegawai getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException {
+		return pegawaiRepository.findByPerusahaanAndStatusAndKode(perusahaan, Status.AKTIF, kode);
 	}
 
 	@Override
-	public PegawaiEntity getOneByUsername(String username) throws EntityNotExistException {
+	public Pegawai getOneByUsername(String username) throws EntityNotExistException {
 		return pegawaiRepository.findByKredensi_UsernameAndStatus(username, Status.AKTIF);
 	}
 
 	@Override
 	public long count(Perusahaan perusahaan) {
-		return pegawaiRepository.countByPerusahaanAndStatus(perusahaan.toEntity(), Status.AKTIF);
+		return pegawaiRepository.countByPerusahaanAndStatus(perusahaan, Status.AKTIF);
 	}
 
 	@Override
 	public long countByNama(Perusahaan perusahaan, String nama) {
-		return pegawaiRepository.countByPerusahaanAndStatusAndNamaContaining(perusahaan.toEntity(), Status.AKTIF, nama);
+		return pegawaiRepository.countByPerusahaanAndStatusAndNamaContaining(perusahaan, Status.AKTIF, nama);
 	}
 
 	@Override
 	public long countByKode(Perusahaan perusahaan, String kode) {
-		return pegawaiRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan.toEntity(), Status.AKTIF, kode);
+		return pegawaiRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan, Status.AKTIF, kode);
 	}
 }

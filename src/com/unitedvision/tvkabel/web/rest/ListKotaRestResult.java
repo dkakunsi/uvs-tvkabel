@@ -2,21 +2,21 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.web.model.KotaModel;
+import com.unitedvision.tvkabel.domain.Kota;
 
 public class ListKotaRestResult extends ListRestResult {
-	private List<KotaModel> list;
+	private List<Kota> list;
 
 	protected ListKotaRestResult(String message) {
 		super(message);
 	}
 	
-	private ListKotaRestResult(String message, List<KotaModel> list) {
+	private ListKotaRestResult(String message, List<Kota> list) {
 		super(message, 0, 0, 0);
 		this.list = list;
 	}
 
-	public List<KotaModel> getListModel() {
+	public List<Kota> getList() {
 		return list;
 	}
 	
@@ -24,7 +24,7 @@ public class ListKotaRestResult extends ListRestResult {
 		return new ListKotaRestResult(message);
 	}
 	
-	public static ListKotaRestResult create(String message, List<KotaModel> list) {
+	public static ListKotaRestResult create(String message, List<Kota> list) {
 		return new ListKotaRestResult(message, list);
 	}
 }

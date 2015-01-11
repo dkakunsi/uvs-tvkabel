@@ -2,17 +2,17 @@ package com.unitedvision.tvkabel.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.unitedvision.tvkabel.core.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.core.domain.Pegawai;
-import com.unitedvision.tvkabel.core.domain.Pelanggan;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
 import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
-import com.unitedvision.tvkabel.web.security.SpringAuthenticationBasedAuthorizationProvider;
+import com.unitedvision.tvkabel.security.SpringAuthenticationBasedAuthorizationProvider;
 
 public abstract class AbstractController {
 	@Autowired

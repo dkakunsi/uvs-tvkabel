@@ -3,8 +3,8 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.core.domain.Operator;
-import com.unitedvision.tvkabel.core.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.Operator;
+import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
@@ -15,7 +15,7 @@ public interface PerusahaanService extends Service<Perusahaan> {
 	void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException;
 
 	//This will be use for admin's page
-	List<? extends Perusahaan> getAll();
+	List<Perusahaan> getAll();
 	
 	long countTagihanBulanBerjalan(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir);
 	long countTagihanBulanBerjalan(Perusahaan perusahaan);
