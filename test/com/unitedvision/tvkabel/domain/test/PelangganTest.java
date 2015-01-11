@@ -6,16 +6,16 @@ import java.time.Month;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.Alamat;
-import com.unitedvision.tvkabel.domain.Kecamatan;
-import com.unitedvision.tvkabel.domain.Kelurahan;
-import com.unitedvision.tvkabel.domain.Kontak;
-import com.unitedvision.tvkabel.domain.Kota;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pelanggan.Detail;
-import com.unitedvision.tvkabel.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.domain.Pembayaran;
-import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.entity.Alamat;
+import com.unitedvision.tvkabel.domain.entity.Kecamatan;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Kontak;
+import com.unitedvision.tvkabel.domain.entity.Kota;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;

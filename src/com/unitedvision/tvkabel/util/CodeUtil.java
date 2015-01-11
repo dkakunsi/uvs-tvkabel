@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.util;
 
-import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
 
 public class CodeUtil {
 	private static final String kode = "Dk4kuN51";

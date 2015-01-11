@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.util.PageSizeUtil;

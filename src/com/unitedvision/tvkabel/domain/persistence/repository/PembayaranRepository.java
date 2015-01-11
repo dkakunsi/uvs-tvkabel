@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pembayaran;
-import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
 
 public interface PembayaranRepository extends JpaRepository<Pembayaran, Integer> {
 	String countPemasukanBulanBerjalan = "SELECT COALESCE(SUM(p.jumlahBayar), 0) FROM Pembayaran p WHERE p.pegawai.perusahaan = ?1 AND p.tanggalBayar BETWEEN ?2 AND ?3";

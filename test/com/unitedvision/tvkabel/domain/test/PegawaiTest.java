@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.Alamat;
-import com.unitedvision.tvkabel.domain.Kelurahan;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pegawai.Status;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Alamat;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;

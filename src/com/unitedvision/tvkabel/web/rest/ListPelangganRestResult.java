@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
 
 public class ListPelangganRestResult extends ListRestResult {
 	private List<Pelanggan> list;

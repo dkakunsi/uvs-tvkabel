@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
 
 public class ListPegawaiRestResult extends ListRestResult {
 	private List<Pegawai> list;

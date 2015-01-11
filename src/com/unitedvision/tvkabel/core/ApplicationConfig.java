@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.configuration.core;
+package com.unitedvision.tvkabel.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

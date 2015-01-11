@@ -3,8 +3,8 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Operator;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Operator;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 

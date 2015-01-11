@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
 public interface PerusahaanRepository extends JpaRepository<Perusahaan, Integer> {

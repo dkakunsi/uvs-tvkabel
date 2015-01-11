@@ -5,10 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.unitedvision.tvkabel.domain.Operator;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pegawai.Role;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Operator;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai.Role;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 

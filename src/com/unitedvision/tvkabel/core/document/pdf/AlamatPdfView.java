@@ -13,7 +13,7 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.domain.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
 
 public class AlamatPdfView extends CustomAbstractPdfView {
 	private String kelurahan;

@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.domain;
+package com.unitedvision.tvkabel.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

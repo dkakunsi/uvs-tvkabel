@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
-import com.unitedvision.tvkabel.domain.Kelurahan;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.domain.Pembayaran;
-import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @Service

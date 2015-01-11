@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.service.KecamatanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
-import com.unitedvision.tvkabel.domain.Kecamatan;
-import com.unitedvision.tvkabel.domain.Kota;
+import com.unitedvision.tvkabel.domain.entity.Kecamatan;
+import com.unitedvision.tvkabel.domain.entity.Kota;
 import com.unitedvision.tvkabel.domain.persistence.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 

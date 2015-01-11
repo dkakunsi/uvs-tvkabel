@@ -16,9 +16,9 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pembayaran;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganPdfView extends CustomAbstractPdfView {

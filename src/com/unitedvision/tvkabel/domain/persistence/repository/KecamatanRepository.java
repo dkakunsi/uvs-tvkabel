@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.unitedvision.tvkabel.domain.Kecamatan;
-import com.unitedvision.tvkabel.domain.Kota;
+import com.unitedvision.tvkabel.domain.entity.Kecamatan;
+import com.unitedvision.tvkabel.domain.entity.Kota;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
 public interface KecamatanRepository extends JpaRepository<Kecamatan, Integer> {

@@ -5,8 +5,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.unitedvision.tvkabel.domain.Operator;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Operator;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 
 public class CustomUser extends User {
 	private static final long serialVersionUID = 1L;

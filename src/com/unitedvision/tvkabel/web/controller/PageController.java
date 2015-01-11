@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unitedvision.tvkabel.core.service.KelurahanService;
-import com.unitedvision.tvkabel.domain.Kelurahan;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.util.CodeUtil;

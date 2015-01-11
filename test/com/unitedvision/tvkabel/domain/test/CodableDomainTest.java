@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.unitedvision.tvkabel.domain.CodableDomain;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.CodableDomain;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 
 public class CodableDomainTest {

@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.core.service;
 
-import com.unitedvision.tvkabel.domain.Domain;
+import com.unitedvision.tvkabel.domain.entity.Domain;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 

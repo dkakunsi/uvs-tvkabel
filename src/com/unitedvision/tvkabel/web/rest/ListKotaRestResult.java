@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Kota;
+import com.unitedvision.tvkabel.domain.entity.Kota;
 
 public class ListKotaRestResult extends ListRestResult {
 	private List<Kota> list;

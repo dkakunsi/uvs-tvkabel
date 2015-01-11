@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.configuration.persistence;
+package com.unitedvision.tvkabel.domain.persistence;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import com.unitedvision.tvkabel.configuration.core.ApplicationConfig;
+import com.unitedvision.tvkabel.core.ApplicationConfig;
 
 @Configuration
 @EnableJpaRepositories

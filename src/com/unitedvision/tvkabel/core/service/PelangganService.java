@@ -3,11 +3,11 @@ package com.unitedvision.tvkabel.core.service;
 import java.util.Date;
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Kelurahan;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pelanggan.Status;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 
 public interface PelangganService extends Service<Pelanggan> {

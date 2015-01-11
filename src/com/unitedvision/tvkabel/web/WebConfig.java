@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.configuration.web;
+package com.unitedvision.tvkabel.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,12 +9,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.XmlViewResolver;
 
-import com.unitedvision.tvkabel.configuration.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
 
 @Configuration
 @EnableWebMvc
-@Import(SpringDataJpaConfig.class)
 @ComponentScan("com.unitedvision.tvkabel.web")
+@Import(SpringDataJpaConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

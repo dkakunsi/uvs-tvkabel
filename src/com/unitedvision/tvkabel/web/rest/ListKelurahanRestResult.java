@@ -2,7 +2,7 @@ package com.unitedvision.tvkabel.web.rest;
 
 import java.util.List;
 
-import com.unitedvision.tvkabel.domain.Kelurahan;
+import com.unitedvision.tvkabel.domain.entity.Kelurahan;
 
 public class ListKelurahanRestResult extends ListRestResult {
 	private List<Kelurahan> list;

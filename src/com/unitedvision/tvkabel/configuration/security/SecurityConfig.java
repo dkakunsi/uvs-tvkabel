@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import com.unitedvision.tvkabel.domain.Pegawai.Role;
+import com.unitedvision.tvkabel.domain.entity.Pegawai.Role;
 import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
 
 @Configuration

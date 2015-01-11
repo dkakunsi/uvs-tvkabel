@@ -10,12 +10,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.configuration.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pegawai.Status;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai.Status;
+import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
-import com.unitedvision.tvkabel.domain.Perusahaan;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
 @RunWith (SpringJUnit4ClassRunner.class)

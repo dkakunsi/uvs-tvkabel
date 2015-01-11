@@ -15,16 +15,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.unitedvision.tvkabel.configuration.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pelanggan;
-import com.unitedvision.tvkabel.domain.Pembayaran;
-import com.unitedvision.tvkabel.domain.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Pelanggan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.domain.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.domain.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.domain.persistence.repository.PelangganRepository;
 import com.unitedvision.tvkabel.domain.persistence.repository.PembayaranRepository;
 import com.unitedvision.tvkabel.domain.persistence.repository.PerusahaanRepository;
-import com.unitedvision.tvkabel.domain.Perusahaan;
 
 import org.springframework.transaction.annotation.Transactional;
 

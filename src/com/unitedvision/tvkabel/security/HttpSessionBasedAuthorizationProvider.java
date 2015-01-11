@@ -4,10 +4,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Component;
 
-import com.unitedvision.tvkabel.domain.Operator;
-import com.unitedvision.tvkabel.domain.Pegawai;
-import com.unitedvision.tvkabel.domain.Pegawai.Role;
-import com.unitedvision.tvkabel.domain.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Operator;
+import com.unitedvision.tvkabel.domain.entity.Pegawai;
+import com.unitedvision.tvkabel.domain.entity.Perusahaan;
+import com.unitedvision.tvkabel.domain.entity.Pegawai.Role;
 
 /**
  * Class that provides authorization mechanism based on {@code HttpSession} class.
