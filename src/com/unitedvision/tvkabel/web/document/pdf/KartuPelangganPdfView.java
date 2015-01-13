@@ -38,7 +38,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		if (modelPelanggan instanceof PelangganEntity) {
 			createCard(doc, (Pelanggan)modelPelanggan);
 		} else if (modelPelanggan instanceof List) {
-			createCard(doc, (List<Pelanggan>) model);
+			createCard(doc, (List<Pelanggan>) modelPelanggan);
 		}
 	}
 	
