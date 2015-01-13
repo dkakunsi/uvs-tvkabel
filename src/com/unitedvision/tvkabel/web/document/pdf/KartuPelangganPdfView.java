@@ -11,9 +11,10 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.domain.Pelanggan;
@@ -27,7 +28,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private boolean contained;
 	private float[] columnWidths = {4f, 4f, 4f, 4f};
 	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
-	protected Font fontTableContent = new Font(Font.TIMES_ROMAN, 14);
+	public static Font fontTableContent = new Font(Font.TIMES_ROMAN, 11);
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -85,7 +86,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	}
 	
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
-		paragraph.add(new Paragraph(String.format("TVK. %s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
+		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
 		paragraph.setAlignment(Element.ALIGN_CENTER);
@@ -173,9 +174,21 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	}
 	
 	@Override
+	protected void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int border) {
+		PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+		cell.setHorizontalAlignment(align);
+		cell.setColspan(colspan);
+		cell.setBorder(border);
+
+		if(text.trim().equalsIgnoreCase("")){
+			cell.setMinimumHeight(22f);
+		}
+
+		table.addCell(cell);
+	};
+	
+	@Override
 	protected Document newDocument() {
-		Rectangle pageSize = new Rectangle(PageSize.LETTER.getBorderWidth() / 2, PageSize.LETTER.getHeight() / 2);
-		
-		return new Document(pageSize, 0.1f, 0.1f, 0.1f, 0.1f);
+		return new Document(new Rectangle(297, 466), 0.1f, 0.1f, 0.1f, 0.1f);
 	}
 }
