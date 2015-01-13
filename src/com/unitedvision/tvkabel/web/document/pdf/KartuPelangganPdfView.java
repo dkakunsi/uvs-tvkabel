@@ -49,8 +49,15 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	}
 	
 	private void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
-		decorateDocument(doc, String.format("Kartu Pelanggan %s", pelanggan.getPerusahaan().getNama()));
+		if (perusahaan == null)
+			setPerusahaan(pelanggan.getPerusahaan());
+
+		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
 		createPage(doc, pelanggan);
+	}
+	
+	public void setPerusahaan(Perusahaan perusahaan) {
+		this.perusahaan = perusahaan;
 	}
 	
 	public void setContained(boolean bool) {
