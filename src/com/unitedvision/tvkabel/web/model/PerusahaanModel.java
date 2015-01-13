@@ -49,7 +49,7 @@ public final class PerusahaanModel extends CodableModel implements Perusahaan {
 		this.id = perusahaanEntity.getId();
 		this.kode = perusahaanEntity.getKode();
 		this.nama = perusahaanEntity.getNama();
-		this.idKota = perusahaanEntity.getKelurahan.getIdKota();
+		this.idKota = perusahaanEntity.getKelurahan().getIdKota();
 		this.namaKota = perusahaanEntity.getKelurahan().getNamaKota();
 		this.idKecamatan = perusahaanEntity.getKelurahan().getIdKecamatan();
 		this.namaKecamatan = perusahaanEntity.getKelurahan().getNamaKecamatan();
