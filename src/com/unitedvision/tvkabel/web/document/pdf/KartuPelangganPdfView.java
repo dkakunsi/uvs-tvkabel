@@ -24,7 +24,6 @@ import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private Perusahaan perusahaan;
-	private List<Pelanggan> listPelanggan;
 	private boolean contained;
 	private float[] columnWidths = {4f, 4f, 4f, 4f};
 	
@@ -33,14 +32,26 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setPelanggan((List<Pelanggan>)model.get("pelanggan"));
+		Object modelPelanggan = model.get("pelanggan");
 		setContained((int)model.get("pembayaran"));
 
 		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
 
-		for (Pelanggan pelanggan : listPelanggan) {
-			createPage(doc, pelanggan);
+		if (modelPelanggan instanceof PelangganEntity) {
+			createCard(doc, (Pelanggan)modelPelanggan);
+		} else if (modelPelanggan instanceof List) {
+			createCard(doc, (List<Pelanggan>) model);
 		}
+	}
+	
+	private void createCard(Document doc, List<Pelanggan> listPelanggan) throws DocumentException {
+		for (Pelanggan pelanggan : listPelanggan) {
+			createCard(doc, pelanggan);
+		}
+	}
+	
+	private void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
+		createPage(doc, pelanggan);
 	}
 	
 	public void setContained(boolean bool) {
@@ -53,11 +64,6 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		} else {
 			setContained(false);
 		}
-	}
-	
-	public void setPelanggan(List<Pelanggan> listPelanggan) {
-		this.listPelanggan = listPelanggan;
-		this.perusahaan = this.listPelanggan.get(0).getPerusahaan();
 	}
 	
 	protected void createPage(Document doc, Pelanggan pelanggan) throws DocumentException {
