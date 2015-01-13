@@ -45,7 +45,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	@Override
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
 		paragraph.add(new Paragraph("Laporan Pelanggan", fontTitle));
-		paragraph.add(new Paragraph(String.format("Kelurahan : %s / Lingkungak : %d", kelurahan, lingkungan), fontSubTitle));
+		paragraph.add(new Paragraph(String.format("Kelurahan : %s / Lingkungan : %d", kelurahan, lingkungan), fontSubTitle));
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		addEmptyLine(paragraph, 1);
 	}
