@@ -308,6 +308,12 @@ public class DateUtil {
 	 * @return month in {@code Month} representation
 	 */
 	public static Month getMonth(int month) {
+		if (month < 1)
+			month += 12;
+		
+		if (month > 12)
+			month -= 12;
+		
 		return Month.of(month);
 	}
 
@@ -417,7 +423,7 @@ public class DateUtil {
 
 		List<Month> months = new ArrayList<>();
 		for (int i = (start + 1); i <= bulan; i++)
-			months.add(Month.of(i));
+			months.add(getMonth(i));
 		
 		return months;
 	}
