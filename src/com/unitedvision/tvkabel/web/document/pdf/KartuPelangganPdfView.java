@@ -26,6 +26,8 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private Perusahaan perusahaan;
 	private boolean contained;
 	private float[] columnWidths = {4f, 4f, 4f, 4f};
+	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
+	protected Font fontTableContent = new Font(Font.TIMES_ROMAN, 14);
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -121,58 +123,59 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 				align, 1, fontContent, Rectangle.NO_BORDER);
 
 		paragraph.add(table);
-		addEmptyLine(paragraph, 1);
 	}
 
 	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(90f);
 		
-		insertCell(table, "Bulan", align, 1, fontHeader, Rectangle.BOX);
-		insertCell(table, "Tgl Bayar", align, 1, fontHeader, Rectangle.BOX);
-		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);
-		insertCell(table, "Penagih", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Bulan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
+		insertCell(table, "Tgl Bayar", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
+		insertCell(table, "Pelanggan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
+		insertCell(table, "Penagih", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
 
 		if (contained) {
-			setContainedTable(table, align, fontHeader, fontContent, pelanggan);
+			setContainedTable(table, pelanggan);
 		} else {
-			insertEmptyCell(table, align, fontContent, 1);
+			insertEmptyCell(table, 1);
 		}
 
 		paragraph.add(table);
 	}
 	
-	private void setContainedTable(PdfPTable table, int align, Font fontHeader, Font fontContent, Pelanggan pelanggan) {
+	private void setContainedTable(PdfPTable table, Pelanggan pelanggan) {
 		List<PembayaranEntity> list = ((PelangganEntity)pelanggan).getListPembayaran();
 		int i = 1;
 		for (PembayaranEntity p : list) {
 			String month = Month.of(i).name();
 			String tanggalBayar = DateUtil.toUserString(p.getTanggalBayar(), "-");
 			
-			insertCell(table, month.substring(0, 3), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, tanggalBayar, align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
+			insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 			
 			i++;
 		}
 		
-		insertEmptyCell(table, align, fontContent, i);
+		insertEmptyCell(table, i);
 	}
 
-	private void insertEmptyCell(PdfPTable table, int align, Font fontContent, int i) {
+	private void insertEmptyCell(PdfPTable table, int i) {
 		for (int x = i; x <= 12; x++) {
 			String month = Month.of(x).name();
 			
-			insertCell(table, month.substring(0, 3), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
+			insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 		}
 	}
 	
 	@Override
 	protected Document newDocument() {
-		return new Document(PageSize.A6, 0.5f, 0.5f, 0.5f, 0.5f);
+		Rectangle pageSize = new Rectangle(PageSize.LETTER.getBorderWidth() / 2, PageSize.LETTER.getHeight() / 2);
+		
+		return new Document(pageSize, 0.1f, 0.1f, 0.1f, 0.1f);
 	}
 }

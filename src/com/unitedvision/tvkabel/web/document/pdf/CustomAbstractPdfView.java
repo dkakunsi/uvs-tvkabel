@@ -15,7 +15,7 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	protected Font fontTitle = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
 	protected Font fontSubTitle = new Font(Font.TIMES_ROMAN, 14);
 	protected Font fontHeader = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
-	protected Font fontContent = new Font(Font.TIMES_ROMAN, 12);
+	protected Font fontContent = new Font(Font.TIMES_ROMAN, 11);
 	protected int align = Element.ALIGN_LEFT;
 
 	protected void decorateDocument(Document doc, String title) {
