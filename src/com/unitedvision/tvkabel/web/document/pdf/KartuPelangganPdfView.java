@@ -35,8 +35,6 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		Object modelPelanggan = model.get("pelanggan");
 		setContained((int)model.get("pembayaran"));
 
-		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
-
 		if (modelPelanggan instanceof PelangganEntity) {
 			createCard(doc, (Pelanggan)modelPelanggan);
 		} else if (modelPelanggan instanceof List) {
@@ -51,6 +49,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	}
 	
 	private void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
+		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
 		createPage(doc, pelanggan);
 	}
 	
