@@ -320,6 +320,9 @@ function loadListKelurahanByKecamatan(kecamatan, success, error) {
 function rekapAlamat(data) {
     submitPost(target + '/print/rekap/alamat', data);
 }
+function rekapAlamatBatch(data) {
+    submitPost(target + '/print/rekap/alamat/batch', data);
+}
 function rekapTunggakan(data) {
     submitPost(target + '/print/rekap/tunggakan', data);
 }
