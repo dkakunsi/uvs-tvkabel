@@ -16,6 +16,7 @@ import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
 public interface PelangganRepository extends JpaRepository<PelangganEntity, Integer> {
 	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
+	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.kelurahan.id ASC and p.alamat.lingkungan ASC";
 	String countByPembayaran = "SELECT count(*) FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";
 	String summerizeEstimasiPemasukanBulanan = "SELECT COALESCE(SUM(p.detail.iuran), 0) FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2";
 	String summerizeTotalEstimasiTunggakan = "SELECT COALESCE(SUM(p.detail.tunggakan * p.detail.iuran), 0) FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2";
@@ -36,8 +37,6 @@ public interface PelangganRepository extends JpaRepository<PelangganEntity, Inte
 	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
 	List<PelangganEntity> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(PerusahaanEntity perusahaanEntity, Status status, int tunggakan, Pageable page);
 
-	List<PelangganEntity> findByPerusahaanAndStatusOrderByAlamatAsc(PerusahaanEntity perusahaanEntity, Status status);
-
 	long countByPerusahaanAndStatusAndNamaContaining(PerusahaanEntity perusahaanEntity, Status status, String nama);
 	long countByPerusahaanAndStatusAndKodeContaining(PerusahaanEntity perusahaanEntity, Status status, String kode);
 	long countByPerusahaanAndStatus(PerusahaanEntity perusahaanEntity, Status status);
@@ -48,7 +47,10 @@ public interface PelangganRepository extends JpaRepository<PelangganEntity, Inte
 	long countByPerusahaanAndStatusAndDetail_Tunggakan(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanLessThan(PerusahaanEntity perusahaanEntity, Status status, int tunggakan);
-	
+
+	@Query(findByAlamatOrdered)
+	List<PelangganEntity> findByPerusahaanAndStatusOrderByAlamat(PerusahaanEntity perusahaanEntity, Status status);
+
 	@Query (value = findByTanggalMulai, nativeQuery = true)
 	List<PelangganEntity> findByTanggalMulai(@Param("status") Status status, @Param("tanggal") int tanggal);
 	@Query (value = findByPembayaran, nativeQuery = true)

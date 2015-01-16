@@ -200,8 +200,25 @@ public class PelangganRepositoryTest {
 	public void testFindByPerusahaanAndStatusOrderByAlamat() {
 		PerusahaanEntity perusahaanEntity = perusahaanRepository.findOne(17);
 		
-		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamatAsc(perusahaanEntity, Status.AKTIF);
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(perusahaanEntity, Status.AKTIF);
 		
-		assertNotEquals(0, list.size());
+		int i = 0;
+		String kelurahan = "";
+		int lingkungan = 0;
+		boolean isNew = true;
+		for (PelangganEntity en : list) {
+			if (!kelurahan.equals(en.getNamaKelurahan()) || lingkungan != en.getLingkungan()) {
+				kelurahan = en.getNamaKelurahan();
+				lingkungan = en.getLingkungan();
+				
+				if (isNew == false)
+					break;
+			}
+
+			i++;
+			isNew = false;
+		}
+		
+		assertEquals(117, i);
 	}
 }
