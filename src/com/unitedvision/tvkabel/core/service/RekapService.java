@@ -23,6 +23,7 @@ public interface RekapService {
 	
 	List<? extends Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan);
 	List<? extends Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan, Integer lastNumber);
+	List<? extends Pelanggan> rekapAlamat(Perusahaan perusahaan);
 
 	List<? extends Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan);
 	List<? extends Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber);

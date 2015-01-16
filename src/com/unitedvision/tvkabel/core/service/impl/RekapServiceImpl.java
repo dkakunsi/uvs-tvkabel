@@ -209,6 +209,12 @@ public class RekapServiceImpl implements RekapService {
 		return (List<PelangganEntity>)pelangganService.get(perusahaan, status, kelurahan, lingkungan, lastNumber);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PelangganEntity> rekapAlamat(Perusahaan perusahaan) {
+		return (List<PelangganEntity>)pelangganService.get(perusahaan, Pelanggan.Status.AKTIF);
+	}
+
 	@Override
 	public long countRekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
 		Tagihan tagihan = new TagihanValue(tahun, bulan);

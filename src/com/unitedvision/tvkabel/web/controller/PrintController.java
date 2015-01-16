@@ -152,6 +152,23 @@ public class PrintController extends AbstractController {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/rekap/alamat/batch", method = RequestMethod.POST)
+	public ModelAndView printAlamat(@RequestParam Integer idPerusahaan, Map<String, Object> model) {
+		try {
+			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
+			List<PelangganEntity> list = (List<PelangganEntity>)rekapService.rekapAlamat(perusahaan);
+			
+			model.put("listPelanggan", list);
+
+			return new ModelAndView("pdfAlamat", model);
+		} catch (ApplicationException e) {
+			model.put("message", e.getMessage());
+
+			return new ModelAndView("pdfException", model);
+		}
+	}
+
 	@RequestMapping(value = "/pelanggan/kartu", method = RequestMethod.POST)
 	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam Integer pembayaran, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
