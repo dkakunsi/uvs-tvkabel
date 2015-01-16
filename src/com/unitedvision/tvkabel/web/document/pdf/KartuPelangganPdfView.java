@@ -26,15 +26,19 @@ import com.unitedvision.tvkabel.util.DateUtil;
 public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private Perusahaan perusahaan;
 	private boolean contained;
-	private float[] columnWidths = {4f, 4f, 4f, 4f};
+	private float[] columnWidths = {3.5f, 5f, 4.5f, 3f};
 	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
 	public static Font fontTableContent = new Font(Font.TIMES_ROMAN, 11);
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		create(model, doc);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		Object modelPelanggan = model.get("pelanggan");
 		setContained((int)model.get("pembayaran"));
 
@@ -43,6 +47,8 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		} else if (modelPelanggan instanceof List) {
 			createCard(doc, (List<Pelanggan>) modelPelanggan);
 		}
+		
+		return doc;
 	}
 	
 	private void createCard(Document doc, List<Pelanggan> listPelanggan) throws DocumentException {
@@ -86,10 +92,10 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	}
 	
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
+		paragraph.setAlignment(Element.ALIGN_CENTER);
 		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
-		paragraph.setAlignment(Element.ALIGN_CENTER);
+		paragraph.add(new Paragraph("PT. Aspetika Manasa Sulut - Manado", new Font(Font.TIMES_ROMAN, 8)));
 		paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
-		paragraph.setAlignment(Element.ALIGN_CENTER);
 	}
 	
 	private void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
@@ -98,27 +104,40 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getKode(), align, 3, fontContent, Rectangle.NO_BORDER);
+
 		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getNama(), align, 3, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, 
-				String.format("%s, %s, %s", pelanggan.getTelepon(), pelanggan.getHp(), pelanggan.getEmail()), 
-				align, 3, fontContent, Rectangle.NO_BORDER);
+		String kontak = pelanggan.getTelepon();
+		if (!kontak.equals("")) {
+			kontak = String.format("%s, %s", kontak, pelanggan.getHp());
+		} else {
+			kontak = pelanggan.getHp();
+		}
+		insertCell(table, kontak, align, 3, fontContent, Rectangle.NO_BORDER);
+
 		insertCell(table, "Jmlh TV", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Integer.toString(pelanggan.getJumlahTv()), align, 1, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Iuran", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Kel.", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getNamaKelurahan(), align, 1, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Lingk.", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Integer.toString(pelanggan.getLingkungan()), align, 1, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Detail", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getDetailAlamat(), align, 3, fontContent, Rectangle.NO_BORDER);
+		
 		insertCell(table, "Tgl Mulai", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, 
 				DateUtil.toUserString(pelanggan.getTanggalMulai(), "-"), 
 				align, 1, fontContent, Rectangle.NO_BORDER);
-		insertCell(table, "Tahun", align, 1, fontHeader, Rectangle.NO_BORDER);
+		
+		insertCell(table, "Tahun Tagih", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, 
 				Integer.toString(DateUtil.getYear(DateUtil.getNow())), 
 				align, 1, fontContent, Rectangle.NO_BORDER);
