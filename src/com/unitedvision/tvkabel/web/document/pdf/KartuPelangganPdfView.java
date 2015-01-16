@@ -100,7 +100,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	
 	private void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(100f);
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getKode(), align, 3, fontContent, Rectangle.NO_BORDER);
@@ -147,7 +147,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 
 	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(100f);
 		
 		insertCell(table, "Bulan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
 		insertCell(table, "Tgl Bayar", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
