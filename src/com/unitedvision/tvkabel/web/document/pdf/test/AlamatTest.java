@@ -48,8 +48,11 @@ public class AlamatTest extends AlamatPdfView {
             PerusahaanEntity perusahaan2 = new PerusahaanEntity(1, "COM1", "PT. GALAU", alamat2, kontak2, 1000, Perusahaan.Status.AKTIF);
             PelangganEntity pelanggan2 = new PelangganEntity(1, perusahaan2, "PA01001", "Joseph Katiandagho", "Programmer", alamat2, kontak2, detail2, Pelanggan.Status.AKTIF);
 
+            PelangganEntity pelanggan3 = new PelangganEntity(1, perusahaan, "PB01002", "Christoper Kakunsi", "Programmer", alamat, kontak, detail, Pelanggan.Status.AKTIF);
+
             List<PelangganEntity> list = new ArrayList<>();
             list.add(pelanggan);
+            list.add(pelanggan3);
             list.add(pelanggan2);
             
             Map<String, Object> model = new HashMap<>();

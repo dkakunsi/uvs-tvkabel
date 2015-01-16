@@ -39,8 +39,12 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	}
 
 	private boolean changeAlamat(Pelanggan pelanggan) {
-		if (!kelurahan.equals(pelanggan.getNamaKelurahan()) || lingkungan != pelanggan.getLingkungan())
+		if (!kelurahan.equals(pelanggan.getNamaKelurahan()) || lingkungan != pelanggan.getLingkungan()) {
+			setKelurahan(pelanggan.getNamaKelurahan());
+			setLingkungan(pelanggan.getLingkungan());
+
 			return true;
+		}
 		return false;
 	}
 	
@@ -80,6 +84,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	private void createDoc(List<List<PelangganEntity>> list, Document doc) throws DocumentException {
 		for (List<PelangganEntity> listPelanggan : list) {
+			System.out.println(listPelanggan.size());
 			create(listPelanggan, doc);
 		}
 	}
@@ -90,7 +95,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		Pelanggan pelanggan = list.get(0);
 		setKelurahan(pelanggan.getNamaKelurahan());
 		setLingkungan(pelanggan.getLingkungan());
-
+		
 		Paragraph paragraph = new Paragraph();
 		createTitle(paragraph);
 		createContent(paragraph, list);
