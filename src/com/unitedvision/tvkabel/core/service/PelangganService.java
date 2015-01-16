@@ -32,6 +32,8 @@ public interface PelangganService extends Service<Pelanggan> {
 	List<? extends Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int page);
 	List<? extends Pelanggan> get(Status status, int tanggal);
 
+	List<? extends Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
+	
 	List<? extends Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
 	List<? extends Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int page);
 	List<? extends Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);

@@ -195,4 +195,13 @@ public class PelangganRepositoryTest {
 
 		//assertEquals(12, list.size());
 	}
+	
+	@Test
+	public void testFindByPerusahaanAndStatusOrderByAlamat() {
+		PerusahaanEntity perusahaanEntity = perusahaanRepository.findOne(17);
+		
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamatAsc(perusahaanEntity, Status.AKTIF);
+		
+		assertNotEquals(0, list.size());
+	}
 }

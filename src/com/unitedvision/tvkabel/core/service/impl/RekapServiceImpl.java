@@ -212,7 +212,7 @@ public class RekapServiceImpl implements RekapService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PelangganEntity> rekapAlamat(Perusahaan perusahaan) {
-		return (List<PelangganEntity>)pelangganService.get(perusahaan, Pelanggan.Status.AKTIF);
+		return (List<PelangganEntity>)pelangganService.getOrdered(perusahaan, Pelanggan.Status.AKTIF);
 	}
 
 	@Override

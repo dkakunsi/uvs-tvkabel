@@ -372,4 +372,9 @@ public class PelangganServiceImpl implements PelangganService {
 		
 		return message;
 	}
+
+	@Override
+	public List<? extends Pelanggan> getOrdered(Perusahaan perusahaan, Status status) {
+		return pelangganRepository.findByPerusahaanAndStatusOrderByAlamatAsc(perusahaan.toEntity(), Status.AKTIF);
+	}
 }
