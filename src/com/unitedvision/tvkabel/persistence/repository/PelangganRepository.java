@@ -14,7 +14,7 @@ import com.unitedvision.tvkabel.persistence.entity.PelangganEntity;
 import com.unitedvision.tvkabel.persistence.entity.PerusahaanEntity;
 
 public interface PelangganRepository extends JpaRepository<PelangganEntity, Integer> {
-	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";
+	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai) ORDER BY kode";
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
 	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.kelurahan, p.alamat.lingkungan";
 	String findByAlamatOrderedNative = "SELECT * FROM pelanggan p WHERE p.id_perusahaan = :idPerusahaan AND p.status = :status ORDER BY p.id_kelurahan, p.lingkungan, p.kode";

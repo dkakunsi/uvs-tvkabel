@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
@@ -29,6 +30,10 @@ public class HariPdfView extends CustomAbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		create(model, doc);
+	}
+	
+	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		setNamaPegawai((String)model.get("pegawai"));
 		setTanggal(DateUtil.getDate((String)model.get("tanggal")));
 
@@ -38,6 +43,8 @@ public class HariPdfView extends CustomAbstractPdfView {
 		createTitle(paragraph);
 		createTable(model, paragraph);
 		doc.add(paragraph);
+		
+		return doc;
 	}
 	
 	public void setTanggal(String tanggal) {
@@ -73,25 +80,27 @@ public class HariPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Lingk.", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Iuran", align, 1, fontHeader, Rectangle.BOX);
 		
-		for (Month m : (List<Month>)model.get("listBulan")) {
-			String str = m.name().substring(0, 3);
+		for (Month month : (List<Month>)model.get("listBulan")) {
+			String str = month.name().substring(0, 3);
 			insertCell(table, str, align, 1, fontHeader, Rectangle.BOX);
 		}
 		table.setHeaderRows(1);
 
 		final List<PelangganModel> list = (List<PelangganModel>)model.get("rekap");
 		long total = 0;
-		for (PelangganModel p : list) {
-			insertCell(table, p.getKode(), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, p.getNama(), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, p.getNamaKelurahan(), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, Integer.toString(p.getLingkungan()), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, Long.toString(p.getIuran()), align, 1, fontContent, Rectangle.BOX);
-			for (PembayaranModel pbr : p.getListPembayaran()) {
+		for (PelangganModel pelanggan : list) {
+			Font customFont = getCustomFont(pelanggan.getTunggakan());
+			
+			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, pelanggan.getNamaKelurahan(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, Integer.toString(pelanggan.getLingkungan()), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, customFont, Rectangle.BOX);
+			for (PembayaranModel pbr : pelanggan.getListPembayaran()) {
 				if (pbr.getJumlahBayar() == 0) {
-					insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
+					insertCell(table, "", align, 1, customFont, Rectangle.BOX);
 				} else {
-					insertCell(table, "lunas", align, 1, fontContent, Rectangle.BOX);
+					insertCell(table, "lunas", align, 1, customFont, Rectangle.BOX);
 
 					if (DateUtil.equals(pbr.getTanggalBayar(), date))
 						total += pbr.getJumlahBayar();
