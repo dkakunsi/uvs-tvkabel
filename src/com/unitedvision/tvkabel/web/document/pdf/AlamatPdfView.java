@@ -22,7 +22,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	private String kelurahan = "";
 	private int lingkungan = 0;
 	private float[] columnWidths = {3f, 8f, 3f, 2f};
-	private boolean isNew = true;
+	private boolean isNew;
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
@@ -51,6 +51,8 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
+		isNew = true;
+		
 		List<List<PelangganEntity>> container = new ArrayList<>();
 		List<PelangganEntity> part = new ArrayList<>();
 		for (PelangganEntity pelanggan : (List<PelangganEntity>) model.get("listPelanggan")) {

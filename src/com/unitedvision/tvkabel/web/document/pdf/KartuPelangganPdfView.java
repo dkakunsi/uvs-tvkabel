@@ -147,7 +147,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 
 	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(100f);
+		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Bulan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
 		insertCell(table, "Tgl Bayar", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
