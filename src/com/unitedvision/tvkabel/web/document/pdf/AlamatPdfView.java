@@ -99,7 +99,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	private void createContent(Paragraph paragraph, List<PelangganEntity> list) {
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(100f);
+		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);

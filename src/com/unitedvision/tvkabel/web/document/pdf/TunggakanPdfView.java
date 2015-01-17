@@ -46,7 +46,7 @@ public class TunggakanPdfView extends CustomAbstractPdfView {
 	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
 		float[] columnWidths = {3f, 6f, 3f, 2f, 7f};
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);

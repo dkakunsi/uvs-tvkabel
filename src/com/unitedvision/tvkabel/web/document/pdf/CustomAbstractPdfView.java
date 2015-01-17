@@ -28,11 +28,12 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	public static final int fontHeaderType = Font.TIMES_ROMAN;
 	protected Font fontHeader = new Font(fontHeaderType, fontHeaderSize, fontHeaderStyle);
 
-	public static final int fontContentSize = 14;
+	public static final int fontContentSize = 10;
 	public static final int fontContentType = Font.TIMES_ROMAN;
 	protected Font fontContent = new Font(fontContentType, fontContentSize);
 
 	protected int align = Element.ALIGN_LEFT;
+	protected float tablePercentage = 98f;
 
 	protected void decorateDocument(Document doc, String title) {
 		doc.addAuthor("United Vision");

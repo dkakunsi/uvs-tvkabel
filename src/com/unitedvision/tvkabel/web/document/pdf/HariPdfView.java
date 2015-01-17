@@ -72,7 +72,7 @@ public class HariPdfView extends CustomAbstractPdfView {
 	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
 		float[] columnWidths = {5f, 8f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 2f};
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode Pelanggan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Nama Pelanggan", align, 1, fontHeader, Rectangle.BOX);

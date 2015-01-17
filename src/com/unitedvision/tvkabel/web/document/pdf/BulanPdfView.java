@@ -71,7 +71,7 @@ public class BulanPdfView extends CustomAbstractPdfView {
 	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
 		float[] columnWidths = {5f, 5f, 4f, 3f, 3f};
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode Referensi", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);

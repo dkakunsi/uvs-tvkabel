@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
@@ -24,6 +25,10 @@ public class TahunPdfView extends CustomAbstractPdfView {
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
 			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		create(model, doc);
+	}
+	
+	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		setTahun((int)model.get("tahun"));
 
 		decorateDocument(doc, String.format("Laporan Pembayaran Tahun %d", tahun));
@@ -32,6 +37,8 @@ public class TahunPdfView extends CustomAbstractPdfView {
 		createTitle(paragraph);
 		createTable(model, paragraph);
 		doc.add(paragraph);
+		
+		return doc;
 	}
 	
 	private void setTahun(int tahun) {
@@ -46,11 +53,12 @@ public class TahunPdfView extends CustomAbstractPdfView {
 	}
 	
 	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
-		float[] columnWidths = {10f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f};
+		float[] columnWidths = {2f, 9f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f};
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(90f);
+		table.setWidthPercentage(tablePercentage);
 		
-		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "JAN", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "FEB", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "MAR", align, 1, fontHeader, Rectangle.BOX);
@@ -67,21 +75,24 @@ public class TahunPdfView extends CustomAbstractPdfView {
 
 		@SuppressWarnings("unchecked")
 		final List<PelangganModel> list = (List<PelangganModel>)model.get("rekap");
-		for (PelangganModel p : list) {
-			insertCell(table, p.getNama(), align, 1, fontContent, Rectangle.BOX);
+		for (PelangganModel pelanggan : list) {
+			Font customFont = getCustomFont(pelanggan.getTunggakan());
+			
+			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
 
 			int counter = 0;
-			for (PembayaranModel pemb : p.getListPembayaran()) {
+			for (PembayaranModel pemb : pelanggan.getListPembayaran()) {
 				if (pemb.getJumlahBayar() == 0) {
-					insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
+					insertCell(table, "", align, 1, customFont, Rectangle.BOX);
 				} else {
-					insertCell(table, "lunas", align, 1, fontContent, Rectangle.BOX);
+					insertCell(table, "lunas", align, 1, customFont, Rectangle.BOX);
 				}
 				counter++;
 			}
 			
 			for (int i = 1; i <= (12 - counter); i++) {
-				insertCell(table, "", align, 1, fontContent, Rectangle.BOX);
+				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
 			}
 		}
 
