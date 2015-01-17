@@ -375,6 +375,6 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public List<? extends Pelanggan> getOrdered(Perusahaan perusahaan, Status status) {
-		return pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(perusahaan.toEntity(), Status.AKTIF);
+		return pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(perusahaan.getId(), Status.AKTIF);
 	}
 }

@@ -198,27 +198,35 @@ public class PelangganRepositoryTest {
 	
 	@Test
 	public void testFindByPerusahaanAndStatusOrderByAlamat() {
-		PerusahaanEntity perusahaanEntity = perusahaanRepository.findOne(17);
-		
-		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(perusahaanEntity, Status.AKTIF);
-		
+		List<PelangganEntity> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(17, Status.AKTIF);
+
+		int[] limit = {117, 2, 81, 84, 22, 48, 85, 46, 1, 5, 2, 8, 11, 7, 7, 3, 4, 6, 9};
 		int i = 0;
 		String kelurahan = "";
-		int lingkungan = 0;
+		int lingkungan = 0, counter = 0;
 		boolean isNew = true;
+		boolean next = false;
 		for (PelangganEntity en : list) {
 			if (!kelurahan.equals(en.getNamaKelurahan()) || lingkungan != en.getLingkungan()) {
 				kelurahan = en.getNamaKelurahan();
 				lingkungan = en.getLingkungan();
 				
 				if (isNew == false)
-					break;
+					next = true;
+			}
+
+			if (next == true) {
+				//assertEquals(limit[counter], i);
+				i = 0;
+				next = false;
+				counter++;
 			}
 
 			i++;
 			isNew = false;
+			
+			System.out.println(String.format("%s, %s, %d", en.getKode(), en.getNamaKelurahan(), en.getLingkungan()));
 		}
-		
-		assertEquals(117, i);
+		assertEquals(limit[counter], i);
 	}
 }
