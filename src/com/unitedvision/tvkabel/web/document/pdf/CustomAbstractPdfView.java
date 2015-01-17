@@ -1,5 +1,7 @@
 package com.unitedvision.tvkabel.web.document.pdf;
 
+import java.awt.Color;
+
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import com.lowagie.text.Document;
@@ -12,10 +14,24 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
 public abstract class CustomAbstractPdfView extends AbstractPdfView {
-	protected Font fontTitle = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
-	protected Font fontSubTitle = new Font(Font.TIMES_ROMAN, 14);
-	protected Font fontHeader = new Font(Font.TIMES_ROMAN, 11, Font.BOLD);
-	protected Font fontContent = new Font(Font.TIMES_ROMAN, 10);
+	public static final int fontTitleSize = 14;
+	public static final int fontTitleStyle = Font.BOLD;
+	public static final int fontTitleType = Font.TIMES_ROMAN;
+	protected Font fontTitle = new Font(fontTitleType, fontTitleSize, fontTitleStyle);
+
+	public static final int fontSubtitleSize = 14;
+	public static final int fontSubtitleType = Font.TIMES_ROMAN;
+	protected Font fontSubTitle = new Font(fontSubtitleType, fontSubtitleSize);
+
+	public static final int fontHeaderSize = 11;
+	public static final int fontHeaderStyle = Font.BOLD;
+	public static final int fontHeaderType = Font.TIMES_ROMAN;
+	protected Font fontHeader = new Font(fontHeaderType, fontHeaderSize, fontHeaderStyle);
+
+	public static final int fontContentSize = 14;
+	public static final int fontContentType = Font.TIMES_ROMAN;
+	protected Font fontContent = new Font(fontContentType, fontContentSize);
+
 	protected int align = Element.ALIGN_LEFT;
 
 	protected void decorateDocument(Document doc, String title) {
@@ -45,4 +61,17 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	    }
 	}
 	
+	protected Font getCustomFont(int tunggakan) {
+		Font takWajar = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.MAGENTA);
+		Font lunas = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.GREEN);
+		Font rekomPutus = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.RED);
+		
+		if (tunggakan > 3)
+			return rekomPutus;
+		if (tunggakan > 1)
+			return takWajar;
+		if (tunggakan < 1)
+			return lunas;
+		return fontContent;
+	}
 }

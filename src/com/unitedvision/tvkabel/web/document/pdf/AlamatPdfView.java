@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
@@ -50,20 +51,6 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
-		/*
-		setKelurahan((String)model.get("kelurahan"));
-		setLingkungan((int)model.get("lingkungan"));
-		
-		decorateDocument(doc, "Laporan Pelanggan Berdasarkan Alamat");
-		
-		Paragraph paragraph = new Paragraph();
-		createTitle(paragraph);
-		createTable(model, paragraph);
-		doc.add(paragraph);
-		
-		return doc;
-		*/
-
 		List<List<PelangganEntity>> container = new ArrayList<>();
 		List<PelangganEntity> part = new ArrayList<>();
 		for (PelangganEntity pelanggan : (List<PelangganEntity>) model.get("listPelanggan")) {
@@ -84,7 +71,6 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	private void createDoc(List<List<PelangganEntity>> list, Document doc) throws DocumentException {
 		for (List<PelangganEntity> listPelanggan : list) {
-			System.out.println(listPelanggan.size());
 			create(listPelanggan, doc);
 		}
 	}
@@ -122,13 +108,15 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		table.setHeaderRows(1);
 
 		for (PelangganEntity pelanggan : list) {
-			insertCell(table, pelanggan.getKode(), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, pelanggan.getNama(), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, createKontak(pelanggan), align, 1, fontContent, Rectangle.BOX);
-			insertCell(table, String.format("%d bulan", pelanggan.getTunggakan()), align, 1, fontContent, Rectangle.BOX);
+			Font customFont = getCustomFont(pelanggan.getTunggakan());
+			
+			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, createKontak(pelanggan), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, String.format("%d bulan", pelanggan.getTunggakan()), align, 1, customFont, Rectangle.BOX);
 		}
 
-		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 2, fontContent, Rectangle.BOX);
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 3, fontContent, Rectangle.BOX);
 		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);
