@@ -44,7 +44,7 @@ public class HariTest extends HariPdfView {
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);
             model.put("pegawai", "Deddy Kakunsi");
-            model.put("tanggal", "12-12-2012");
+            model.put("tanggal", "12-12-2014");
             model.put("listBulan", Arrays.asList(listBulan));
             
             kartu.create(model, document);

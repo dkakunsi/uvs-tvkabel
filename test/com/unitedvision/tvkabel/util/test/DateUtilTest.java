@@ -12,12 +12,12 @@ import org.junit.Test;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class DateUtilTest {
-	private final int NOW_DATE = 11;
+	private final int NOW_DATE = 19;
 	private final int NOW_MONTH = 1;
 	private final Month _NOW_MONTH = Month.JANUARY;
 	private final int NOW_YEAR = 2015;	
-	private final String NOW_STR = "1/11/2015";
-	private final String NOW_STR_DELIM = "1-11-2015";
+	private final String NOW_STR = "1/19/2015";
+	private final String NOW_STR_DELIM = "1-19-2015";
 	
 	@Test
 	public void testGetDateString() {

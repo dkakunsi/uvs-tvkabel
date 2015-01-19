@@ -26,7 +26,7 @@ import com.unitedvision.tvkabel.util.DateUtil;
 public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private Perusahaan perusahaan;
 	private boolean contained;
-	private float[] columnWidths = {3.5f, 5f, 4.5f, 3f};
+	private float[] columnWidths = {3.5f, 5f, 4f, 3.5f};
 	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
 	public static Font fontTableContent = new Font(Font.TIMES_ROMAN, 11);
 	
@@ -40,7 +40,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		Object modelPelanggan = model.get("pelanggan");
-		setContained((int)model.get("pembayaran"));
+		setContained((boolean)model.get("pembayaran"));
 
 		if (modelPelanggan instanceof Pelanggan) {
 			createCard(doc, (Pelanggan)modelPelanggan);
@@ -73,14 +73,6 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		this.contained = bool;
 	}
 	
-	public void setContained(int i) {
-		if (i == 1) {
-			setContained(true);
-		} else {
-			setContained(false);
-		}
-	}
-	
 	protected void createPage(Document doc, Pelanggan pelanggan) throws DocumentException {
 		doc.newPage();
 
@@ -95,7 +87,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
 		paragraph.add(new Paragraph("PT. Aspetika Manasa Sulut - Manado", new Font(Font.TIMES_ROMAN, 8)));
-		paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
+		//paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
 	}
 	
 	private void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
@@ -103,10 +95,10 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, pelanggan.getKode(), align, 3, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, pelanggan.getKode(), align, 3, fontHeader, Rectangle.NO_BORDER);
 
 		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, pelanggan.getNama(), align, 3, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, pelanggan.getNama(), align, 3, fontHeader, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.NO_BORDER);
 		String kontak = pelanggan.getTelepon();
@@ -121,12 +113,12 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		insertCell(table, Integer.toString(pelanggan.getJumlahTv()), align, 1, fontContent, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Iuran", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, fontHeader, Rectangle.NO_BORDER);
 		
-		insertCell(table, "Kel.", align, 1, fontHeader, Rectangle.NO_BORDER);
+		insertCell(table, "Kelurahan", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getNamaKelurahan(), align, 1, fontContent, Rectangle.NO_BORDER);
 		
-		insertCell(table, "Lingk.", align, 1, fontHeader, Rectangle.NO_BORDER);
+		insertCell(table, "Lingkungan", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Integer.toString(pelanggan.getLingkungan()), align, 1, fontContent, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Detail", align, 1, fontHeader, Rectangle.NO_BORDER);
@@ -143,6 +135,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 				align, 1, fontContent, Rectangle.NO_BORDER);
 
 		paragraph.add(table);
+		addEmptyLine(paragraph, 1);
 	}
 
 	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
@@ -166,16 +159,19 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 	private void setContainedTable(PdfPTable table, Pelanggan pelanggan) {
 		List<Pembayaran> list = ((Pelanggan)pelanggan).getListPembayaran();
 		int i = 1;
-		for (Pembayaran pembayaran : list) {
-			String month = Month.of(i).name();
-			String tanggalBayar = DateUtil.toUserString(pembayaran.getTanggalBayar(), "-");
-			
-			insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			
-			i++;
+		
+		if (list != null) {
+			for (Pembayaran pembayaran : list) {
+				String month = Month.of(i).name();
+				String tanggalBayar = DateUtil.toUserString(pembayaran.getTanggalBayar(), "-");
+				
+				insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+				insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+				insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+				insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+				
+				i++;
+			}
 		}
 		
 		insertEmptyCell(table, i);

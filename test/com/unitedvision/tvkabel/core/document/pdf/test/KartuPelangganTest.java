@@ -2,8 +2,11 @@ package com.unitedvision.tvkabel.core.document.pdf.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.lowagie.text.Document;
@@ -17,7 +20,10 @@ import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Kontak;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganTest extends KartuPelangganPdfView {
 	private static KartuPelangganTest kartu = new KartuPelangganTest();
@@ -37,9 +43,17 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
             Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", alamat, kontak, 1000, Perusahaan.Status.AKTIF);
             Pelanggan pelanggan = new Pelanggan(1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", alamat, kontak, detail, Pelanggan.Status.AKTIF);
             
+            Tagihan tagihan = new Tagihan(2015, Month.JANUARY);
+            Pembayaran pembayaran = new Pembayaran(pelanggan, null, detail.getIuran(), DateUtil.getNow(), tagihan);
+            
+            List<Pembayaran> listPembayaran = new ArrayList<>(); 
+            listPembayaran.add(pembayaran);
+            
+            pelanggan.setListPembayaran(listPembayaran);
+
             Map<String, Object> model = new HashMap<>();
             model.put("pelanggan", pelanggan);
-            model.put("pembayaran", 0);
+            model.put("pembayaran", true);
             
             kartu.create(model, document);
             document.close();

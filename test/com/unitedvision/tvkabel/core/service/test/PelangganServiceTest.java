@@ -78,7 +78,7 @@ public class PelangganServiceTest {
 		Date date = saved.getTanggalMulai();
 		assertEquals(2015, DateUtil.getYear(date));
 		assertEquals(Month.JANUARY, DateUtil.getMonth(date));
-		assertEquals(11, DateUtil.getDay(date));
+		assertEquals(19, DateUtil.getDay(date));
 	}
 
 	@Test
@@ -280,7 +280,7 @@ public class PelangganServiceTest {
 	@Test
 	public void testGetByPerusahaanAndKodeAndStatus() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
-		String kode = "PLG000";
+		String kode = "WS01";
 		Status status = Status.AKTIF;
 
 		List<? extends Pelanggan> list = pelangganService.getByKode(perusahaan, status, kode, 0);
