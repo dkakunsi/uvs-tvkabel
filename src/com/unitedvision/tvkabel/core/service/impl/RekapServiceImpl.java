@@ -30,32 +30,32 @@ public class RekapServiceImpl implements RekapService {
 	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) {
 		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
 
-		return verify(listPelanggan, hari);
+		return rekapHarian(listPelanggan, hari);
 	}
 	
 	@Override
 	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari, int lastNumber) {
 		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari, lastNumber);
 
-		return verify(listPelanggan, hari);
+		return rekapHarian(listPelanggan, hari);
 	}
 	
-	private List<Pelanggan> verify(List<Pelanggan> list, Date hari) {
+	private List<Pelanggan> rekapHarian(List<Pelanggan> list, Date hari) {
 		final int numberOfMonth = 5;
 		Tagihan tagihanAkhir = Tagihan.create(hari);
 		Tagihan tagihanAwal = Tagihan.create(hari);
 		tagihanAwal.substract(numberOfMonth);
 		
-		for (Pelanggan p : list) {
-			List<Pembayaran> listPembayaran = pembayaranService.get(p, tagihanAwal, tagihanAkhir);
-			listPembayaran = verifyListPembayaran(listPembayaran, numberOfMonth);
-			p.setListPembayaran(listPembayaran);
+		for (Pelanggan pelanggan : list) {
+			List<Pembayaran> listPembayaran = pembayaranService.get(pelanggan, tagihanAwal, tagihanAkhir);
+			listPembayaran = verify(listPembayaran, numberOfMonth);
+			pelanggan.setListPembayaran(listPembayaran);
 		}
 		
 		return list;
 	}
 	
-	private List<Pembayaran> verifyListPembayaran(List<Pembayaran> list, int counter) {
+	private List<Pembayaran> verify(List<Pembayaran> list, int counter) {
 		if (list.size() == 0) {
 			for (int i = 1; i <= counter; i++)
 				list.add(createDefaultPembayaran(2014, Month.JANUARY));
@@ -90,7 +90,6 @@ public class RekapServiceImpl implements RekapService {
 
 	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
  		for (Pelanggan pelanggan : list) {
- 			
  			List<Pembayaran> listPembayaran = (List<Pembayaran>)pembayaranService.get(pelanggan, tahun);
  			verifyListPembayaran(listPembayaran, tahun, pelanggan);
  			pelanggan.setListPembayaran(listPembayaran); 
@@ -192,6 +191,11 @@ public class RekapServiceImpl implements RekapService {
 	@Override
 	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan, Integer lastNumber) {
 		return (List<Pelanggan>)pelangganService.get(perusahaan, status, kelurahan, lingkungan, lastNumber);
+	}
+
+	@Override
+	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan) {
+		return (List<Pelanggan>)pelangganService.getOrdered(perusahaan, Pelanggan.Status.AKTIF);
 	}
 
 	@Override

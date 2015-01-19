@@ -36,6 +36,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int page);
 	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
 	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
+	List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
 
 	long count(Perusahaan perusahaan, Status status);
 	long count(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);

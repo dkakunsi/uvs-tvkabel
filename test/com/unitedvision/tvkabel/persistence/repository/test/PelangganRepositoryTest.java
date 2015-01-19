@@ -19,8 +19,8 @@ import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
@@ -50,7 +50,6 @@ public class PelangganRepositoryTest {
 	}
 
 	@Test
-	@Ignore
 	public void testCountEstimasiWhenNoData() {
 		Perusahaan perusahaan = perusahaanRepository.getOne(17);
 		long hasil = pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaan, Status.AKTIF);
@@ -61,16 +60,15 @@ public class PelangganRepositoryTest {
 	@Test
 	public void countAkumulasi() {
 		Perusahaan perusahaan = perusahaanRepository.getOne(17);
-		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan, Pelanggan.Status.AKTIF);
+		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan, Status.AKTIF);
 
 		assertNotEquals(0, hasil);
 	}
 
 	@Test
-	@Ignore
 	public void countAkumulasiWhenNoData() {
 		Perusahaan perusahaan = perusahaanRepository.getOne(17);
-		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan, Pelanggan.Status.AKTIF);
+		long hasil = pelangganRepository.summarizeTotalAkumulasiTunggakan(perusahaan, Status.AKTIF);
 
 		assertEquals(0, hasil);
 	}
@@ -195,5 +193,39 @@ public class PelangganRepositoryTest {
 		//List<Pelanggan> list = pelangganRepository.findByPembayaran(14, tanggalBayarStr, page);
 
 		//assertEquals(12, list.size());
+	}
+	
+	@Test
+	public void testFindByPerusahaanAndStatusOrderByAlamat() {
+		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(17, Status.AKTIF);
+
+		int[] limit = {117, 2, 81, 84, 22, 48, 85, 46, 1, 5, 2, 8, 11, 7, 7, 3, 4, 6, 9};
+		int i = 0;
+		String kelurahan = "";
+		int lingkungan = 0, counter = 0;
+		boolean isNew = true;
+		boolean next = false;
+		for (Pelanggan en : list) {
+			if (!kelurahan.equals(en.getNamaKelurahan()) || lingkungan != en.getLingkungan()) {
+				kelurahan = en.getNamaKelurahan();
+				lingkungan = en.getLingkungan();
+				
+				if (isNew == false)
+					next = true;
+			}
+
+			if (next == true) {
+				//assertEquals(limit[counter], i);
+				i = 0;
+				next = false;
+				counter++;
+			}
+
+			i++;
+			isNew = false;
+			
+			System.out.println(String.format("%s, %s, %d", en.getKode(), en.getNamaKelurahan(), en.getLingkungan()));
+		}
+		assertEquals(limit[counter], i);
 	}
 }
