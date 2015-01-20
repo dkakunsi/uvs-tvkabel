@@ -16,7 +16,7 @@ public class ListKotaRestResult extends ListRestResult {
 		this.list = list;
 	}
 
-	public List<Kota> getList() {
+	public List<Kota> getListModel() {
 		return list;
 	}
 	

@@ -16,7 +16,7 @@ public class ListPegawaiRestResult extends ListRestResult {
 		this.list = list;
 	}
 	
-	public List<Pegawai> getList() {
+	public List<Pegawai> getListModel() {
 		return list;
 	}
 	

@@ -3,7 +3,7 @@ package com.unitedvision.tvkabel.web.rest;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 
 public class PerusahaanRestResult extends RestResult {
-	private Perusahaan model;
+	private Perusahaan perusahaan;
 
 	private PerusahaanRestResult(String message) {
 		super(message);
@@ -12,11 +12,11 @@ public class PerusahaanRestResult extends RestResult {
 	private PerusahaanRestResult(String message, Perusahaan model) {
 		super(message);
 		this.type = "model";
-		this.model = model;
+		this.perusahaan = model;
 	}
 
-	public Perusahaan get() {
-		return model;
+	public Perusahaan getModel() {
+		return perusahaan;
 	}
 	
 	public static PerusahaanRestResult create(String message) {

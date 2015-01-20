@@ -15,7 +15,7 @@ public class PegawaiRestResult extends RestResult {
 		this.pegawai = pegawai;
 	}
 	
-	public Pegawai get() {
+	public Pegawai getModel() {
 		return pegawai;
 	}
 

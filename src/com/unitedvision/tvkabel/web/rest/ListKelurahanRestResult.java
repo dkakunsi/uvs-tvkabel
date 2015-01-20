@@ -16,7 +16,7 @@ public class ListKelurahanRestResult extends ListRestResult {
 		this.list = list;
 	}
 	
-	public List<Kelurahan> getList() {
+	public List<Kelurahan> getListModel() {
 		return list;
 	}
 	

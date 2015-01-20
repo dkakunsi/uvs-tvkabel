@@ -16,7 +16,7 @@ public class ListPerusahaanRestResult extends ListRestResult {
 		this.list = list;
 	}
 
-	public List<Perusahaan> getList() {
+	public List<Perusahaan> getListModel() {
 		return list;
 	}
 	

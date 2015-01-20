@@ -16,7 +16,7 @@ public class ListPembayaranRestResult extends ListRestResult {
 		this.list = list;
 	}
 
-	public List<Pembayaran> getList() {
+	public List<Pembayaran> getListModel() {
 		return list;
 	}
 	
