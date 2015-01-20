@@ -9,7 +9,7 @@
   
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>com.unitedvision.tvkabel.configuration.web.WebConfig</param-value>
+    <param-value>com.unitedvision.tvkabel.web.WebConfig</param-value>
   </context-param>
 
   <servlet>
