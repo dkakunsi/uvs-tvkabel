@@ -68,13 +68,6 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
-	public List<Pegawai> get(Perusahaan perusahaan, int page) {
-		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
-
-		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan, Status.AKTIF, pageRequest);
-	}
-
-	@Override
 	public List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
@@ -101,11 +94,6 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Override
 	public Pegawai getOneByUsername(String username) throws EntityNotExistException {
 		return pegawaiRepository.findByKredensi_UsernameAndStatus(username, Status.AKTIF);
-	}
-
-	@Override
-	public long count(Perusahaan perusahaan) {
-		return pegawaiRepository.countByPerusahaanAndStatus(perusahaan, Status.AKTIF);
 	}
 
 	@Override

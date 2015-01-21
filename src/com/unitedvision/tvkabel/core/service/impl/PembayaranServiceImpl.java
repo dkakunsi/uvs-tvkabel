@@ -114,13 +114,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir, int page) {
-		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
-
-		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir, pageRequest);
-	}
-
-	@Override
 	public List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
@@ -137,14 +130,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	public List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) {
 		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
-	}
-
-	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, int tahun, Month bulan, int page) {
-		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
-		Tagihan tagihan = new Tagihan(tahun, bulan);
-
-		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan, pageRequest);
 	}
 
 	@Override
@@ -174,11 +159,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public long count(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
-		return pembayaranRepository.countByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir);
-	}
-
-	@Override
 	public long count(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir) {
 		return pembayaranRepository.countByPegawaiAndTanggalBayarBetween(pegawai, tanggalMulai, tanggalAkhir);
 	}
@@ -186,11 +166,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	public long count(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir) {
 		return pembayaranRepository.countByPelangganAndTanggalBayarBetween(pelanggan, tanggalMulai, tanggalAkhir);
-	}
-	
-	@Override
-	public long count(Perusahaan perusahaan, Tagihan tagihan) {
-		return pembayaranRepository.countByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
 	}
 
 	@Override

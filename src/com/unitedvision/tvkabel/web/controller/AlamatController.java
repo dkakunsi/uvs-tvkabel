@@ -51,9 +51,13 @@ public class AlamatController extends AbstractController {
 	
 	@RequestMapping(value = "/kecamatan", method = RequestMethod.GET)
 	public @ResponseBody ListKecamatanRestResult getAllKecamatan() {
-		List<Kecamatan> list = kecamatanService.getAll();
-		
-		return ListKecamatanRestResult.create("Berhasil!", list);
+		try {
+			List<Kecamatan> list = kecamatanService.getAll();
+			
+			return ListKecamatanRestResult.create("Berhasil!", list);
+		} catch (EntityNotExistException e) {
+			return ListKecamatanRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 
 	@RequestMapping(value = "/kecamatan/kota/{kotaId}", method = RequestMethod.GET)

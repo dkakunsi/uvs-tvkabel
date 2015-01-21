@@ -16,12 +16,10 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Integer> {
 	Pegawai findByKredensi_UsernameAndStatus(String username, Status status) throws EntityNotExistException;
 
 	List<Pegawai> findByPerusahaanAndStatus(Perusahaan perusahaan, Status status);
-	List<Pegawai> findByPerusahaanAndStatus(Perusahaan perusahaan, Status status, Pageable page);
 	List<Pegawai> findByPerusahaanAndStatusAndKodeContaining(Perusahaan perusahaan, Status status, String kode, Pageable page);
 	List<Pegawai> findByPerusahaanAndStatusAndNamaContaining(Perusahaan perusahaan, Status status, String nama, Pageable page);
 	
 	long countByPerusahaan(Perusahaan perusahaan);
-	long countByPerusahaanAndStatus(Perusahaan perusahaan, Status status);
 	long countByPerusahaanAndStatusAndKodeContaining(Perusahaan perusahaan, Status status, String kode);
 	long countByPerusahaanAndStatusAndNamaContaining(Perusahaan perusahaan, Status status, String nama);
 }

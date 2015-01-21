@@ -33,15 +33,8 @@ public class RekapServiceImpl implements RekapService {
 		return rekapHarian(listPelanggan, hari);
 	}
 	
-	@Override
-	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari, int lastNumber) {
-		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari, lastNumber);
-
-		return rekapHarian(listPelanggan, hari);
-	}
-	
 	private List<Pelanggan> rekapHarian(List<Pelanggan> list, Date hari) {
-		final int numberOfMonth = 5;
+		final int numberOfMonth = 5; //Retrieve 5 months backward from this month to be reported
 		Tagihan tagihanAkhir = Tagihan.create(hari);
 		Tagihan tagihanAwal = Tagihan.create(hari);
 		tagihanAwal.substract(numberOfMonth);
@@ -68,29 +61,9 @@ public class RekapServiceImpl implements RekapService {
 		return list;
 	}
 	
-	@Override
-	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
-		return (List<Pembayaran>)pembayaranService.get(perusahaan, tahun, bulan, lastNumber);
-	}
-
-	@Override
-	public List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan, int lastNumber) {
-		final Date tanggalMulai = DateUtil.getDate(tahun, bulan, 1);
-		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
-
-		return (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir, lastNumber);
-	}
-	
-	@Override
-	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun, int lastNumber) {
-		List<Pelanggan> listPelanggan = (List<Pelanggan>)pelangganService.get(perusahaan, Status.AKTIF, lastNumber);
-
-		return rekapTahunan(listPelanggan, tahun);
-	}
-
 	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
  		for (Pelanggan pelanggan : list) {
- 			List<Pembayaran> listPembayaran = (List<Pembayaran>)pembayaranService.get(pelanggan, tahun);
+ 			List<Pembayaran> listPembayaran = pembayaranService.get(pelanggan, tahun);
  			verifyListPembayaran(listPembayaran, tahun, pelanggan);
  			pelanggan.setListPembayaran(listPembayaran); 
  		} 
@@ -153,7 +126,7 @@ public class RekapServiceImpl implements RekapService {
 
 	@Override
 	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) {
-		List<Pelanggan> listPelanggan = (List<Pelanggan>)pelangganService.get(perusahaan, Status.AKTIF);
+		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.AKTIF);
 
 		return rekapTahunan(listPelanggan, tahun);
 	}
@@ -162,7 +135,7 @@ public class RekapServiceImpl implements RekapService {
 	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
 		Tagihan tagihan = new Tagihan(tahun, bulan);
 
-		return (List<Pembayaran>)pembayaranService.get(perusahaan, tagihan);
+		return pembayaranService.get(perusahaan, tagihan);
 	}
 
 	@Override
@@ -170,66 +143,21 @@ public class RekapServiceImpl implements RekapService {
 		final Date tanggalAwal = DateUtil.getDate(tahun, bulan, 1);
 		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
 
-		return (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalAwal, tanggalAkhir);
+		return pembayaranService.get(perusahaan, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
 	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) {
-		return (List<Pelanggan>)pelangganService.getByTunggakan(perusahaan, status, tunggakan);
-	}
-
-	@Override
-	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan, int lastNumber) {
-		return (List<Pelanggan>)pelangganService.getByTunggakan(perusahaan, status, tunggakan, lastNumber);
+		return pelangganService.getByTunggakan(perusahaan, status, tunggakan);
 	}
 
 	@Override
 	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) {
-		return (List<Pelanggan>)pelangganService.get(perusahaan, status, kelurahan, lingkungan);
-	}
-
-	@Override
-	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan, Integer lastNumber) {
-		return (List<Pelanggan>)pelangganService.get(perusahaan, status, kelurahan, lingkungan, lastNumber);
+		return pelangganService.get(perusahaan, status, kelurahan, lingkungan);
 	}
 
 	@Override
 	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan) {
-		return (List<Pelanggan>)pelangganService.getOrdered(perusahaan, Pelanggan.Status.AKTIF);
-	}
-
-	@Override
-	public long countRekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
-		Tagihan tagihan = new Tagihan(tahun, bulan);
-		
-		return pembayaranService.count(perusahaan, tagihan);
-	}
-
-	@Override
-	public long countRekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
-		final Date tanggalMulai = DateUtil.getDate(tahun, bulan, 1);
-		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
-
-		return pembayaranService.count(perusahaan, tanggalMulai, tanggalAkhir);
-	}
-
-	@Override
-	public long countRekapHarian(Pegawai pegawai, Date hari) {
-		return pelangganService.count(pegawai, hari);
-	}
-	
-	@Override
-	public long countRekapTahunan(Perusahaan perusahaan) {
-		return pelangganService.count(perusahaan, Status.AKTIF);
-	}
-
-	@Override
-	public long countRekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) {
-		return pelangganService.countByTunggakan(perusahaan, status, tunggakan);
-	}
-
-	@Override
-	public long countRekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) {
-		return pelangganService.count(perusahaan, status, kelurahan, lingkungan);
+		return pelangganService.getOrdered(perusahaan, Pelanggan.Status.AKTIF);
 	}
 }

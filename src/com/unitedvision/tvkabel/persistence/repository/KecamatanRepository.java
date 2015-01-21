@@ -10,7 +10,5 @@ import com.unitedvision.tvkabel.persistence.entity.Kota;
 
 public interface KecamatanRepository extends JpaRepository<Kecamatan, Integer> {
 	Kecamatan findByNama(String nama) throws EntityNotExistException;
-	
-	//This will be used by AJAX-style call later
-	List<Kecamatan> findByKota(Kota kota);
+	List<Kecamatan> findByKota(Kota kota) throws EntityNotExistException;
 }

@@ -173,16 +173,6 @@ public class PembayaranRepositoryTest {
 	}
 	
 	@Test
-	public void testCountByPegawai_PerusahaanAndTagihan() {
-		Perusahaan perusahaan = perusahaanRepository.findOne(17);
-		Tagihan tagihan = new Tagihan(2014, Month.NOVEMBER);
-		
-		long hasil = pembayaranRepository.countByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
-		
-		assertNotEquals(0, hasil);
-	}
-	
-	@Test
 	public void testFindFirstByPelangganOrderByIdDesc() {
 		Pelanggan pelanggan = pelangganRepository.findOne(69);
 

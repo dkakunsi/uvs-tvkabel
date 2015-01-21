@@ -22,25 +22,20 @@ public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
 
-	List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page);
-	List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page);
 	List<Pelanggan> get(Perusahaan perusahaan, Status status);
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page);
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
-	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int page);
 	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar);
-	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int page);
 	List<Pelanggan> get(Status status, int tanggal);
-
-	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
-	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int page);
-	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
-	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
 	List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
 
+	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
+	List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page);
+	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
+	List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page);
+	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
+
 	long count(Perusahaan perusahaan, Status status);
-	long count(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
-	long count(Pegawai pegawai, Date tanggalBayar);
 	long countByNama(Perusahaan perusahaan, String nama);
 	long countByKode(Perusahaan perusahaan, String kode);
 	long countByNama(Perusahaan perusahaan, Status status, String nama);

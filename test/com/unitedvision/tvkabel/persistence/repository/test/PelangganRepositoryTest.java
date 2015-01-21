@@ -95,16 +95,6 @@ public class PelangganRepositoryTest {
 	}
 
 	@Test
-	public void testCountByPembayaran() {
-		Date tanggalBayar = DateUtil.getDate(2014, 11, 7);
-		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
-		
-		long hasil = pelangganRepository.countByPembayaran(14, tanggalBayarStr);
-
-		assertEquals(113, hasil);
-	}
-
-	@Test
 	public void testFindByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanRepository.findOne(17); //17 is Global Vision
 		Status status = Status.AKTIF;
@@ -117,15 +107,16 @@ public class PelangganRepositoryTest {
 	}
 
 	@Test
-	public void testCountByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan() throws EntityNotExistException {
+	public void testFindByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganWhenNoData() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanRepository.findOne(17); //17 is Global Vision
-		Status status = Status.AKTIF;
+		Status status = Status.BERHENTI;
 		Kelurahan kelurahan = kelurahanRepository.findByNama("Winangun 1");
 		int lingkungan = 1;
 		
-		long hasil = pelangganRepository.countByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan, status, kelurahan, lingkungan);
-		
-		assertNotEquals(0, hasil);
+		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
+
+		assertNotNull(list);
+		assertEquals(0, list.size());
 	}
 
 	@Test

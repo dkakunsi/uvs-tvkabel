@@ -18,7 +18,6 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
 	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.kelurahan, p.alamat.lingkungan";
 	String findByAlamatOrderedNative = "SELECT * FROM pelanggan p WHERE p.id_perusahaan = :idPerusahaan AND p.status = :status ORDER BY p.id_kelurahan, p.lingkungan, p.kode";
-	String countByPembayaran = "SELECT count(*) FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai)";
 	String summerizeEstimasiPemasukanBulanan = "SELECT COALESCE(SUM(p.detail.iuran), 0) FROM Pelanggan p WHERE p.perusahaan = ?1 AND p.status = ?2";
 	String summerizeTotalEstimasiTunggakan = "SELECT COALESCE(SUM(p.detail.tunggakan * p.detail.iuran), 0) FROM Pelanggan p WHERE p.perusahaan = ?1 AND p.status = ?2";
 	
@@ -33,10 +32,8 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	List<Pelanggan> findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(Perusahaan perusahaan, Status status, String kode, Pageable page);
 
 	List<Pelanggan> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
-	List<Pelanggan> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, Pageable page);
 
 	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakan);
-	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakan, Pageable page);
 
 	long countByPerusahaanAndStatusAndNamaContaining(Perusahaan perusahaan, Status status, String nama);
 	long countByPerusahaanAndStatusAndKodeContaining(Perusahaan perusahaan, Status status, String kode);
@@ -44,7 +41,6 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	long countByPerusahaanAndKodeContaining(Perusahaan perusahaan, String kode);
 	long countByPerusahaanAndNamaContaining(Perusahaan perusahaan, String nama);
 	
-	long countByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
 	long countByPerusahaanAndStatusAndDetail_Tunggakan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanLessThan(Perusahaan perusahaan, Status status, int tunggakan);
@@ -55,9 +51,6 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	List<Pelanggan> findByTanggalMulai(@Param("status") Status status, @Param("tanggal") int tanggal);
 	@Query (value = findByPembayaran, nativeQuery = true)
 	List<Pelanggan> findByPembayaran(@Param("idPegawai") int idPegawai, @Param("tanggalBayar") String tanggalBayar);
-
-	@Query (value = countByPembayaran, nativeQuery = true)
-	long countByPembayaran(@Param("idPegawai") int idPegawai, @Param("tanggalBayar") String tanggalBayar);
 
 	@Query (summerizeEstimasiPemasukanBulanan)
 	long sumarizeEstimasiPemasukanBulanan(Perusahaan perusahaan, Status status);

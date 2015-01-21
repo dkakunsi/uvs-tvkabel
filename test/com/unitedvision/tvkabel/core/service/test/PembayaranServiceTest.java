@@ -49,9 +49,8 @@ public class PembayaranServiceTest {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		Date tanggalMulai = DateUtil.getFirstDate();
 		Date tanggalAkhir = DateUtil.getLastDate();
-		int lastNumber = 0;
 		
-		List<Pembayaran> list = (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir, lastNumber);
+		List<Pembayaran> list = (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir);
 		
 		for (Pembayaran pembayaran : list) {
 			assertNotNull(pembayaran.getId());

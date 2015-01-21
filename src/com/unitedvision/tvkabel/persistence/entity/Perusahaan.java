@@ -471,7 +471,18 @@ public final class Perusahaan extends CodableDomain {
 		/** AKTIF */
 		AKTIF, 
 		/** BANNED */
-		BANNED
+		BANNED;
+		
+		/**
+		 * Returns {@link Status} from the given string.
+		 * @param status.
+		 * @return {@link Status}.
+		 */
+		public static Status get(String status) {
+			status = status.toUpperCase();
+
+			return Perusahaan.Status.valueOf(status);
+		}
 	}
 	
 	/**

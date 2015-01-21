@@ -41,12 +41,12 @@ public class KecamatanServiceImpl implements KecamatanService {
 	}
 
 	@Override
-	public List<Kecamatan> getAll() {
+	public List<Kecamatan> getAll() throws EntityNotExistException {
 		return kecamatanRepository.findAll();
 	}
 
 	@Override
-	public List<Kecamatan> getByKota(Kota kota) {
+	public List<Kecamatan> getByKota(Kota kota) throws EntityNotExistException {
 		return kecamatanRepository.findByKota(kota);
 	}
 }

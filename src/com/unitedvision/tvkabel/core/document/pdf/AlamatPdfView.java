@@ -22,7 +22,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	private String kelurahan = "";
 	private int lingkungan = 0;
 	private float[] columnWidths = {3f, 8f, 3f, 2f};
-	private boolean isNew;
+	private boolean first;
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
@@ -51,18 +51,25 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
-		isNew = true;
+		first = true;
 		
 		List<List<Pelanggan>> container = new ArrayList<>();
 		List<Pelanggan> part = new ArrayList<>();
+		/**
+		 * Divide {@code listPelanggan} into some list as much as {@link Kelurahan} and {@code lingkungan}.
+		 * So, every {@code listPelanggan} will contain {@link Pelanggan} with the same {@link Kelurahan} and {@code lingkungan}.
+		 */
 		for (Pelanggan pelanggan : (List<Pelanggan>) model.get("listPelanggan")) {
-			if (changeAlamat(pelanggan) && isNew == false) {
+			/**
+			 * Create a new list if {@code alamat} is changes and it's not the first loop.
+			 */
+			if (changeAlamat(pelanggan) && first == false) {
 				container.add(part);
 				part = new ArrayList<>();
 			}
 			
 			part.add(pelanggan);
-			isNew = false;
+			first = false;
 		}
 
 		container.add(part);
@@ -70,7 +77,13 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		
 		return doc;
 	}
-	
+
+	/**
+	 * Create document for each {@link Alamat} and {@code lingkungan}.
+	 * @param list
+	 * @param doc
+	 * @throws DocumentException
+	 */
 	private void createDoc(List<List<Pelanggan>> list, Document doc) throws DocumentException {
 		for (List<Pelanggan> listPelanggan : list) {
 			create(listPelanggan, doc);

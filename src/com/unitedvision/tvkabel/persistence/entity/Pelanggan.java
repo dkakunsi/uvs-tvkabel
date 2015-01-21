@@ -761,5 +761,16 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		PUTUS,
 		/** REMOVED from database (not deleted) */
 		REMOVED;
+		
+		/**
+		 * Returns {@link Status} from the given string.
+		 * @param status
+		 * @return {@link Status}.
+		 */
+		public static Status get(String status) {
+			status = status.toUpperCase();
+			
+			return Pelanggan.Status.valueOf(status);
+		}
 	}
 }

@@ -10,6 +10,5 @@ import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 
 public interface KelurahanRepository extends JpaRepository<Kelurahan, Integer> {
 	Kelurahan findByNama(String nama) throws EntityNotExistException;
-	
 	List<Kelurahan> findByKecamatan(Kecamatan kecamatan);
 }

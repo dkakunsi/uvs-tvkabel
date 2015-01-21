@@ -10,6 +10,7 @@ import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 
 public interface PerusahaanService extends Service<Perusahaan> {
 	Perusahaan getByKode(String kode) throws EntityNotExistException;
+	
 	Operator regist(Perusahaan perusahaan) throws ApplicationException;
 	
 	void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException;

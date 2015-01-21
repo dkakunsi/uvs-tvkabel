@@ -24,12 +24,9 @@ public interface PembayaranRepository extends JpaRepository<Pembayaran, Integer>
 	List<Pembayaran> findByPelangganAndTagihan_Tahun(Pelanggan pelanggan, int tahun);
 	List<Pembayaran> findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(Pelanggan pelanggan, int tahun, Month bulanAwal, Month bulanAkhir);
 	List<Pembayaran> findByPegawai_PerusahaanAndTagihan(Perusahaan perusahaan, Tagihan tagihan);
-	List<Pembayaran> findByPegawai_PerusahaanAndTagihan(Perusahaan perusahaan, Tagihan tagihan, Pageable page);
 	List<Pembayaran> findByPegawai_PerusahaanAndTanggalBayarBetween(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir);
-	List<Pembayaran> findByPegawai_PerusahaanAndTanggalBayarBetween(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir, Pageable page);
 
 	long countByPegawai_PerusahaanAndTanggalBayarBetween(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir);
-	long countByPegawai_PerusahaanAndTagihan(Perusahaan perusahaan, Tagihan tagihan);
 	long countByPegawaiAndTanggalBayarBetween(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
 	long countByPelangganAndTanggalBayarBetween(Pelanggan pelanggan, Date tanggalAwal, Date tanggalAkhir);
 	

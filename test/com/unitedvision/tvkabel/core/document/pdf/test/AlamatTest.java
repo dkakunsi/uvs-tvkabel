@@ -13,10 +13,12 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.AlamatPdfView;
+import com.unitedvision.tvkabel.core.service.KelurahanService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.service.RekapService;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
+import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 
@@ -25,6 +27,7 @@ public class AlamatTest extends AlamatPdfView {
 	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
 	private static RekapService rekapService = appContext.getBean(RekapService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
+	private static KelurahanService kelurahanService = appContext.getBean(KelurahanService.class);
 
 	public static void main(String[] args) {
         Document document = kartu.newDocument();
@@ -34,7 +37,8 @@ public class AlamatTest extends AlamatPdfView {
 
             document.open();
             Perusahaan perusahaan = perusahaanService.getOne(17);
-            List<Pelanggan> list = rekapService.rekapAlamat(perusahaan);
+            Kelurahan kelurahan = kelurahanService.getOne(22);
+            List<Pelanggan> list = rekapService.rekapAlamat(perusahaan, Pelanggan.Status.BERHENTI, kelurahan, 1);
             
             Map<String, Object> model = new HashMap<>();
             model.put("listPelanggan", list);

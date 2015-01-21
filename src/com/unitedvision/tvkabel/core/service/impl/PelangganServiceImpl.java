@@ -199,13 +199,6 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan, int pageNumber) {
-		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
-		
-		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan, status, tunggakan, page);
-	}
-
-	@Override
 	public List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
@@ -225,29 +218,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan, int pageNumber) {
-		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
-		
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan, page);
-	}
-
-	@Override
 	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) {
-		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
-		
-		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarStr);
-	}
-
-	@Override
-	public long count(Pegawai pegawai, Date tanggalBayar) {
-		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
-		
-		return pelangganRepository.countByPembayaran(pegawai.getId(), tanggalBayarStr);
-	}
-
-	@Override
-	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar, int pageNumber) {
-		//PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
 		
 		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarStr);
@@ -291,11 +262,6 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public long countByTunggakanGreaterThan(Perusahaan perusahaan, Status status, int tunggakan) {
 		return pelangganRepository.countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(perusahaan, status, tunggakan);
-	}
-
-	@Override
-	public long count(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
-		return pelangganRepository.countByPerusahaanAndStatusAndKelurahanAndAlamat_Lingkungan(perusahaan, status, kelurahan, lingkungan);
 	}
 
 	@Override

@@ -48,16 +48,6 @@ public class PegawaiRepositoryTest {
 	}
 	
 	@Test
-	public void testCountByPerusahaanAndStatus() {
-		Perusahaan perusahaan = perusahaanRepository.findOne(17);
-		Status status = Status.AKTIF;
-		
-		long hasil = pegawaiRepository.countByPerusahaanAndStatus(perusahaan, status);
-		
-		assertNotEquals(0, hasil);
-	}
-	
-	@Test
 	public void testCountByPerusahaanAndStatusAndKodeContaining() {
 		Perusahaan perusahaan = perusahaanRepository.findOne(17);
 		Status status = Status.AKTIF;

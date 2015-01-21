@@ -17,7 +17,6 @@ import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
-import com.unitedvision.tvkabel.util.StatusUtil;
 import com.unitedvision.tvkabel.web.rest.ListPelangganRestResult;
 import com.unitedvision.tvkabel.web.rest.PelangganRestResult;
 import com.unitedvision.tvkabel.web.rest.RestResult;
@@ -38,7 +37,7 @@ public class PelangganController extends AbstractController {
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/status/{status}", method = RequestMethod.GET)
 	public @ResponseBody ListPelangganRestResult getAll(@PathVariable Integer perusahaan, @PathVariable String status) throws ApplicationException {
-		final Status _status = StatusUtil.getPelangganStatus(status);
+		final Status _status = Status.get(status);
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), _status);
 		
 		return ListPelangganRestResult.create("Berhasil!", list);
@@ -46,7 +45,7 @@ public class PelangganController extends AbstractController {
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/status/{status}/page/{page}", method = RequestMethod.GET)
 	public @ResponseBody ListPelangganRestResult get(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable Integer page) throws ApplicationException {
-		final Status _status = StatusUtil.getPelangganStatus(status);
+		final Status _status = Status.get(status);
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), _status, page);
 		long total = pelangganService.count(getPerusahaan(perusahaan), _status);
 		long count = PageSizeUtil.getCounter(page, list.size());
@@ -78,7 +77,7 @@ public class PelangganController extends AbstractController {
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/kode/{kode}/status/{status}/page/{page}", method = RequestMethod.GET)
 	public @ResponseBody ListPelangganRestResult getByKode(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
-		Status _status = StatusUtil.getPelangganStatus(status);
+		final Status _status = Status.get(status);
 		List<Pelanggan> list = pelangganService.getByKode(getPerusahaan(perusahaan), _status, kode, page);
 		long total = pelangganService.countByKode(getPerusahaan(perusahaan), _status, kode);
 		long count = PageSizeUtil.getCounter(page, list.size());
@@ -109,7 +108,7 @@ public class PelangganController extends AbstractController {
 
 	@RequestMapping(value = "/perusahaan/{perusahaan}/nama/{nama:.+}/status/{status}/page/{page}", method = RequestMethod.GET)
 	public @ResponseBody ListPelangganRestResult getByNama(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
-		Status _status = StatusUtil.getPelangganStatus(status);
+		final Status _status = Status.get(status);
 		List<Pelanggan> list = pelangganService.getByNama(getPerusahaan(perusahaan), _status, nama, page);
 		long total = pelangganService.countByNama(getPerusahaan(perusahaan), _status, nama);
 		long count = PageSizeUtil.getCounter(page, list.size());

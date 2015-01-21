@@ -424,7 +424,18 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 		/**
 		 * REMOVED
 		 */
-		REMOVED
+		REMOVED;
+		
+		/**
+		 * Returns {@link Status} from the given string.
+		 * @param status
+		 * @return {@link Status}.
+		 */
+		public static Status get(String status) {
+			status = status.toUpperCase();
+
+			return Pegawai.Status.valueOf(status);
+		}
 	}
 	
 	/**

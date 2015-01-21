@@ -7,7 +7,6 @@ import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 
 public interface KelurahanService extends Service<Kelurahan> {
-	//This will be used by AJAX-style call later
 	List<Kelurahan> getByKecamatan(Kecamatan kecamatan);
 	List<Kelurahan> getAll();
 	
