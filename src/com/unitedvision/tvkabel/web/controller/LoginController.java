@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.unitedvision.tvkabel.exception.EmptyCodeException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
@@ -62,6 +64,10 @@ public class LoginController extends AbstractController {
 			
 			return PegawaiRestResult.create("Berhasil", Pegawai.createGuest());
 		} catch (IOException e) {
+			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		} catch (EmptyCodeException e) {
+			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		} catch (EmptyIdException e) {
 			return PegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
 		}
 	}

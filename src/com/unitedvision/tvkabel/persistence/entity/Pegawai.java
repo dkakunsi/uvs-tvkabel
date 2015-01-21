@@ -63,46 +63,6 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 
 	/**
 	 * Create instance.
-	 * @param id
-	 * @throws EmptyIdException {@code id} is not positive
-	 */
-	@Deprecated
-	public Pegawai(int id) throws EmptyIdException {
-		super();
-		setId(id);
-	}
-
-	/**
-	 * Create instance.
-	 * @param perusahaan
-	 * @param nama
-	 * @param kredensi
-	 * @param status
-	 */
-	public Pegawai(Perusahaan perusahaan, String nama, Kredensi kredensi, Status status) {
-		super();
-		setPerusahaan(perusahaan);
-		setNama(nama);
-		setKredensi(kredensi);
-		setStatus(status);
-	}
-
-	/**
-	 * Create instance.
-	 * @param kode cannot be null or empty String
-	 * @param perusahaan
-	 * @param nama
-	 * @param kredensi
-	 * @param status
-	 * @throws EmptyCodeException {@code kode} is null or an empty String
-	 */
-	public Pegawai(String kode, Perusahaan perusahaan, String nama, Kredensi kredensi, Status status) throws EmptyCodeException {
-		this(perusahaan, nama, kredensi, status);
-		setKode(kode);
-	}
-
-	/**
-	 * Create instance.
 	 * @param id must be positive
 	 * @param kode cannot be null or an empty String
 	 * @param perusahaan
@@ -113,9 +73,13 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 	 * @throws EmptyIdException {@code id} is not positive.
 	 */
 	public Pegawai(int id, String kode, Perusahaan perusahaan, String nama, Kredensi kredensi, Status status) throws EmptyCodeException, EmptyIdException {
-		this(perusahaan, nama, kredensi, status);
+		super();
 		setId(id);
 		setKode(kode);
+		setPerusahaan(perusahaan);
+		setNama(nama);
+		setKredensi(kredensi);
+		setStatus(status);
 	}
 
 	@Override
@@ -167,7 +131,7 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 	}
 
 	/**
-	 * 
+	 * Return name.
 	 * @return
 	 */
 	@Column(name = "nama")
@@ -286,10 +250,10 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 		}
 	}
 
-	public static Pegawai createGuest() {
+	public static Pegawai createGuest() throws EmptyCodeException, EmptyIdException {
 		Kredensi kredensi = new Kredensi("guest", "guest", Role.GUEST);
 
-		return new Pegawai(null, "GUEST", kredensi, Status.AKTIF);
+		return new Pegawai(0, "GUEST", null, "GUEST", kredensi, Status.AKTIF);
 	}
 	
 	/**

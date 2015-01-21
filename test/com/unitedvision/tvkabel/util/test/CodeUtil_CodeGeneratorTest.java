@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.unitedvision.tvkabel.exception.EmptyCodeException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
@@ -39,12 +41,12 @@ public class CodeUtil_CodeGeneratorTest {
 	}
 	
 	@Test
-	public void testCreateKode() {
+	public void testCreateKode() throws EmptyIdException, EmptyCodeException {
 		CodeUtil.CodeGenerator codeGenerator = new CodeUtil.CodeGenerator();
 		
 		Kelurahan kelurahanEntity = new Kelurahan(null, "Winangun 1");
-		Alamat alamatValue = new Alamat(kelurahanEntity, 6, "");
-		Pelanggan pelanggan = new Pelanggan(null, "", "", alamatValue, null, null, null);
+		Alamat alamatValue = new Alamat(6, "", 0, 0);
+		Pelanggan pelanggan = new Pelanggan(0, null, "", "", "", kelurahanEntity, alamatValue, null, null, null);
 		
 		String generatedKode = codeGenerator.createKode(pelanggan);
 		

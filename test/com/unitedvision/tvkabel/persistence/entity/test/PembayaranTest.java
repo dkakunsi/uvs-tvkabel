@@ -16,10 +16,10 @@ public class PembayaranTest {
 
 	@Test
 	public void generateKodeWorks() throws EmptyIdException {
-		@SuppressWarnings("deprecation")
-		Pelanggan pelanggan = new Pelanggan(101);
-		@SuppressWarnings("deprecation")
-		Pegawai pegawai = new Pegawai(201);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setId(101);
+		Pegawai pegawai = new Pegawai();
+		pegawai.setId(201);
 		
 		Pembayaran pembayaran = new Pembayaran();
 		pembayaran.setPegawai(pegawai);

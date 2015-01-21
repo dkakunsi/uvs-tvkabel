@@ -17,16 +17,16 @@ public class PegawaiTest {
 
 	@Test
 	public void createWithIdWorks() throws EmptyIdException {
-		@SuppressWarnings("deprecation")
-		Pegawai pegawaiDomain = new Pegawai(1);
+		Pegawai pegawaiDomain = new Pegawai();
+		pegawaiDomain.setId(1);;
 
 		assertEquals(1, pegawaiDomain.getId());
 		assertNull(pegawaiDomain.getStatus());
 	}
 
 	@Test
-	public void createNewWithKodeWorks() throws EmptyCodeException {
-		Pegawai pegawaiDomain = new Pegawai("1", null, "Pegawai", null, Status.AKTIF);
+	public void createNewWithKodeWorks() throws EmptyCodeException, EmptyIdException {
+		Pegawai pegawaiDomain = new Pegawai(0, "1", null, "Pegawai", null, Status.AKTIF);
 
 		assertEquals(Status.AKTIF, pegawaiDomain.getStatus());
 		assertEquals(0, pegawaiDomain.getId());
@@ -34,12 +34,11 @@ public class PegawaiTest {
 	}
 
 	@Test
-	public void createNewWorks() {
-		Pegawai pegawaiDomain = new Pegawai(null, "Pegawai", null, Status.AKTIF);
+	public void createNewWorks() throws EmptyCodeException, EmptyIdException {
+		Pegawai pegawaiDomain = new Pegawai(0, "PG01", null, "Pegawai", null, Status.AKTIF);
 
 		assertEquals(Status.AKTIF, pegawaiDomain.getStatus());
 		assertEquals(0, pegawaiDomain.getId());
-		assertNull(pegawaiDomain.getKode());
 	}
 
 	@Test
@@ -63,19 +62,16 @@ public class PegawaiTest {
 	}
 
 	@Test(expected = StatusChangeException.class)
-	public void removeNewEntity() throws StatusChangeException {
-		Pegawai pegawaiDomain = new Pegawai(null, "Pegawai", null, Status.AKTIF);
+	public void removeNewEntity() throws StatusChangeException, EmptyCodeException, EmptyIdException {
+		Pegawai pegawaiDomain = new Pegawai(0, "-", null, "Pegawai", null, Status.AKTIF);
 		
 		pegawaiDomain.remove();
 	}
 
 	@Test
 	public void generateKodeWorks() throws EmptyCodeException, EmptyIdException {
-		Perusahaan perusahaanDomain = new Perusahaan(1, "COM1", "Perusahaan", new Alamat(new Kelurahan(), 1, ""), null, 1000L, Perusahaan.Status.AKTIF);
-		Pegawai pegawaiDomain = new Pegawai(perusahaanDomain, "Pegawai", null, Status.AKTIF);
-		
-		assertNull(pegawaiDomain.getKode());
-
+		Perusahaan perusahaanDomain = new Perusahaan(1, "COM1", "Perusahaan", new Kelurahan(), new Alamat(1, "", 0, 0), null, 1000L, Perusahaan.Status.AKTIF);
+		Pegawai pegawaiDomain = new Pegawai(0, "-", perusahaanDomain, "Pegawai", null, Status.AKTIF);
 		pegawaiDomain.generateKode(1L);
 		
 		assertEquals(Status.AKTIF, pegawaiDomain.getStatus());

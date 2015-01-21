@@ -25,10 +25,11 @@ public class PelangganTest {
 
 	@Test
 	public void createWithId() throws EmptyIdException {
-		@SuppressWarnings("deprecation")
-		Pelanggan pelanggan = new Pelanggan(1);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setId(0);
 		
-		assertEquals(1, pelanggan.getId());
+		assertEquals(0, pelanggan.getId());
+		assertEquals(true, pelanggan.isNew());
 	}
 
 	@Test
@@ -36,10 +37,10 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(kelurahan, 1, "");
+		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("08/20/2012"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -64,10 +65,10 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(kelurahan, 1, "");
+		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -83,10 +84,10 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(kelurahan, 1, "");
+		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -105,10 +106,10 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(kelurahan, 1, "");
+		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());

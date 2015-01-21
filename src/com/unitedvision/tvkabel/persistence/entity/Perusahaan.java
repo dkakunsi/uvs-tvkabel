@@ -63,53 +63,28 @@ public final class Perusahaan extends CodableDomain {
 	}
 
 	/**
-	 * Create new instance which is not persisted in database and does not has id.
-	 * @param nama
-	 * @param alamat
-	 * @param kontak
-	 * @param iuran
-	 * @param status
-	 */
-	public Perusahaan(String nama, Alamat alamat, Kontak kontak, long iuran, Status status) {
-		super();
-		setNama(nama);
-		setKontak(kontak);
-		setAlamat(alamat);
-		setIuran(iuran);
-		setStatus(status);
-	}
-
-	/**
-	 * Create instance.
-	 * @param kode
-	 * @param nama
-	 * @param alamat
-	 * @param kontak
-	 * @param iuran
-	 * @param status
-	 * @throws EmptyCodeException {@code kode} is null or an empty string
-	 */
-	public Perusahaan(String kode, String nama, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyCodeException {
-		this(nama, alamat, kontak, iuran, status);
-		setKode(kode);
-	}
-
-	/**
 	 * Create instance.
 	 * @param id must be positive
 	 * @param kode
 	 * @param nama
+	 * @param kelurahan
 	 * @param alamat
 	 * @param kontak
 	 * @param iuran
 	 * @param status
-	 * @throws EmptyIdException id is 0 or negative
+	 * @throws EmptyIdException {@code id} is negative.
 	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Perusahaan(int id, String kode, String nama, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyIdException, EmptyCodeException {
-		this(nama, alamat, kontak, iuran, status);
+	public Perusahaan(int id, String kode, String nama, Kelurahan kelurahan, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyIdException, EmptyCodeException {
+		super();
 		setId(id);
 		setKode(kode);
+		setNama(nama);
+		setKelurahan(kelurahan);
+		setAlamat(alamat);
+		setKontak(kontak);
+		setIuran(iuran);
+		setStatus(status);
 	}
 
 	@Override
@@ -157,8 +132,6 @@ public final class Perusahaan extends CodableDomain {
 	 */
 	public void setAlamat(Alamat alamat) {
 		this.alamat = alamat;
-		if (alamat != null)
-			setKelurahan(alamat.getKelurahan());
 	}
 	
 	/**
@@ -246,7 +219,6 @@ public final class Perusahaan extends CodableDomain {
 	 */
 	public void setKelurahan(Kelurahan kelurahan) {
 		this.kelurahan = kelurahan;
-		this.alamat.setKelurahan(kelurahan);
 	}
 
 	/**

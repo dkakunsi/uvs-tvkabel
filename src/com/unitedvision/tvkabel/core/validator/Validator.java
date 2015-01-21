@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Kota;
@@ -74,34 +73,16 @@ public class Validator {
 		return kelurahan;
 	}
 
-	public Alamat validate(Alamat alamat) {
-		Kelurahan kelurahan = alamat.getKelurahan();
-		
-		try {
-			if (kelurahan.isNew())
-				kelurahan = kelurahanRepository.findByNama(kelurahan.getNama());
-		} catch (EntityNotExistException e) {
-			kelurahan = validate(kelurahan);
-			kelurahan = kelurahanRepository.save(kelurahan);
-		}
-
-		alamat.setKelurahan(kelurahan);
-		
-		return alamat;
-	}
-	
 	public Perusahaan validate(Perusahaan perusahaan) {
-		Alamat alamat = perusahaan.getAlamat();
-		alamat = validate(alamat);
-		perusahaan.setAlamat((Alamat)alamat);
+		Kelurahan kelurahan = validate(perusahaan.getKelurahan());
+		perusahaan.setKelurahan(kelurahan);
 		
 		return perusahaan;
 	}
 	
 	public Pelanggan validate(Pelanggan pelanggan) {
-		Alamat alamat = pelanggan.getAlamat();
-		alamat = validate(alamat);
-		pelanggan.setAlamat((Alamat)alamat);
+		Kelurahan kelurahan = validate(pelanggan.getKelurahan());
+		pelanggan.setKelurahan(kelurahan);
 		
 		return pelanggan;
 	}

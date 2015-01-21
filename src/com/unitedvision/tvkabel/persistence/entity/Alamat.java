@@ -2,7 +2,6 @@ package com.unitedvision.tvkabel.persistence.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 
 /**
  * Address value object.
@@ -12,11 +11,6 @@ import javax.persistence.Transient;
  */
 @Embeddable
 public final class Alamat {
-	/**
-	 * kelurahan.
-	 */
-	private Kelurahan kelurahan;
-	
 	/**
 	 * lingkungan.
 	 */
@@ -46,15 +40,17 @@ public final class Alamat {
 
 	/**
 	 * Create instance.
-	 * @param kelurahan
 	 * @param lingkungan
 	 * @param detailAlamat
+	 * @param latitude
+	 * @param longitude
 	 */
-	public Alamat(Kelurahan kelurahan, int lingkungan, String detailAlamat) {
+	public Alamat(int lingkungan, String detailAlamat, float latitude, float longitude) {
 		super();
-		setKelurahan(kelurahan);
 		setLingkungan(lingkungan);
 		setDetailAlamat(detailAlamat);
+		setLatitude(latitude);
+		setLongitude(longitude);
 	}
 
 	/**
@@ -125,97 +121,15 @@ public final class Alamat {
 		this.longitude = longitude;
 	}
 
-	/**
-	 * Return {@link Kelurahan} instance.
-	 * @return kelurahan
-	 */
-	@Transient
-	public Kelurahan getKelurahan() {
-		return kelurahan;
-	}
-
-	/**
-	 * Set kelurahan.  It is a transient object, which means it will not be persisted to database.
-	 * If you want to persist it to database, use {@link Kelurahan} object in alamat container classes instead,
-	 * such as {@link Perusahaan} or {@link Pelanggan}.
-	 * 
-	 * @param {@link Kelurahan} kelurahan
-	 */
-	public void setKelurahan(Kelurahan kelurahan) {
-		this.kelurahan = kelurahan;
-	}
-
-	/**
-	 * If kelurahan is null, create a new one.
-	 */
-	private void setKelurahan() {
-		if (kelurahan == null)
-			kelurahan = new Kelurahan();
-	}
-
-	/**
-	 * Return {@link Kecamatan} instance.
-	 * @return kecamatan
-	 */
-	@Transient
-	public Kecamatan getKecamatan() {
-		return getKelurahan().getKecamatan();
-	}
-
-	/**
-	 * Return {@link Kota} instance.
-	 * @return kota
-	 */
-	@Transient
-	public Kota getKota() {
-		return getKelurahan().getKecamatan().getKota();
-	}
-
-	@Transient
-	public int getIdKota() {
-		setKelurahan();
-		return kelurahan.getIdKota();
-	}
-
-	@Transient
-	public String getNamaKota() {
-		setKelurahan();
-		return kelurahan.getNamaKota();
-	}
-
-	@Transient
-	public int getIdKecamatan() {
-		setKelurahan();
-		return kelurahan.getIdKecamatan();
-	}
-
-	@Transient
-	public String getNamaKelurahan() {
-		setKelurahan();
-		return kelurahan.getNama();
-	}
-
-	@Transient
-	public int getIdKelurahan() {
-		setKelurahan();
-		return kelurahan.getId();
-	}
-
-	@Transient
-	public String getNamaKecamatan() {
-		setKelurahan();
-		return kelurahan.getNamaKecamatan();
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
 				+ ((detailAlamat == null) ? 0 : detailAlamat.hashCode());
-		result = prime * result
-				+ ((kelurahan == null) ? 0 : kelurahan.hashCode());
+		result = prime * result + Float.floatToIntBits(latitude);
 		result = prime * result + lingkungan;
+		result = prime * result + Float.floatToIntBits(longitude);
 		return result;
 	}
 
@@ -233,19 +147,22 @@ public final class Alamat {
 				return false;
 		} else if (!detailAlamat.equals(other.detailAlamat))
 			return false;
-		if (kelurahan == null) {
-			if (other.kelurahan != null)
-				return false;
-		} else if (!kelurahan.equals(other.kelurahan))
+		if (Float.floatToIntBits(latitude) != Float
+				.floatToIntBits(other.latitude))
 			return false;
 		if (lingkungan != other.lingkungan)
+			return false;
+		if (Float.floatToIntBits(longitude) != Float
+				.floatToIntBits(other.longitude))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Alamat [kelurahan=" + kelurahan + ", lingkungan=" + lingkungan
-				+ ", detailAlamat=" + detailAlamat + "]";
+		return "Alamat [lingkungan=" + lingkungan + ", detailAlamat="
+				+ detailAlamat + ", latitude=" + latitude + ", longitude="
+				+ longitude + "]";
 	}
+
 }

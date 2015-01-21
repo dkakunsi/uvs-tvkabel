@@ -69,75 +69,33 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		super();
 	}
 
-	/** 
-	 * Create instance.
-	 * @param id
-	 * @throws EmptyIdException {@code id} is not positive.
-	 */
-	@Deprecated
-	public Pelanggan(int id) throws EmptyIdException {
-		super();
-		setId(id);
-	}
-
 	/**
 	 * Create instance.
+	 * @param id must be positive
 	 * @param perusahaan
+	 * @param kode cannot be null or an empty string
 	 * @param nama
 	 * @param profesi
+	 * @param kelurahan
 	 * @param alamat
 	 * @param kontak
 	 * @param detail
 	 * @param status
+	 * @throws EmptyIdException {@code id} is negative.
+	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Pelanggan(Perusahaan perusahaan, String nama, String profesi, Alamat alamat, Kontak kontak, Detail detail, Status status) {
+	public Pelanggan(int id, Perusahaan perusahaan, String kode, String nama, String profesi, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
 		super();
+		setId(id);
 		setPerusahaan(perusahaan);
+		setKode(kode);
 		setNama(nama);
 		setProfesi(profesi);
+		setKelurahan(kelurahan);
+		setAlamat(alamat);
 		setKontak(kontak);
 		setDetail(detail);
 		setStatus(status);
-		setAlamat(alamat);
-	}
-
-	/**
-	 * Create instance.
-	 * @param id must be positive
-	 * @param perusahaan
-	 * @param kode cannot be null or an empty string
-	 * @param nama
-	 * @param profesi
-	 * @param alamat
-	 * @param kontak
-	 * @param detail
-	 * @param status
-	 * @throws EmptyIdException {@code id} is not positive.
-	 * @throws EmptyCodeException {@code kode} is null or an empty string
-	 */
-	public Pelanggan(Perusahaan perusahaan, String kode, String nama, String profesi, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyCodeException {
-		this(perusahaan, nama, profesi, alamat, kontak, detail, status);
-		setKode(kode);
-	}
-
-	/**
-	 * Create instance.
-	 * @param id must be positive
-	 * @param perusahaan
-	 * @param kode cannot be null or an empty string
-	 * @param nama
-	 * @param profesi
-	 * @param alamat
-	 * @param kontak
-	 * @param detail
-	 * @param status
-	 * @throws EmptyIdException {@code id} is not positive.
-	 * @throws EmptyCodeException {@code kode} is null or an empty string
-	 */
-	public Pelanggan(int id, Perusahaan perusahaan, String kode, String nama, String profesi, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
-		this(perusahaan, nama, profesi, alamat, kontak, detail, status);
-		setId(id);
-		setKode(kode);
 	}
 
 	@Override
@@ -221,8 +179,6 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 */
 	public void setAlamat(Alamat alamat) {
 		this.alamat = alamat;
-		if (alamat != null)
-			setKelurahan(alamat.getKelurahan());
 	}
 	
 	/**
@@ -319,7 +275,6 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 */
 	public void setKelurahan(Kelurahan kelurahan) {
 		this.kelurahan = kelurahan;
-		alamat.setKelurahan(kelurahan);
 	}
 	
 	/**

@@ -37,11 +37,11 @@ public abstract class Domain {
 	/**
 	 * Set id.
 	 * @param id must be positive
-	 * @throws EmptyIdException id is 0 or negative
+	 * @throws EmptyIdException id is negative
 	 */
 	public void setId(int id) throws EmptyIdException {
-		if (id <= 0)
-			throw new EmptyIdException("id must be positive");
+		if (id < 0)
+			throw new EmptyIdException("id cannot be negative");
 		this.id = id;
 	}
 	

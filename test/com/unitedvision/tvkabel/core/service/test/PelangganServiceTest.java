@@ -2,7 +2,6 @@ package com.unitedvision.tvkabel.core.service.test;
 
 import static org.junit.Assert.*;
 
-import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
@@ -62,12 +61,12 @@ public class PelangganServiceTest {
 	public void insertPelangganSuccess() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan pelanggan = newPelanggan;
 		Pelanggan saved = pelangganService.save(pelanggan);
@@ -76,21 +75,22 @@ public class PelangganServiceTest {
 
 		//Check Tanggal Mulai
 		Date date = saved.getTanggalMulai();
-		assertEquals(2015, DateUtil.getYear(date));
-		assertEquals(Month.JANUARY, DateUtil.getMonth(date));
-		assertEquals(19, DateUtil.getDay(date));
+		Date now = DateUtil.getSimpleNow();
+		assertEquals(DateUtil.getYear(now), DateUtil.getYear(date));
+		assertEquals(DateUtil.getMonth(now), DateUtil.getMonth(date));
+		assertEquals(DateUtil.getDay(now), DateUtil.getDay(date));
 	}
 
 	@Test
 	public void bannedWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		
@@ -112,12 +112,12 @@ public class PelangganServiceTest {
 	public void banBannedPelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		
@@ -144,12 +144,12 @@ public class PelangganServiceTest {
 	public void passivateWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		
@@ -171,12 +171,12 @@ public class PelangganServiceTest {
 	public void passivatePassivePelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		
@@ -204,12 +204,12 @@ public class PelangganServiceTest {
 	public void activateWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		
@@ -232,12 +232,12 @@ public class PelangganServiceTest {
 	public void activateActivePelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(kelurahan, 1, "Detail");
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				alamat, kontak, detail, Status.AKTIF);
+		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
 		

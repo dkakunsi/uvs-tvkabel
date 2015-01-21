@@ -27,7 +27,7 @@ public class DomainTest {
 		assertEquals(false, domain.isNew());
 	}
 	
-	@Test (expected = EmptyIdException.class)
+	@Test
 	public void setIdWithZeroId() throws EmptyIdException {
 		Domain domain = new Perusahaan();
 		domain.setId(0);

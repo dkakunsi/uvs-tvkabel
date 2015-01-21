@@ -37,11 +37,11 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
 
             document.open();
             Kelurahan kelurahan = new Kelurahan(null, "Paniki Bawah");
-            Alamat alamat = new Alamat(kelurahan, 1, "Rumah Saya");
+            Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
             Detail detail = new Detail(new Date(), 1, 50000, 0);
-            Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", alamat, kontak, 1000, Perusahaan.Status.AKTIF);
-            Pelanggan pelanggan = new Pelanggan(1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", alamat, kontak, detail, Pelanggan.Status.AKTIF);
+            Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
+            Pelanggan pelanggan = new Pelanggan(1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", kelurahan, alamat, kontak, detail, Pelanggan.Status.AKTIF);
             
             Tagihan tagihan = new Tagihan(2015, Month.JANUARY);
             Pembayaran pembayaran = new Pembayaran(pelanggan, null, detail.getIuran(), DateUtil.getNow(), tagihan);
