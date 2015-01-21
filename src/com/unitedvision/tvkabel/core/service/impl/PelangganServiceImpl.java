@@ -1,5 +1,6 @@
 package com.unitedvision.tvkabel.core.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public void remove(Pelanggan domain) throws EntityNotExistException, StatusChangeException {
+	public void remove(Pelanggan domain) throws StatusChangeException {
 		domain = pelangganRepository.findOne(domain.getId());
 		((Removable)domain).remove();
 
@@ -101,13 +102,19 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void banned(Pelanggan pelanggan) throws EntityNotExistException, StatusChangeException, DataDuplicationException {
+	public void banned(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.PUTUS))
 			throw new StatusChangeException("Tidak mem-banned pelanggan.<br />"
 					+ "Karena pelanggan merupakan pelanggan putus");
 
 		pelanggan.setStatus(Status.PUTUS);
-		pelanggan.countTunggakan(pembayaranService.getLast(pelanggan));
+		Pembayaran last = null;
+		try {
+			last = pembayaranService.getLast(pelanggan);
+		} catch (EntityNotExistException e) {
+			//nothing to do
+		}
+		pelanggan.countTunggakan(last);
 		
 		save(pelanggan);
 	}
@@ -148,7 +155,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public Pelanggan getOne(int id){
+	public Pelanggan getOne(int id) throws EntityNotExistException {
 		return pelangganRepository.findOne(id);
 	}
 
@@ -163,62 +170,62 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int pageNumber) {
+	public List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
 		return pelangganRepository.findByPerusahaanAndKodeContainingOrderByKodeAsc(perusahaan, kode, page);
 	}
 
 	@Override
-	public List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int pageNumber) {
+	public List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 
 		return pelangganRepository.findByPerusahaanAndNamaContainingOrderByKodeAsc(perusahaan, nama, page);
 	}
 	
 	@Override
-	public List<Pelanggan> get(Status status, int tanggal) {
+	public List<Pelanggan> get(Status status, int tanggal) throws EntityNotExistException {
 		return pelangganRepository.findByTanggalMulai(status, tanggal);
 	}
 	
 	@Override
-	public List<Pelanggan> get(Perusahaan perusahaan, Status status) {
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status) throws EntityNotExistException {
 		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, status);
 	}
 
 	@Override
-	public List<Pelanggan> get(Perusahaan perusahaan, Status status, int pageNumber) {
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
 		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, status, page);
 	}
 
 	@Override
-	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
+	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) throws EntityNotExistException {
 		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan, status, tunggakan);
 	}
 
 	@Override
-	public List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) {
+	public List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
 		return pelangganRepository.findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(perusahaan, status, nama, page);
 	}
 
 	@Override
-	public List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int pageNumber) {
+	public List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
 		
 		return pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan, status, kode, page);
 	}
 
 	@Override
-	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) {
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException {
 		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
 	}
 
 	@Override
-	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) {
+	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) throws EntityNotExistException {
 		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
 		
 		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarStr);
@@ -267,7 +274,11 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public Pelanggan cetakKartu(Pelanggan pelanggan) {
 		int tahun = DateUtil.getYearNow();
-		pelanggan.setListPembayaran((List<Pembayaran>)pembayaranService.get(pelanggan, tahun));
+		try {
+			pelanggan.setListPembayaran((List<Pembayaran>)pembayaranService.get(pelanggan, tahun));
+		} catch (EntityNotExistException e) {
+			pelanggan.setListPembayaran(new ArrayList<>());
+		}
 
 		return pelanggan;
 	}

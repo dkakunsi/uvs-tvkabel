@@ -46,12 +46,12 @@ public class KelurahanServiceImpl implements KelurahanService {
 	}
 
 	@Override
-	public List<Kelurahan> getAll() {
+	public List<Kelurahan> getAll() throws EntityNotExistException {
 		return kelurahanRepository.findAll();
 	}
 
 	@Override
-	public List<Kelurahan> getByKecamatan(Kecamatan kecamatan) {
+	public List<Kelurahan> getByKecamatan(Kecamatan kecamatan) throws EntityNotExistException {
 		return kelurahanRepository.findByKecamatan(kecamatan);
 	}
 }

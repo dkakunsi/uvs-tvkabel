@@ -63,19 +63,19 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
-	public List<Pegawai> get(Perusahaan perusahaan) {
+	public List<Pegawai> get(Perusahaan perusahaan) throws EntityNotExistException {
 		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan, Status.AKTIF);
 	}
 
 	@Override
-	public List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) {
+	public List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) throws EntityNotExistException {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
 		return pegawaiRepository.findByPerusahaanAndStatusAndNamaContaining(perusahaan, Status.AKTIF, nama, pageRequest);
 	}
 
 	@Override
-	public List<Pegawai> getByKode(Perusahaan perusahaan, String kode, int page) {
+	public List<Pegawai> getByKode(Perusahaan perusahaan, String kode, int page) throws EntityNotExistException {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
 		return pegawaiRepository.findByPerusahaanAndStatusAndKodeContaining(perusahaan, Status.AKTIF, kode, pageRequest);

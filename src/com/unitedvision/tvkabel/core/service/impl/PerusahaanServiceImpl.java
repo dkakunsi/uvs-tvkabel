@@ -70,7 +70,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	}
 
 	@Override
-	public List<Perusahaan> getAll() {
+	public List<Perusahaan> getAll() throws EntityNotExistException {
 		return perusahaanRepository.findAll();
 	}
 

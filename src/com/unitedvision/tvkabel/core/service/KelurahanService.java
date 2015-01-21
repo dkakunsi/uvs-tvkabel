@@ -7,8 +7,8 @@ import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 
 public interface KelurahanService extends Service<Kelurahan> {
-	List<Kelurahan> getByKecamatan(Kecamatan kecamatan);
-	List<Kelurahan> getAll();
+	List<Kelurahan> getByKecamatan(Kecamatan kecamatan) throws EntityNotExistException;
+	List<Kelurahan> getAll() throws EntityNotExistException;
 	
 	Kelurahan getOneByNama(String nama) throws EntityNotExistException;
 }

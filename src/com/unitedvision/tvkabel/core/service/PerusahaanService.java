@@ -16,7 +16,7 @@ public interface PerusahaanService extends Service<Perusahaan> {
 	void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException;
 
 	//This will be use for admin's page
-	List<Perusahaan> getAll();
+	List<Perusahaan> getAll() throws EntityNotExistException;
 	
 	long countTagihanBulanBerjalan(Perusahaan perusahaan, Date tanggalAwal, Date tanggalAkhir);
 	long countTagihanBulanBerjalan(Perusahaan perusahaan);

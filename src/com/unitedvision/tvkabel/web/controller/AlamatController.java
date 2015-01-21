@@ -32,9 +32,13 @@ public class AlamatController extends AbstractController {
 
 	@RequestMapping(value = "/kelurahan", method = RequestMethod.GET)
 	public @ResponseBody ListKelurahanRestResult getAllKelurahan() {
-		List<Kelurahan> list = kelurahanService.getAll();
-		
-		return ListKelurahanRestResult.create("Berhasil!", list);
+		try {
+			List<Kelurahan> list = kelurahanService.getAll();
+			
+			return ListKelurahanRestResult.create("Berhasil!", list);
+		} catch (EntityNotExistException e) {
+			return ListKelurahanRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 
 	@RequestMapping(value = "/kelurahan/kecamatan/{kecamatanId}", method = RequestMethod.GET)
@@ -74,8 +78,12 @@ public class AlamatController extends AbstractController {
 	
 	@RequestMapping(value = "/kota", method = RequestMethod.GET)
 	public @ResponseBody ListKotaRestResult getAllKota() {
-		List<Kota> list = kotaService.getAll();
-		
-		return ListKotaRestResult.create("Berhasil!", list);
+		try {
+			List<Kota> list = kotaService.getAll();
+			
+			return ListKotaRestResult.create("Berhasil!", list);
+		} catch (EntityNotExistException e) {
+			return ListKotaRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 }

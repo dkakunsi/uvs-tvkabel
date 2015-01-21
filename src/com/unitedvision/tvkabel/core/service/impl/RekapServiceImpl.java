@@ -1,6 +1,7 @@
 package com.unitedvision.tvkabel.core.service.impl;
 
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
@@ -27,7 +29,7 @@ public class RekapServiceImpl implements RekapService {
 	private PembayaranService pembayaranService;
 
 	@Override
-	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) {
+	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) throws EntityNotExistException {
 		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
 
 		return rekapHarian(listPelanggan, hari);
@@ -40,8 +42,13 @@ public class RekapServiceImpl implements RekapService {
 		tagihanAwal.substract(numberOfMonth);
 		
 		for (Pelanggan pelanggan : list) {
-			List<Pembayaran> listPembayaran = pembayaranService.get(pelanggan, tagihanAwal, tagihanAkhir);
-			listPembayaran = verify(listPembayaran, numberOfMonth);
+			List<Pembayaran> listPembayaran;
+			try {
+				listPembayaran = pembayaranService.get(pelanggan, tagihanAwal, tagihanAkhir);
+				listPembayaran = verify(listPembayaran, numberOfMonth);
+			} catch (EntityNotExistException e) {
+				listPembayaran = new ArrayList<>();
+			}
 			pelanggan.setListPembayaran(listPembayaran);
 		}
 		
@@ -51,11 +58,11 @@ public class RekapServiceImpl implements RekapService {
 	private List<Pembayaran> verify(List<Pembayaran> list, int counter) {
 		if (list.size() == 0) {
 			for (int i = 1; i <= counter; i++)
-				list.add(createDefaultPembayaran(2014, Month.JANUARY));
+				list.add(createDefaultPembayaran(DateUtil.getYearNow(), Month.JANUARY));
 		} else {
 			int listSize = list.size();
 			for (int i = listSize; i < counter; i++)
-				list.add(createDefaultPembayaran(2014, Month.JANUARY));
+				list.add(createDefaultPembayaran(DateUtil.getYearNow(), Month.JANUARY));
 		}
 		
 		return list;
@@ -63,8 +70,14 @@ public class RekapServiceImpl implements RekapService {
 	
 	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
  		for (Pelanggan pelanggan : list) {
- 			List<Pembayaran> listPembayaran = pembayaranService.get(pelanggan, tahun);
- 			verifyListPembayaran(listPembayaran, tahun, pelanggan);
+ 			List<Pembayaran> listPembayaran;
+			try {
+				listPembayaran = pembayaranService.get(pelanggan, tahun);
+	 			verifyListPembayaran(listPembayaran, tahun, pelanggan);
+			} catch (EntityNotExistException e) {
+				listPembayaran = new ArrayList<>();
+				verifyPembayaranEmpty(listPembayaran);
+			}
  			pelanggan.setListPembayaran(listPembayaran); 
  		} 
  		 
@@ -72,12 +85,8 @@ public class RekapServiceImpl implements RekapService {
 	}
 	
 	private void verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) {
-		if (listPembayaran.size() > 0) {
-			verifyPembayaranFirst(listPembayaran);
-			verifyPembayaranLast(listPembayaran);
-		} else {
-			verifyPembayaranEmpty(listPembayaran);
-		}
+		verifyPembayaranFirst(listPembayaran);
+		verifyPembayaranLast(listPembayaran);
 	}
 
 	/**
@@ -125,21 +134,21 @@ public class RekapServiceImpl implements RekapService {
 	}
 
 	@Override
-	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) {
+	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException {
 		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.AKTIF);
 
 		return rekapTahunan(listPelanggan, tahun);
 	}
 
 	@Override
-	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
+	public List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) throws EntityNotExistException {
 		Tagihan tagihan = new Tagihan(tahun, bulan);
 
 		return pembayaranService.get(perusahaan, tagihan);
 	}
 
 	@Override
-	public List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) {
+	public List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) throws EntityNotExistException {
 		final Date tanggalAwal = DateUtil.getDate(tahun, bulan, 1);
 		final Date tanggalAkhir = DateUtil.getDate(tahun, bulan, DateUtil.getLastDay(bulan, tahun));
 
@@ -147,12 +156,12 @@ public class RekapServiceImpl implements RekapService {
 	}
 
 	@Override
-	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) {
+	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) throws EntityNotExistException {
 		return pelangganService.getByTunggakan(perusahaan, status, tunggakan);
 	}
 
 	@Override
-	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) {
+	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) throws EntityNotExistException {
 		return pelangganService.get(perusahaan, status, kelurahan, lingkungan);
 	}
 

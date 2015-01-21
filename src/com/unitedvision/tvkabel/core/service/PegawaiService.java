@@ -14,10 +14,10 @@ public interface PegawaiService extends Service<Pegawai> {
 	Pegawai getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException;
 	Pegawai getOneByUsername(String username) throws EntityNotExistException;
 	
-	List<Pegawai> get(Perusahaan perusahaan);
+	List<Pegawai> get(Perusahaan perusahaan) throws EntityNotExistException;
 	
-	List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page);
-	List<Pegawai> getByKode(Perusahaan perusahaan, String kode, int page);
+	List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) throws EntityNotExistException;
+	List<Pegawai> getByKode(Perusahaan perusahaan, String kode, int page) throws EntityNotExistException;
 	
 	long countByNama(Perusahaan perusahaan, String nama);
 	long countByKode(Perusahaan perusahaan, String kode);

@@ -1,5 +1,7 @@
 package com.unitedvision.tvkabel.interceptor;
 
+import java.util.List;
+
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,21 @@ public class NullObjectInterceptor {
 		pointcut = "execution(public * com.unitedvision.tvkabel.persistence.repository.*.find*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
 		returning = "returnValue")
 	public void nullObjectReturned(Object returnValue) throws EntityNotExistException {
+		System.out.println("XXX");
+		
 		if (returnValue == null)
+			throw new EntityNotExistException("Data tidak ditemukan");
+	}
+
+	@AfterReturning(
+		pointcut = "execution(public * com.unitedvision.tvkabel.core.service.impl.*.get*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
+		returning = "returnValue")
+	public void nullObjectReturned2(Object returnValue) throws EntityNotExistException {
+		System.out.println("YYY");
+		
+		if (returnValue == null)
+			throw new EntityNotExistException("Data tidak ditemukan");
+		if ((returnValue instanceof List) && (((List<?>)returnValue).size() <= 0))
 			throw new EntityNotExistException("Data tidak ditemukan");
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
@@ -22,18 +23,18 @@ public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
 
-	List<Pelanggan> get(Perusahaan perusahaan, Status status);
-	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page);
-	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
-	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar);
-	List<Pelanggan> get(Status status, int tanggal);
+	List<Pelanggan> get(Perusahaan perusahaan, Status status) throws EntityNotExistException;
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page) throws EntityNotExistException;
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
+	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) throws EntityNotExistException;
+	List<Pelanggan> get(Status status, int tanggal) throws EntityNotExistException;
 	List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
 
-	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
-	List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page);
-	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page);
-	List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page);
-	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page);
+	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) throws EntityNotExistException;
+	List<Pelanggan> getByKode(Perusahaan perusahaan, String kode, int page) throws EntityNotExistException;
+	List<Pelanggan> getByKode(Perusahaan perusahaan, Status status, String kode, int page) throws EntityNotExistException;
+	List<Pelanggan> getByNama(Perusahaan perusahaan, String nama, int page) throws EntityNotExistException;
+	List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int page) throws EntityNotExistException;
 
 	long count(Perusahaan perusahaan, Status status);
 	long countByNama(Perusahaan perusahaan, String nama);

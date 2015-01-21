@@ -327,4 +327,20 @@ public class PelangganServiceTest {
 		Pelanggan pelangganUpdated = pelangganService.getOne(37);
 		assertEquals(generatedKode, pelangganUpdated.getKode());
 	}
+	
+	@Test (expected = EntityNotExistException.class)
+	public void testGetOne() throws EntityNotExistException {
+		Pelanggan pelanggan = pelangganService.getOne(0);
+		
+		assertNotNull(pelanggan);
+	}
+	
+	@Test (expected = EntityNotExistException.class)
+	public void testGet() throws EntityNotExistException {
+		Perusahaan perusahaan = perusahaanService.getOne(17);
+		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.REMOVED);
+		
+		assertNotNull(listPelanggan);
+		assertNotEquals(0, listPelanggan.size());
+	}
 }

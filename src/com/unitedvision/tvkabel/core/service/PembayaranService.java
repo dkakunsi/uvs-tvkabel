@@ -20,14 +20,14 @@ public interface PembayaranService extends Service<Pembayaran> {
 	
 	Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException;
 
-	List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan);
-	List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir);
-	List<Pembayaran> get(Pelanggan pelanggan, int tahun);
+	List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) throws EntityNotExistException;
+	List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) throws EntityNotExistException;
+	List<Pembayaran> get(Pelanggan pelanggan, int tahun) throws EntityNotExistException;
 
-	List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page);
-	List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page);
+	List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException;
+	List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException;
 
-	List<Pembayaran> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir);
+	List<Pembayaran> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir) throws EntityNotExistException;
 
 	long count(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir);
 	long count(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir);

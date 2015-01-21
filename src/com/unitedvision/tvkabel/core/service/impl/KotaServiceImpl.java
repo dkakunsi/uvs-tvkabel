@@ -36,7 +36,7 @@ public class KotaServiceImpl implements KotaService {
 	}
 	
 	@Override
-	public List<Kota> getAll() {
+	public List<Kota> getAll() throws EntityNotExistException {
 		return kotaRepository.findAll();
 	}
 }

@@ -67,9 +67,13 @@ public class PerusahaanController extends AbstractController {
 	
 	@RequestMapping (value = "", method = RequestMethod.GET)
 	public @ResponseBody ListPerusahaanRestResult getAll() {
-		List<Perusahaan> list = perusahaanService.getAll();
-		
-		return ListPerusahaanRestResult.create("Berhasil!", list);
+		try {
+			List<Perusahaan> list = perusahaanService.getAll();
+			
+			return ListPerusahaanRestResult.create("Berhasil!", list);
+		} catch (EntityNotExistException e) {
+			return ListPerusahaanRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 	
 	@RequestMapping (value = "/kode/{kode}", method = RequestMethod.GET)

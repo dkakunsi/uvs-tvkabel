@@ -109,37 +109,37 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) {
+	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) throws EntityNotExistException {
 		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir);
 	}
 
 	@Override
-	public List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) {
+	public List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
 		return pembayaranRepository.findByPegawaiAndTanggalBayarBetween(pegawai, tanggalMulai, tanggalAkhir, pageRequest);
 	}
 
 	@Override
-	public List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page) {
+	public List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
 		return pembayaranRepository.findByPelangganAndTanggalBayarBetween(pelanggan, tanggalMulai, tanggalAkhir, pageRequest);
 	}
 	
 	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) {
+	public List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) throws EntityNotExistException {
 		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
 	}
 
 	@Override
-	public List<Pembayaran> get(Pelanggan pelanggan, int tahun) {
+	public List<Pembayaran> get(Pelanggan pelanggan, int tahun) throws EntityNotExistException {
 		return pembayaranRepository.findByPelangganAndTagihan_Tahun(pelanggan, tahun);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Pembayaran> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir) {
+	public List<Pembayaran> get(Pelanggan pelanggan, Tagihan tagihanAwal, Tagihan tagihanAkhir) throws EntityNotExistException {
 		int tahunAwal = tagihanAwal.getTahun();
 		int tahunAkhir = tagihanAkhir.getTahun();
 		Month bulanAwal = tagihanAwal.getBulan();

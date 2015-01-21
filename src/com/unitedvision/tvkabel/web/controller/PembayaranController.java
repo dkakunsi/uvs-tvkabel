@@ -189,11 +189,11 @@ public class PembayaranController extends AbstractController {
 		}
 	}
 
-	private List<Pembayaran> getByPegawai(Pegawai pegawai, Date awal, Date akhir, int page) {
+	private List<Pembayaran> getByPegawai(Pegawai pegawai, Date awal, Date akhir, int page) throws EntityNotExistException {
 		return pembayaranService.get(pegawai, awal, akhir, page);
 	}
 	
-	private List<Pembayaran> getByPelanggan(Pelanggan pelanggan, Date awal, Date akhir, int page) {
+	private List<Pembayaran> getByPelanggan(Pelanggan pelanggan, Date awal, Date akhir, int page) throws EntityNotExistException {
 		return pembayaranService.get(pelanggan, awal, akhir, page);
 	}
 
