@@ -51,7 +51,7 @@ public class AlamatTest extends AlamatPdfView {
         } catch (FileNotFoundException e) {
 			e.printStackTrace(); 
 		} catch (EntityNotExistException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
         
         System.out.println("DONE...");
