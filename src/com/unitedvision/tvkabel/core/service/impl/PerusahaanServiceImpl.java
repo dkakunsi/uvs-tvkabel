@@ -93,7 +93,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 		perusahaan = save(perusahaanEntity);
 		
 		final Kredensi kredensi = new Kredensi(perusahaan.getEmail(), "admin", Role.OWNER);
-		Pegawai pegawai = new Pegawai(0, "", perusahaan, "OWNER", kredensi, Status.AKTIF);
+		Pegawai pegawai = new Pegawai(0, "new", perusahaan, "OWNER", kredensi, Status.AKTIF);
 		pegawai.generateKode(pegawaiRepository.countByPerusahaan(perusahaan));
 		pegawai = pegawaiRepository.save(pegawai);
 		

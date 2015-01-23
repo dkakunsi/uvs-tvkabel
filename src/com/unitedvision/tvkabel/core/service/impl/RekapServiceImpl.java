@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.RekapService;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
@@ -29,13 +30,13 @@ public class RekapServiceImpl implements RekapService {
 	private PembayaranService pembayaranService;
 
 	@Override
-	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) throws EntityNotExistException {
+	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) throws EntityNotExistException, EmptyIdException {
 		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
 
 		return rekapHarian(listPelanggan, hari);
 	}
 	
-	private List<Pelanggan> rekapHarian(List<Pelanggan> list, Date hari) {
+	private List<Pelanggan> rekapHarian(List<Pelanggan> list, Date hari) throws EmptyIdException {
 		final int numberOfMonth = 5; //Retrieve 5 months backward from this month to be reported
 		Tagihan tagihanAkhir = Tagihan.create(hari);
 		Tagihan tagihanAwal = Tagihan.create(hari);
@@ -55,7 +56,7 @@ public class RekapServiceImpl implements RekapService {
 		return list;
 	}
 	
-	private List<Pembayaran> verify(List<Pembayaran> list, int counter) {
+	private List<Pembayaran> verify(List<Pembayaran> list, int counter) throws EmptyIdException {
 		if (list.size() == 0) {
 			for (int i = 1; i <= counter; i++)
 				list.add(createDefaultPembayaran(DateUtil.getYearNow(), Month.JANUARY));
@@ -68,7 +69,7 @@ public class RekapServiceImpl implements RekapService {
 		return list;
 	}
 	
-	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
+	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) throws EmptyIdException {
  		for (Pelanggan pelanggan : list) {
  			List<Pembayaran> listPembayaran;
 			try {
@@ -84,7 +85,7 @@ public class RekapServiceImpl implements RekapService {
  		return list; 
 	}
 	
-	private void verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) {
+	private void verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) throws EmptyIdException {
 		verifyPembayaranFirst(listPembayaran);
 		verifyPembayaranLast(listPembayaran);
 	}
@@ -92,8 +93,9 @@ public class RekapServiceImpl implements RekapService {
 	/**
 	 * Set the default {@link Pembayaran} value when it is not starts from JANUARY
 	 * @param listPembayaran
+	 * @throws EmptyIdException 
 	 */
-	private void verifyPembayaranFirst(List<Pembayaran> listPembayaran) {
+	private void verifyPembayaranFirst(List<Pembayaran> listPembayaran) throws EmptyIdException {
 		Pembayaran pembayaranEntity = listPembayaran.get(0);
 		
 		if (pembayaranEntity.getBulan() != Month.JANUARY) {
@@ -106,8 +108,9 @@ public class RekapServiceImpl implements RekapService {
 	/**
 	 * Set the default {@link Pembayaran} value when it is not ends to DECEMBER
 	 * @param listPembayaran
+	 * @throws EmptyIdException 
 	 */
-	private void verifyPembayaranLast(List<Pembayaran> listPembayaran) {
+	private void verifyPembayaranLast(List<Pembayaran> listPembayaran) throws EmptyIdException {
 		Pembayaran pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
 
 		if (pembayaranEntity.getBulan() != Month.DECEMBER) {
@@ -120,21 +123,22 @@ public class RekapServiceImpl implements RekapService {
 	/**
 	 * Set the default {@link Pembayaran} value when it is not found
 	 * @param listPembayaran
+	 * @throws EmptyIdException 
 	 */
-	private void verifyPembayaranEmpty(List<Pembayaran> listPembayaran) {
+	private void verifyPembayaranEmpty(List<Pembayaran> listPembayaran) throws EmptyIdException {
 		for (int i = Month.JANUARY.getValue(); i <= Month.DECEMBER.getValue(); i++) {
 			listPembayaran.add(createDefaultPembayaran(0, Month.of(i)));
 		}
 	}
 	
-	private Pembayaran createDefaultPembayaran(int tahun, Month bulan) {
+	private Pembayaran createDefaultPembayaran(int tahun, Month bulan) throws EmptyIdException {
 		Tagihan tagihan = new Tagihan(tahun, bulan);
 
-		return new Pembayaran("default", DateUtil.getNow(), new Pelanggan(), new Pegawai(), 0, tagihan);
+		return new Pembayaran(0, "", DateUtil.getNow(), new Pelanggan(), new Pegawai(), 0, tagihan);
 	}
 
 	@Override
-	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException {
+	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException, EmptyIdException {
 		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.AKTIF);
 
 		return rekapTahunan(listPelanggan, tahun);

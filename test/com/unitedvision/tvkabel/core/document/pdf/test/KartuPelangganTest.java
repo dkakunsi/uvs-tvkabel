@@ -36,7 +36,7 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
                 new FileOutputStream("E:\\test.pdf"));
 
             document.open();
-            Kelurahan kelurahan = new Kelurahan(null, "Paniki Bawah");
+            Kelurahan kelurahan = new Kelurahan(0, null, "Paniki Bawah");
             Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
             Detail detail = new Detail(new Date(), 1, 50000, 0);
@@ -44,7 +44,7 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
             Pelanggan pelanggan = new Pelanggan(1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", kelurahan, alamat, kontak, detail, Pelanggan.Status.AKTIF);
             
             Tagihan tagihan = new Tagihan(2015, Month.JANUARY);
-            Pembayaran pembayaran = new Pembayaran(pelanggan, null, detail.getIuran(), DateUtil.getNow(), tagihan);
+            Pembayaran pembayaran = new Pembayaran(0, "", DateUtil.getNow(), pelanggan, null, detail.getIuran(), tagihan);
             
             List<Pembayaran> listPembayaran = new ArrayList<>(); 
             listPembayaran.add(pembayaran);

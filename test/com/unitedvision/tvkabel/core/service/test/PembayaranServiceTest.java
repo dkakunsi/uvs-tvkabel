@@ -19,6 +19,7 @@ import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
@@ -59,14 +60,14 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
+	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
 		Date tanggalBayar = DateUtil.getSimpleNow();
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
 		long jumlahBayar = pelanggan.getIuran();
 		Tagihan tagihan = new Tagihan(2015, Month.FEBRUARY);
 
-		Pembayaran pembayaran = new Pembayaran(pelanggan, pegawai, jumlahBayar, tanggalBayar, tagihan);
+		Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, jumlahBayar, tagihan);
 		assertEquals(0, pelanggan.getTunggakan());
 		
 		pembayaranService.pay(pembayaran);

@@ -44,7 +44,7 @@ public class CodeUtil_CodeGeneratorTest {
 	public void testCreateKode() throws EmptyIdException, EmptyCodeException {
 		CodeUtil.CodeGenerator codeGenerator = new CodeUtil.CodeGenerator();
 		
-		Kelurahan kelurahanEntity = new Kelurahan(null, "Winangun 1");
+		Kelurahan kelurahanEntity = new Kelurahan(0, null, "Winangun 1");
 		Alamat alamatValue = new Alamat(6, "", 0, 0);
 		Pelanggan pelanggan = new Pelanggan(0, null, "", "", "", kelurahanEntity, alamatValue, null, null, null);
 		

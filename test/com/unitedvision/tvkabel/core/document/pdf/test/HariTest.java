@@ -17,6 +17,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.HariPdfView;
 import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.RekapService;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
@@ -29,7 +30,7 @@ public class HariTest extends HariPdfView {
 	private static RekapService rekapService = appContext.getBean(RekapService.class);
 	private static PegawaiService pegawaiService = appContext.getBean(PegawaiService.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EmptyIdException {
         Document document = kartu.newDocument();
 
         try {

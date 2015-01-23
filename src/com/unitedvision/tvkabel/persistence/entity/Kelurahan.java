@@ -48,18 +48,6 @@ public final class Kelurahan extends Region {
 	public Kelurahan() {
 		super();
 	}
-	
-	/**
-	 * Create instance.
-	 * 
-	 * @param kecamatan
-	 * @param nama name
-	 */
-	public Kelurahan(Kecamatan kecamatan, String nama) {
-		super();
-		setNama(nama);
-		setKecamatan(kecamatan);
-	}
 
 	/**
 	 * Create instance.

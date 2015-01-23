@@ -152,7 +152,7 @@ public class PembayaranController extends AbstractController {
 			Pegawai pegawai = pegawaiService.getOne(restRequest.getIdPegawai());
 			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 			
-			Pembayaran pembayaran = new Pembayaran(pelanggan, pegawai, restRequest.getJumlahPembayaran(), tanggalBayar, tagihan);
+			Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, restRequest.getJumlahPembayaran(), tagihan);
 			pembayaranService.pay(pembayaran);
 
 			return RestResult.create("Berhasil!");

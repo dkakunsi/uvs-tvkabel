@@ -15,6 +15,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.TahunPdfView;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.service.RekapService;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
@@ -26,7 +27,7 @@ public class TahunTest extends TahunPdfView {
 	private static RekapService rekapService = appContext.getBean(RekapService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws EmptyIdException {
         Document document = kartu.newDocument();
 
         try {

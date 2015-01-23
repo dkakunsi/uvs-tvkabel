@@ -47,18 +47,6 @@ public final class Kecamatan extends Region {
 	/**
 	 * Create instance.
 	 * 
-	 * @param kota
-	 * @param nama
-	 */
-	public Kecamatan(Kota kota, String nama) {
-		super();
-		this.nama = nama;
-		this.kota = kota;
-	}
-
-	/**
-	 * Create instance.
-	 * 
 	 * @param id
 	 * @param kota
 	 * @param nama

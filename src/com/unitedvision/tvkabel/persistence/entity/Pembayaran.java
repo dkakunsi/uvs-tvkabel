@@ -55,53 +55,6 @@ public final class Pembayaran extends CodableDomain {
 
 	/**
 	 * Create instance.
-	 * @param id
-	 * @throws EmptyIdException {@code id} is not positive.
-	 */
-	@Deprecated
-	public Pembayaran(int id) throws EmptyIdException {
-		super();
-		setId(id);
-	}
-
-	/**
-	 * Create instance.
-	 * @param tanggalBayar
-	 * @param pelanggan
-	 * @param pegawai
-	 * @param jumlahBayar
-	 * @param tagihan
-	 */
-	public Pembayaran(Pelanggan pelanggan, Pegawai pegawai, long jumlahBayar, Date tanggalBayar, Tagihan tagihan) {
-		super();
-		setTanggalBayar(tanggalBayar);
-		setPelanggan(pelanggan);
-		setPegawai(pegawai);
-		setJumlahBayar(jumlahBayar);
-		setTagihan(tagihan);
-	}
-
-	/**
-	 * Create instance.
-	 * @param kode if null or empty String, it will be generated.
-	 * @param tanggalbayar
-	 * @param pelanggan
-	 * @param pegawai
-	 * @param jumlahbayar
-	 * @param tagihan
-	 */
-	public Pembayaran(String kode, Date tanggalbayar, Pelanggan pelanggan, Pegawai pegawai, long jumlahbayar, Tagihan tagihan) {
-		this(pelanggan, pegawai, jumlahbayar, tanggalbayar, tagihan);
-
-		if (kode == null || kode.equals("")) {
-			generateKode();
-		} else {
-			this.kode = kode;
-		}
-	}
-
-	/**
-	 * Create instance.
 	 * @param id must be positive
 	 * @param kode if null or empty String, i will be generated.
 	 * @param tanggalbayar
@@ -112,8 +65,19 @@ public final class Pembayaran extends CodableDomain {
 	 * @throws EmptyIdException {@code id} is not positive.
 	 */
 	public Pembayaran(int id, String kode, Date tanggalbayar, Pelanggan pelanggan, Pegawai pegawai, long jumlahbayar, Tagihan Tagihan) throws EmptyIdException {
-		this(kode, tanggalbayar, pelanggan, pegawai, jumlahbayar, Tagihan);
+		super();
 		setId(id);
+		setTanggalBayar(tanggalBayar);
+		setPelanggan(pelanggan);
+		setPegawai(pegawai);
+		setJumlahBayar(jumlahBayar);
+		setTagihan(tagihan);
+
+		if (kode == null || kode.equals("") || kode.equals("new")) {
+			generateKode();
+		} else {
+			this.kode = kode;
+		}
 	}
 
 	@Override
