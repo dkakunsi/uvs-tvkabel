@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import com.unitedvision.tvkabel.interceptor.ConstraintViolationInterceptor;
 import com.unitedvision.tvkabel.interceptor.NullObjectInterceptor;
 
 /**
@@ -29,5 +30,15 @@ public class ApplicationConfig {
 	@Bean
 	public NullObjectInterceptor nullObjectInterceptor() {
 		return new NullObjectInterceptor();
+	}
+	
+	/**
+	 * <p>ConstraintViolationInterceptor bean definition. It tells Spring application context to manage ConstraintViolationInterceptor creation.</p>
+	 * 
+	 * @return ConstraintViolationInterceptor
+	 */
+	@Bean
+	public ConstraintViolationInterceptor constraintViolationInterceptor() {
+		return new ConstraintViolationInterceptor();
 	}
 }

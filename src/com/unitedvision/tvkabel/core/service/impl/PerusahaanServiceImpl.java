@@ -11,8 +11,6 @@ import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.exception.EmptyCodeException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Operator;
@@ -87,7 +85,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Operator regist(Perusahaan perusahaan) throws EntityNotExistException, EmptyCodeException, EmptyIdException {
+	public Operator regist(Perusahaan perusahaan) throws ApplicationException {
 		Perusahaan perusahaanEntity = perusahaan;
 		perusahaanEntity.generateKode(getAvailableId());
 		perusahaan = save(perusahaanEntity);

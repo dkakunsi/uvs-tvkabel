@@ -2,6 +2,8 @@ package com.unitedvision.tvkabel.persistence.repository.test;
 
 import static org.junit.Assert.*;
 
+import javax.persistence.PersistenceException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.exception.EmptyCodeException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Kredensi;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai.Role;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
@@ -27,6 +33,25 @@ public class PegawaiRepositoryTest {
 	private PegawaiRepository pegawaiRepository;
 	@Autowired
 	private PerusahaanRepository perusahaanRepository;
+	
+	@Test
+	public void testSaveWithUsernameException() throws EmptyIdException, EmptyCodeException {
+		Perusahaan perusahaan = perusahaanRepository.findOne(17);
+		
+		Pegawai pegawai = new Pegawai();
+		pegawai.setId(0);
+		pegawai.setKode("TEST");
+		pegawai.setKredensi(new Kredensi("jefry", "test", Role.OPERATOR));
+		pegawai.setNama("Test");
+		pegawai.setPerusahaan(perusahaan);
+		pegawai.setStatus(Pegawai.Status.AKTIF);
+
+		try {
+			pegawaiRepository.save(pegawai);
+		} catch (PersistenceException ex) {
+			assertEquals("Username yang anda masukkan sudah digunakan.", ex.getMessage());
+		}
+	}
 
 	@Test
 	public void testFindByUsernameAndStatusAndKredensi_Role() throws EntityNotExistException {
