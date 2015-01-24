@@ -21,11 +21,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         CustomUser user = userDetailService.loadUserByUsername(username);
  
         if (user == null) {
-            throw new BadCredentialsException("Username not found.");
+            throw new BadCredentialsException("Kombinasi Username dan Password Salah!");
         }
  
         if (!password.equals(user.getPassword())) {
-            throw new BadCredentialsException("Wrong password.");
+            throw new BadCredentialsException("Kombinasi Username dan Password Salah!");
         }
  
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());

@@ -3,6 +3,8 @@ package com.unitedvision.tvkabel.core.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Operator;
@@ -45,9 +48,14 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Perusahaan save(Perusahaan domain) {
+	public Perusahaan save(Perusahaan domain) throws DataDuplicationException {
 		domain = validator.validate(domain);
-		return perusahaanRepository.save(domain);
+
+		try {
+			return perusahaanRepository.save(domain);
+		} catch(PersistenceException e) {
+			throw new DataDuplicationException(e.getMessage());
+		}
 	}
 
 	@Override
