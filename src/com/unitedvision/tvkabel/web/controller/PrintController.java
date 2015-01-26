@@ -163,7 +163,7 @@ public class PrintController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/pelanggan/kartu", method = RequestMethod.POST)
-	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam Integer pembayaran, @RequestParam String searchBy, @RequestParam String query,
+	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam boolean pembayaran, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
 		try {
 			Pelanggan pelanggan = createPelanggan(searchBy, query, idPerusahaan);
