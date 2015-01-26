@@ -9,9 +9,9 @@ public class PembayaranRestResult extends RestResult {
 		super(message);
 	}
 
-	private PembayaranRestResult(String message, Pembayaran model) {
+	private PembayaranRestResult(String message, Pembayaran pembayaran) {
 		super(message);
-		this.pembayaran = model;
+		this.pembayaran = pembayaran;
 	}
 	
 	public Pembayaran getModel() {
@@ -22,7 +22,7 @@ public class PembayaranRestResult extends RestResult {
 		return new PembayaranRestResult(message);
 	}
 	
-	public static PembayaranRestResult create(String message, Pembayaran model) {
-		return new PembayaranRestResult(message, model);
+	public static PembayaranRestResult create(String message, Pembayaran pembayaran) {
+		return new PembayaranRestResult(message, pembayaran);
 	}
 }

@@ -9,10 +9,10 @@ public class PerusahaanRestResult extends RestResult {
 		super(message);
 	}
 	
-	private PerusahaanRestResult(String message, Perusahaan model) {
+	private PerusahaanRestResult(String message, Perusahaan perusahaan) {
 		super(message);
 		this.type = "model";
-		this.perusahaan = model;
+		this.perusahaan = perusahaan;
 	}
 
 	public Perusahaan getModel() {
@@ -23,7 +23,7 @@ public class PerusahaanRestResult extends RestResult {
 		return new PerusahaanRestResult(message);
 	}
 	
-	public static PerusahaanRestResult create(String message, Perusahaan model) {
-		return new PerusahaanRestResult(message, model);
+	public static PerusahaanRestResult create(String message, Perusahaan perusahaan) {
+		return new PerusahaanRestResult(message, perusahaan);
 	}
 }

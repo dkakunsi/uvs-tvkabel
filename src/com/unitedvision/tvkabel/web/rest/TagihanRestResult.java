@@ -3,27 +3,27 @@ package com.unitedvision.tvkabel.web.rest;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 
 public class TagihanRestResult extends RestResult {
-	private Tagihan model;
+	private Tagihan tagihan;
 
 	private TagihanRestResult(String message) {
 		super(message);
 	}
 	
-	private TagihanRestResult(String message, Tagihan model) {
+	private TagihanRestResult(String message, Tagihan tagihan) {
 		super(message);
 		this.type = "model";
-		this.model = model;
+		this.tagihan = tagihan;
 	}
 	
-	public Tagihan get() {
-		return model;
+	public Tagihan getModel() {
+		return tagihan;
 	}
 
 	public static TagihanRestResult create(String message) {
 		return new TagihanRestResult(message);
 	}
 	
-	public static TagihanRestResult create(String message, Tagihan model) {
-		return new TagihanRestResult(message, model);
+	public static TagihanRestResult create(String message, Tagihan tagihan) {
+		return new TagihanRestResult(message, tagihan);
 	}
 }
