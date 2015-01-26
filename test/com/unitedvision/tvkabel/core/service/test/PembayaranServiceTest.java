@@ -60,22 +60,6 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
-		Date tanggalBayar = DateUtil.getSimpleNow();
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		Pegawai pegawai = pegawaiService.getOne(15);
-		long jumlahBayar = pelanggan.getIuran();
-		Tagihan tagihan = new Tagihan(2015, Month.FEBRUARY);
-
-		Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, jumlahBayar, tagihan);
-		assertEquals(0, pelanggan.getTunggakan());
-		
-		pembayaranService.pay(pembayaran);
-		Pelanggan pelangganUpdated = pelangganService.getOne(35);
-		assertEquals(-1, pelangganUpdated.getTunggakan());
-	}
-	
-	@Test
 	public void testDelete() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
@@ -106,5 +90,71 @@ public class PembayaranServiceTest {
 		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
 		assertEquals(Month.JANUARY, pembayaran.getBulan());
 		assertEquals(2015, pembayaran.getTahun());
+	}
+	
+	@Test
+	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+		Date tanggalBayar = DateUtil.getSimpleNow();
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		Pegawai pegawai = pegawaiService.getOne(15);
+		long jumlahBayar = pelanggan.getIuran();
+		Tagihan tagihan = new Tagihan(2015, Month.FEBRUARY);
+
+		Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, jumlahBayar, tagihan);
+		assertEquals(0, pelanggan.getTunggakan());
+		
+		pembayaranService.pay(pembayaran);
+		Pelanggan pelangganUpdated = pelangganService.getOne(35);
+		assertEquals(-1, pelangganUpdated.getTunggakan());
+	}
+	
+	@Test
+	public void testSinglePay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		Pegawai pegawai = pegawaiService.getOne(15);
+		long jumlahPembayaran = pelanggan.getIuran();
+		int jumlahBulan = 1;
+
+		pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		
+		Pelanggan pelangganUpdated = pelangganService.getOne(35);
+		
+		assertEquals(-jumlahBulan, pelangganUpdated.getTunggakan());
+	}
+	
+	@Test
+	public void testMultiplePay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		Pegawai pegawai = pegawaiService.getOne(15);
+		long jumlahPembayaran = pelanggan.getIuran();
+		int jumlahBulan = 3;
+
+		pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		
+		Pelanggan pelangganUpdated = pelangganService.getOne(35);
+		
+		assertEquals(-jumlahBulan, pelangganUpdated.getTunggakan());
+	}
+	
+	@Test
+	public void testCreateListPembayaran() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, EmptyIdException, DataDuplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		Pegawai pegawai = pegawaiService.getOne(15);
+		long jumlahPembayaran = pelanggan.getIuran();
+		int jumlahBulan = 3;
+
+		List<Pembayaran> listPembayaran = pembayaranService.createListPembayaran(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		assertEquals(3, listPembayaran.size());
+
+		Tagihan before = null;
+		for (Pembayaran pembayaran : listPembayaran) {
+			Tagihan tagihan = pembayaran.getTagihan();
+			
+			if (before != null) {
+				assertNotEquals(before, tagihan);
+			}
+			
+			before = tagihan;
+		}
 	}
 }

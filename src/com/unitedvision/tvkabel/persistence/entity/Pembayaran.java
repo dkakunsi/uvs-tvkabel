@@ -56,7 +56,7 @@ public final class Pembayaran extends CodableDomain {
 	/**
 	 * Create instance.
 	 * @param id must be positive
-	 * @param kode if null or empty String, i will be generated.
+	 * @param kode if null or empty String, will be generated.
 	 * @param tanggalbayar
 	 * @param pelanggan
 	 * @param pegawai
@@ -64,7 +64,7 @@ public final class Pembayaran extends CodableDomain {
 	 * @param Tagihan
 	 * @throws EmptyIdException {@code id} is not positive.
 	 */
-	public Pembayaran(int id, String kode, Date tanggalbayar, Pelanggan pelanggan, Pegawai pegawai, long jumlahbayar, Tagihan Tagihan) throws EmptyIdException {
+	public Pembayaran(int id, String kode, Date tanggalBayar, Pelanggan pelanggan, Pegawai pegawai, long jumlahBayar, Tagihan tagihan) throws EmptyIdException {
 		super();
 		setId(id);
 		setTanggalBayar(tanggalBayar);
@@ -606,6 +606,10 @@ public final class Pembayaran extends CodableDomain {
 			Month month = DateUtil.getMonth(date);
 			
 			return new Tagihan(tahun, month);
+		}
+		
+		public static Tagihan copy(Tagihan tagihan) {
+			return new Tagihan(tagihan.getTahun(), tagihan.getBulan());
 		}
 
 		@Override

@@ -102,13 +102,14 @@ public class Validator {
 	}
 
 	/**
-	 * Validates {@link Pembayaran} object.
+	 * Validates {@link Pembayaran} object. If {@link Tagihan} is the same as {@code tanggalMulai} then it is the first payment and no need for further validation.
 	 * @param pembayaran
 	 * @return valid {@link Pembayaran} object.
 	 * @throws UnpaidBillException 'pembayaran' is not valid due to Bill Payment error. See {@link Validator.isPreceding} method.
 	 * @throws EntityNotExistException
 	 * @throws DataDuplicationException 'pembayaran' is not valid due to Bill Payment error. See {@link Validator.isPaid} method.
 	 */
+	@Deprecated
 	public Pembayaran validate(Pembayaran pembayaran) throws UnpaidBillException, EntityNotExistException, DataDuplicationException {
 		if (!(compareWithTanggalMulai(pembayaran))) {
 			Pembayaran last = pembayaranRepository.findFirstByPelangganOrderByIdDesc(pembayaran.getPelanggan());

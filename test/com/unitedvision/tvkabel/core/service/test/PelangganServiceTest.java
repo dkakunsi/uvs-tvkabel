@@ -278,6 +278,17 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
+	public void testRecountTunggakan() throws EntityNotExistException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		
+		pelangganService.recountTunggakan(pelanggan);
+		
+		Pelanggan pelangganUpdated = pelangganService.getOne(35);
+		
+		assertEquals(0, pelangganUpdated.getTunggakan());
+	}
+	
+	@Test
 	public void testGetByPerusahaanAndKodeAndStatus() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		String kode = "WS01";

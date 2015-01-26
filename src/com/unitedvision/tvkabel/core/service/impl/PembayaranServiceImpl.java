@@ -1,6 +1,7 @@
 package com.unitedvision.tvkabel.core.service.impl;
 
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,10 +11,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
@@ -32,6 +35,8 @@ import com.unitedvision.tvkabel.util.PageSizeUtil;
 @Transactional(readOnly = true)
 public class PembayaranServiceImpl implements PembayaranService {
 	@Autowired
+	private PelangganService pelangganService;
+	@Autowired
 	private PembayaranRepository pembayaranRepository;
 	@Autowired
 	private PelangganRepository pelangganRepository;
@@ -41,40 +46,72 @@ public class PembayaranServiceImpl implements PembayaranService {
 	private Validator validator;
 
 	@Override
-	public Pembayaran pay(Pembayaran domain) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
-		Pembayaran entity = domain;
-		
-		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
-		entity.setPelanggan(pelanggan);
-		
-		if (!(pelanggan.getStatus().equals(Pelanggan.Status.AKTIF)))
-			throw new NotPayableCustomerException("Status BUKAN merupakan pelanggan AKTIF");
+	public void pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException ,UnpaidBillException ,EntityNotExistException ,DataDuplicationException, EmptyIdException {
+		if (jumlahBulan > 1) {
+			payList(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		} else {
+			Tagihan tagihan = getPayableTagihan(pelanggan);
+			Pembayaran pembayaran = new Pembayaran(0, "", DateUtil.getNow(), pelanggan, pegawai, jumlahPembayaran, tagihan);
+			
+			pay(pembayaran);
+		}
+	};
+	
+	@Override
+	public void payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException ,UnpaidBillException ,EntityNotExistException ,DataDuplicationException, EmptyIdException {
+		List<Pembayaran> listPembayaran = createListPembayaran(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		for (Pembayaran pembayaran : listPembayaran) {
+			pay(pembayaran);
+		}
+	};
 
-		Pegawai pegawai = pegawaiRepository.findOne(entity.getIdPegawai());
-		entity.setPegawai(pegawai);
+	/**
+	 * Create list of {@link Pembayaran}.
+	 * @param pelanggan
+	 * @param pegawai
+	 * @param jumlahPembayaran
+	 * @param jumlahBulan
+	 * @throws EntityNotExistException the given entity is not present in database.
+	 * @throws EmptyIdException id passed to entity cannot be negative.
+	 * @throws NotPayableCustomerException {@link Pelanggan.Status} is not {@code AKTIF}.
+	 * @throws UnpaidBillException the given {@link Pembayaran} cannot be paid.
+	 * @throws DataDuplicationException the given {@link Pembayaran} have been paid.
+	 */
+	public List<Pembayaran> createListPembayaran(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws EntityNotExistException, EmptyIdException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
+		Tagihan tagihan = getPayableTagihan(pelanggan);
 
-		validator.validate(entity);
+		List<Pembayaran> listPembayaran = new ArrayList<>();
+		//Add the first payment
+		listPembayaran.add(new Pembayaran(0, "", DateUtil.getNow(), pelanggan, pegawai, jumlahPembayaran, tagihan));
 
-		entity.generateKode();
-		entity = pembayaranRepository.save(entity);
-		updateTunggakan(entity.getPelanggan());
+		//Add the second and so on
+		for (int i = 2; i <= jumlahBulan; i++) {
+			//increase tagihan as the second payment
+			tagihan = Tagihan.copy(tagihan);
+			tagihan.increase();
+			listPembayaran.add(new Pembayaran(0, "", DateUtil.getNow(), pelanggan, pegawai, jumlahPembayaran, tagihan));
+		}
 		
-		return entity;
+		return listPembayaran;
 	}
 	
 	@Override
-	public Pembayaran updatePayment(Pembayaran domain) {
-		Pembayaran entity = domain;
-		
-		Pelanggan pelanggan = pelangganRepository.findOne(entity.getIdPelanggan());
-		entity.setPelanggan(pelanggan);
+	public Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
+		if (!(pembayaran.getPelanggan().getStatus().equals(Pelanggan.Status.AKTIF)))
+			throw new NotPayableCustomerException("Status BUKAN merupakan pelanggan AKTIF");
 
-		Pegawai pegawai = pegawaiRepository.findOne(entity.getIdPegawai());
-		entity.setPegawai(pegawai);
+		//validator.validate(pembayaran);
 
-		entity = pembayaranRepository.save(entity);
+		pembayaran.generateKode();
+		pembayaran = pembayaranRepository.save(pembayaran);
+		pelangganService.recountTunggakan(pembayaran.getPelanggan());
 		
-		return entity;
+		return pembayaran;
+	}
+	
+	@Override
+	public Pembayaran updatePayment(Pembayaran pembayaran) {
+		return pembayaranRepository.save(pembayaran);
 	}
 	
 	@Override
@@ -82,25 +119,13 @@ public class PembayaranServiceImpl implements PembayaranService {
 	public Pembayaran save(Pembayaran domain) throws ApplicationException {
 		return pay(domain);
 	}
-	
-	private void updateTunggakan(Pelanggan pelanggan) {
-		Pembayaran pembayaranTerakhir;
-		try {
-			pembayaranTerakhir = getLast(pelanggan);
-		} catch (EntityNotExistException e) {
-			pembayaranTerakhir = null;
-		}
-		
-		pelanggan.countTunggakan(pembayaranTerakhir);
-		pelangganRepository.save(pelanggan);
-	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(Pembayaran domain) {
-		domain = pembayaranRepository.findOne(domain.getId());
-		pembayaranRepository.delete(domain);
-		updateTunggakan(domain.getPelanggan());
+	public void delete(Pembayaran pembayaran) throws EntityNotExistException {
+		pembayaran = pembayaranRepository.findOne(pembayaran.getId());
+		pembayaranRepository.delete(pembayaran);
+		pelangganService.recountTunggakan(pembayaran.getPelanggan());
 	}
 
 	@Override
@@ -175,11 +200,13 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 	@Override
 	public Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException {
-		Pembayaran pembayaranEntity = getLast(pelanggan);
+		Pembayaran pembayaran = getLast(pelanggan);
 
 		Tagihan tagihan;
-		if (pembayaranEntity != null) {
-			tagihan = pembayaranEntity.getTagihan();
+		if (pembayaran != null) {
+			Tagihan lastTagihan = pembayaran.getTagihan();
+			
+			tagihan = Tagihan.copy(lastTagihan);
 			tagihan.increase();
 		} else {
 			Date tanggalDaftar = pelanggan.getTanggalMulai();

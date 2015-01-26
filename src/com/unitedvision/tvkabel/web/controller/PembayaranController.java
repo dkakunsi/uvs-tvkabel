@@ -147,13 +147,10 @@ public class PembayaranController extends AbstractController {
 	@RequestMapping(value = "/master", method = RequestMethod.POST)
 	public @ResponseBody RestResult pay(@RequestBody SimpanPembayaranRestRequest restRequest) {
 		try {
-			Date tanggalBayar = DateUtil.getNow();
 			Pelanggan pelanggan = pelangganService.getOne(restRequest.getIdPelanggan());
 			Pegawai pegawai = pegawaiService.getOne(restRequest.getIdPegawai());
-			Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
-			
-			Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, restRequest.getJumlahPembayaran(), tagihan);
-			pembayaranService.pay(pembayaran);
+
+			pembayaranService.pay(pelanggan, pegawai, restRequest.getJumlahPembayaran(), restRequest.getJumlahBulan());
 
 			return RestResult.create("Berhasil!");
 		} catch (ApplicationException e) {

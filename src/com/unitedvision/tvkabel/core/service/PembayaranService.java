@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
@@ -17,6 +18,11 @@ public interface PembayaranService extends Service<Pembayaran> {
 	Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException;
 	Pembayaran updatePayment(Pembayaran pembayaran);
 	Pembayaran getLast(Pelanggan pelanggan) throws EntityNotExistException;
+
+	void pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
+	void payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
+	
+	List<Pembayaran> createListPembayaran(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws EntityNotExistException, EmptyIdException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException;
 	
 	Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException;
 

@@ -142,17 +142,22 @@ public class PelangganServiceImpl implements PelangganService {
 		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		
 		for (Pelanggan pelanggan : listPelanggan) {
-			Pembayaran pembayaranTerakhir = pembayaranService.getLast(pelanggan);
-			
-			if (pembayaranTerakhir == null) {
-				pelanggan.countTunggakan(); //secara otomatis atribut tanggalMulai digunakan sebagai tagihan awal(pertama)
-			} else {
-				pelanggan.countTunggakan(pembayaranTerakhir);
-			}
-			
-			pelangganRepository.save(pelanggan);
+			recountTunggakan(pelanggan);
 		}
 	}
+	
+	@Override
+	public void recountTunggakan(Pelanggan pelanggan) throws EntityNotExistException {
+		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
+		
+		if (pembayaran == null) {
+			pelanggan.countTunggakan(); //secara otomatis atribut tanggalMulai digunakan sebagai tagihan awal(pertama)
+		} else {
+			pelanggan.countTunggakan(pembayaran);
+		}
+		
+		pelangganRepository.save(pelanggan);
+	};
 	
 	@Override
 	public Pelanggan getOne(int id) throws EntityNotExistException {
