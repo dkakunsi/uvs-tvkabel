@@ -208,6 +208,10 @@ public final class Pembayaran extends CodableDomain {
 	public Tagihan getTagihan() {
 		return tagihan;
 	}
+	
+	public String getTagihanStr() {
+		return tagihan.toString();
+	}
 
 	/**
 	 * Set bill.
