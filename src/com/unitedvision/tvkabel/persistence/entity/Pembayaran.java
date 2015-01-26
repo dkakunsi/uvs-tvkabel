@@ -209,6 +209,7 @@ public final class Pembayaran extends CodableDomain {
 		return tagihan;
 	}
 	
+	@Transient
 	public String getTagihanStr() {
 		return tagihan.toString();
 	}
