@@ -135,7 +135,6 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 				align, 1, fontContent, Rectangle.NO_BORDER);
 
 		paragraph.add(table);
-		addEmptyLine(paragraph, 1);
 	}
 
 	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
