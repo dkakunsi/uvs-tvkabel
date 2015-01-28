@@ -46,10 +46,11 @@ public class RekapServiceImpl implements RekapService {
 			List<Pembayaran> listPembayaran;
 			try {
 				listPembayaran = pembayaranService.get(pelanggan, tagihanAwal, tagihanAkhir);
-				listPembayaran = verify(listPembayaran, numberOfMonth);
 			} catch (EntityNotExistException e) {
 				listPembayaran = new ArrayList<>();
 			}
+
+			listPembayaran = verify(listPembayaran, numberOfMonth);
 			pelanggan.setListPembayaran(listPembayaran);
 		}
 		

@@ -180,11 +180,10 @@ public class PrintController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/pelanggan/kartu/aktif", method = RequestMethod.POST)
-	public ModelAndView printKartuPelangganAktif(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer pembayaran,
+	public ModelAndView printKartuPelangganAktif(@RequestParam Integer idPerusahaan, @RequestParam boolean pembayaran,
 			Map<String, Object> model) {
 		try {
-			Status status = createStatus(s);
-			List<Pelanggan> listPelanggan = (List<Pelanggan>) pelangganService.get(getPerusahaan(idPerusahaan), status);
+			List<Pelanggan> listPelanggan = (List<Pelanggan>) pelangganService.get(getPerusahaan(idPerusahaan), Status.AKTIF);
 			
 			model.put("pembayaran", pembayaran);
 			model.put("pelanggan", pelangganService.cetakKartu(listPelanggan));
