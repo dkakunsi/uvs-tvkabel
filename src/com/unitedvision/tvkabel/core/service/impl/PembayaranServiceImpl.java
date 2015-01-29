@@ -23,7 +23,6 @@ import com.unitedvision.tvkabel.exception.UnpaidBillException;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
@@ -134,11 +133,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, Date tanggalMulai, Date tanggalAkhir) throws EntityNotExistException {
-		return pembayaranRepository.findByPegawai_PerusahaanAndTanggalBayarBetween(perusahaan, tanggalMulai, tanggalAkhir);
-	}
-
-	@Override
 	public List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException {
 		PageRequest pageRequest = new PageRequest(page, PageSizeUtil.DATA_NUMBER);
 
@@ -153,8 +147,8 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 	
 	@Override
-	public List<Pembayaran> get(Perusahaan perusahaan, Tagihan tagihan) throws EntityNotExistException {
-		return pembayaranRepository.findByPegawai_PerusahaanAndTagihan(perusahaan, tagihan);
+	public java.util.List<Pembayaran> get(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir) throws EntityNotExistException {
+		return pembayaranRepository.findByPelangganAndTanggalBayarBetween(pelanggan, tanggalMulai, tanggalAkhir);
 	}
 
 	@Override

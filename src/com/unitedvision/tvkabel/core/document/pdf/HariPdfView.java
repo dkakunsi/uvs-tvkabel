@@ -1,6 +1,5 @@
 package com.unitedvision.tvkabel.core.document.pdf;
 
-import java.time.Month;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +22,29 @@ import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class HariPdfView extends CustomAbstractPdfView {
-	private String tanggal;
+	private String tanggalAwalStr;
+	private String tanggalAkhirStr;
 	private String namaPegawai;
-	private Date date;
+	
+	public void setTanggalAwalStr(String tanggal) {
+		this.tanggalAwalStr = tanggal;
+	}
+	
+	public void setTanggalAwal(Date date) {
+		setTanggalAwalStr(DateUtil.toUserString(date, "-"));
+	}
+	
+	public void setTanggalAkhirStr(String tanggal) {
+		this.tanggalAkhirStr = tanggal;
+	}
+	
+	public void setTanggalAkhir(Date date) {
+		setTanggalAkhirStr(DateUtil.toUserString(date, "-"));
+	}
+	
+	public void setNamaPegawai(String namaPegawai) {
+		this.namaPegawai = namaPegawai;
+	}
 	
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document doc,
@@ -36,9 +55,10 @@ public class HariPdfView extends CustomAbstractPdfView {
 	
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		setNamaPegawai((String)model.get("pegawai"));
-		setTanggal(DateUtil.getDate((String)model.get("tanggal")));
+		setTanggalAwal(DateUtil.getDate((String)model.get("tanggalAwal")));
+		setTanggalAkhir(DateUtil.getDate((String)model.get("tanggalAkhir")));
 
-		decorateDocument(doc, String.format("Laporan Pembayaran Tanggal %s", tanggal));
+		decorateDocument(doc, String.format("Laporan Pembayaran Tanggal %s", tanggalAwalStr));
 		
 		Paragraph paragraph = new Paragraph();
 		createTitle(paragraph);
@@ -48,30 +68,17 @@ public class HariPdfView extends CustomAbstractPdfView {
 		return doc;
 	}
 	
-	public void setTanggal(String tanggal) {
-		this.tanggal = tanggal;
-	}
-	
-	public void setTanggal(Date date) {
-		this.date = date;
-		setTanggal(DateUtil.toUserString(date, "-"));
-	}
-	
-	public void setNamaPegawai(String namaPegawai) {
-		this.namaPegawai = namaPegawai;
-	}
-	
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
 		paragraph.add(new Paragraph("Laporan Pembayaran Harian", fontTitle));
-		paragraph.add(new Paragraph(String.format("Tanggal : %s", tanggal), fontSubTitle));
+		paragraph.add(new Paragraph(String.format("%s s/d %s", tanggalAwalStr, tanggalAkhirStr), fontSubTitle));
 		paragraph.add(new Paragraph(String.format("Pegawai : %s", namaPegawai), fontSubTitle));
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		addEmptyLine(paragraph, 1);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
-		float[] columnWidths = {5f, 8f, 4f, 2f, 2f, 2f, 2f, 2f, 2f, 2f};
+	protected void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
+		float[] columnWidths = {5f, 8f, 4f, 2f, 2f, 4f, 2f};
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
@@ -80,11 +87,8 @@ public class HariPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Kelurahan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Lingk.", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Iuran", align, 1, fontHeader, Rectangle.BOX);
-		
-		for (Month month : (List<Month>)model.get("listBulan")) {
-			String str = month.name().substring(0, 3);
-			insertCell(table, str, align, 1, fontHeader, Rectangle.BOX);
-		}
+		insertCell(table, "Jumlah Bulan", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Total", align, 1, fontHeader, Rectangle.BOX);
 		table.setHeaderRows(1);
 
 		final List<Pelanggan> list = (List<Pelanggan>)model.get("rekap");
@@ -97,21 +101,21 @@ public class HariPdfView extends CustomAbstractPdfView {
 			insertCell(table, pelanggan.getNamaKelurahan(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, Integer.toString(pelanggan.getLingkungan()), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, customFont, Rectangle.BOX);
+			
+			int count = 0;
+			long sum = 0;
 			for (Pembayaran pembayaran : pelanggan.getListPembayaran()) {
-				if (pembayaran.getJumlahBayar() == 0) {
-					insertCell(table, "", align, 1, customFont, Rectangle.BOX);
-				} else {
-					insertCell(table, "lunas", align, 1, customFont, Rectangle.BOX);
-
-					if (DateUtil.equals(pembayaran.getTanggalBayar(), date))
-						total += pembayaran.getJumlahBayar();
-				}
+				count++;
+				sum += pembayaran.getJumlahBayar();
 			}
+			insertCell(table, String.format("%d bulan", count), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, String.format("Rp %d", sum), align, 1, customFont, Rectangle.BOX);
+			total += sum;
 		}
 
-		insertCell(table, "Jumlah Pembayaran", Element.ALIGN_RIGHT, 9, fontContent, Rectangle.BOX);
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 6, fontContent, Rectangle.BOX);
 		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
-		insertCell(table, "Total Pembayaran", Element.ALIGN_RIGHT, 9, fontContent, Rectangle.BOX);
+		insertCell(table, "Total Pembayaran", Element.ALIGN_RIGHT, 6, fontContent, Rectangle.BOX);
 		insertCell(table, Long.toString(total), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);

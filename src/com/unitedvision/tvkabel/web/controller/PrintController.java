@@ -19,7 +19,6 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.util.DateUtil;
@@ -46,8 +45,8 @@ public class PrintController extends AbstractController {
 
 			model.put("rekap", list);
 			model.put("pegawai", pegawai.getNama());
-			model.put("tanggal", tanggalAwal);
-			model.put("listBulan", DateUtil.getMonths(hariAwal, 5));
+			model.put("tanggalAwal", tanggalAwal);
+			model.put("tanggalAkhir", tanggalAkhir);
 
 			return new ModelAndView("pdfHari", model);
 		} catch (ApplicationException e) {
@@ -58,13 +57,14 @@ public class PrintController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/rekap/bulan", method = RequestMethod.POST)
-	public ModelAndView printBulan(@RequestParam Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, @RequestParam String jenis,
-			Map<String, Object> model) {
+	public ModelAndView printBulan(@RequestParam Integer idPerusahaan, @RequestParam String bulan, @RequestParam Integer tahun, Map<String, Object> model) {
 		try {
-			List<Pembayaran> list = createListRekapBulanan(idPerusahaan, jenis, tahun, bulan);
+			Perusahaan perusahaan = perusahaanService.getOne(idPerusahaan);
+			Month month = Month.valueOf(bulan.toUpperCase());
 
-			model.put("listPembayaran", list);
-			model.put("jenis", jenis);
+			List<Pelanggan> list = rekapService.rekapBulanan(perusahaan, month, tahun);
+
+			model.put("rekap", list);
 			model.put("bulan", bulan);
 			model.put("tahun", tahun);
 
@@ -74,15 +74,6 @@ public class PrintController extends AbstractController {
 
 			return new ModelAndView("pdfException", model);
 		}
-	}
-	
-	private List<Pembayaran> createListRekapBulanan(int idPerusahaan, String jenis, int tahun, String bulan) throws ApplicationException {
-		final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
-		final Month month = Month.valueOf(bulan.toUpperCase());
-
-		if (jenis.equals("tagihan"))
-			return (List<Pembayaran>)rekapService.rekapTagihanBulanan(perusahaan, tahun, month);
-		return (List<Pembayaran>)rekapService.rekapPembayaranBulanan(perusahaan, tahun, month);
 	}
 	
 	@RequestMapping(value = "/rekap/tahun", method = RequestMethod.POST)

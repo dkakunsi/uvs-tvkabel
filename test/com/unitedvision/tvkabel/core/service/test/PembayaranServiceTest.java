@@ -27,7 +27,6 @@ import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
@@ -44,20 +43,6 @@ public class PembayaranServiceTest {
 	private PelangganService pelangganService;
 	@Autowired
 	private PegawaiService pegawaiService;
-	
-	@Test
-	public void testGet() throws EntityNotExistException {
-		Perusahaan perusahaan = perusahaanService.getOne(17);
-		Date tanggalMulai = DateUtil.getFirstDate();
-		Date tanggalAkhir = DateUtil.getLastDate();
-		
-		List<Pembayaran> list = (List<Pembayaran>)pembayaranService.get(perusahaan, tanggalMulai, tanggalAkhir);
-		
-		for (Pembayaran pembayaran : list) {
-			assertNotNull(pembayaran.getId());
-			assertNotEquals(0, pembayaran.getId());
-		}
-	}
 	
 	@Test
 	public void testDelete() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {

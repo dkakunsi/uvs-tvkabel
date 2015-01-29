@@ -282,4 +282,48 @@ public class DateUtilTest {
 		
 		assertEquals(NOW_STR_DELIM, nowStr);
 	}
+	
+	@Test
+	public void testBeetween_Between() {
+		Date date1 = DateUtil.getDate(2015, Month.JANUARY, 12);
+		Date date2 = DateUtil.getDate(2015, Month.JANUARY, 11);
+		Date date3 = DateUtil.getDate(2015, Month.JANUARY, 15);
+		
+		boolean between = DateUtil.between(date1, date2, date3);
+		
+		assertEquals(true, between);
+	}
+	
+	@Test
+	public void testBeetween_First() {
+		Date date1 = DateUtil.getDate(2015, Month.JANUARY, 11);
+		Date date2 = DateUtil.getDate(2015, Month.JANUARY, 11);
+		Date date3 = DateUtil.getDate(2015, Month.JANUARY, 15);
+		
+		boolean between = DateUtil.between(date1, date2, date3);
+		
+		assertEquals(true, between);
+	}
+	
+	@Test
+	public void testBeetween_Last() {
+		Date date1 = DateUtil.getDate(2015, Month.JANUARY, 15);
+		Date date2 = DateUtil.getDate(2015, Month.JANUARY, 11);
+		Date date3 = DateUtil.getDate(2015, Month.JANUARY, 15);
+		
+		boolean between = DateUtil.between(date1, date2, date3);
+		
+		assertEquals(true, between);
+	}
+	
+	@Test
+	public void testBeetween_NotBetween() {
+		Date date1 = DateUtil.getDate(2015, Month.JANUARY, 10);
+		Date date2 = DateUtil.getDate(2015, Month.JANUARY, 11);
+		Date date3 = DateUtil.getDate(2015, Month.JANUARY, 15);
+		
+		boolean between = DateUtil.between(date1, date2, date3);
+		
+		assertEquals(false, between);
+	}
 }

@@ -23,6 +23,19 @@ public class DateUtil {
 
 	/**
 	 * Return date representation in millisecond.
+	 * @param date
+	 * @return date representation in millisecond.
+	 */
+	public static long toMilis(Date date) {
+		int year = getYear(date);
+		int month = getMonthInt(date);
+		int day = getDay(date);
+		
+		return toMilis(year, month, day);
+	}
+	
+	/**
+	 * Return date representation in millisecond.
 	 * @param year
 	 * @param month
 	 * @param day
@@ -442,5 +455,22 @@ public class DateUtil {
 		if (getDay(date1) != getDay(date2))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Check whether {@code date1} is beetween {@code date2} and {@code date3}.
+	 * @param date1 main date.
+	 * @param date2 camparer.
+	 * @param date3 comporer.
+	 * @return
+	 */
+	public static boolean between(Date date1, Date date2, Date date3) {
+		long date1Milis = toMilis(date1);
+		long date2Milis = toMilis(date2);
+		long date3Milis = toMilis(date3);
+		
+		if (date1Milis >= date2Milis && date1Milis <= date3Milis)
+			return true;
+		return false;
 	}
 }

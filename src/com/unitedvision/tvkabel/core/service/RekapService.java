@@ -9,7 +9,6 @@ import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 
@@ -23,6 +22,5 @@ public interface RekapService {
 	List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) throws EntityNotExistException;
 	List<Pelanggan> rekapAlamat(Perusahaan perusahaan);
 
-	List<Pembayaran> rekapTagihanBulanan(Perusahaan perusahaan, int tahun, Month bulan) throws EntityNotExistException;
-	List<Pembayaran> rekapPembayaranBulanan(Perusahaan perusahaan, int tahun, Month bulan) throws EntityNotExistException;
+	List<Pelanggan> rekapBulanan(Perusahaan perusahaan, Month bulan, int tahun) throws EntityNotExistException, EmptyIdException;
 }
