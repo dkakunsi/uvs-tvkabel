@@ -35,19 +35,19 @@ public class PrintController extends AbstractController {
 	private PembayaranService pembayaranService;
 	
 	@RequestMapping(value = "/rekap/hari", method = RequestMethod.POST)
-	public ModelAndView printHari(@RequestParam Integer idPerusahaan, @RequestParam String tanggal, @RequestParam String searchBy, @RequestParam String query,
+	public ModelAndView printHari(@RequestParam Integer idPerusahaan, @RequestParam String tanggalAwal, @RequestParam String tanggalAkhir, @RequestParam String searchBy, @RequestParam String query,
 			Map<String, Object> model) {
 		try {
-			List<Pelanggan> list = null;
-			Date hari = DateUtil.getDate(tanggal);
+			Date hariAwal = DateUtil.getDate(tanggalAwal);
+			Date hariAkhir = DateUtil.getDate(tanggalAkhir);
 			Pegawai pegawai = createPegawai(searchBy, query, idPerusahaan);
 
-			list = rekapService.rekapHarian(pegawai, hari);
+			List<Pelanggan> list = rekapService.rekapHarian(pegawai, hariAwal, hariAkhir);
 
 			model.put("rekap", list);
 			model.put("pegawai", pegawai.getNama());
-			model.put("tanggal", tanggal);
-			model.put("listBulan", DateUtil.getMonths(hari, 5));
+			model.put("tanggal", tanggalAwal);
+			model.put("listBulan", DateUtil.getMonths(hariAwal, 5));
 
 			return new ModelAndView("pdfHari", model);
 		} catch (ApplicationException e) {

@@ -14,7 +14,7 @@ import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 
 public interface RekapService {
-	List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) throws EntityNotExistException, EmptyIdException;
+	List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari, Date hari2) throws EntityNotExistException, EmptyIdException;
 
 	List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException, EmptyIdException;
 

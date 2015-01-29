@@ -86,12 +86,14 @@ public class PelangganRepositoryTest {
 	
 	@Test
 	public void testFindByPembayaran() {
-		Date tanggalBayar = DateUtil.getDate(2014, 11, 7);
-		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
+		Date tanggalBayarAwal = DateUtil.getDate(2014, 12, 1);
+		String tanggalBayarAwalStr = DateUtil.toDatabaseString(tanggalBayarAwal, "-");
+		Date tanggalBayarAkhir = DateUtil.getDate(2014, 12, 31);
+		String tanggalBayarAkhirStr = DateUtil.toDatabaseString(tanggalBayarAkhir, "-");
 		
-		List<Pelanggan> list = pelangganRepository.findByPembayaran(14, tanggalBayarStr);
+		List<Pelanggan> list = pelangganRepository.findByPembayaran(14, tanggalBayarAwalStr, tanggalBayarAkhirStr);
 
-		assertEquals(113, list.size());
+		assertEquals(164, list.size());
 	}
 
 	@Test

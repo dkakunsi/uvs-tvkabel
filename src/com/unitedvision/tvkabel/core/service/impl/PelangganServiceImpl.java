@@ -230,10 +230,11 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) throws EntityNotExistException {
-		String tanggalBayarStr = DateUtil.toDatabaseString(tanggalBayar, "-");
+	public List<Pelanggan> get(Pegawai pegawai, Date tanggalBayarAwal, Date tanggalBayarAkhir) throws EntityNotExistException {
+		String tanggalBayarAwalStr = DateUtil.toDatabaseString(tanggalBayarAwal, "-");
+		String tanggalBayarAkhirStr = DateUtil.toDatabaseString(tanggalBayarAkhir, "-");
 		
-		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarStr);
+		return pelangganRepository.findByPembayaran(pegawai.getId(), tanggalBayarAwalStr, tanggalBayarAkhirStr);
 	}
 	
 	@Override

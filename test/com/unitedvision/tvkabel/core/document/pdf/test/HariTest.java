@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,9 @@ public class HariTest extends HariPdfView {
 
             document.open();
             Pegawai pegawai = pegawaiService.getOne(14);
-			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapHarian(pegawai, DateUtil.getDate("12-12-2014"));
+            Date hariAwal = DateUtil.getDate("12-1-2014");
+            Date hariAkhir = DateUtil.getDate("1-31-2015");
+			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapHarian(pegawai, hariAwal, hariAkhir);
 
             Month[] listBulan = {Month.AUGUST, Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER};
             

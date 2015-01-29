@@ -27,7 +27,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	List<Pelanggan> get(Perusahaan perusahaan, Status status) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
-	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayar) throws EntityNotExistException;
+	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayarAwal, Date tanggalBayarAkhir) throws EntityNotExistException;
 	List<Pelanggan> get(Status status, int tanggal) throws EntityNotExistException;
 	List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
 

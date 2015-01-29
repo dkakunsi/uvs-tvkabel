@@ -30,10 +30,10 @@ public class RekapServiceImpl implements RekapService {
 	private PembayaranService pembayaranService;
 
 	@Override
-	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hari) throws EntityNotExistException, EmptyIdException {
-		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hari);
+	public List<Pelanggan> rekapHarian(Pegawai pegawai, Date hariAwal, Date hariAkhir) throws EntityNotExistException, EmptyIdException {
+		List<Pelanggan> listPelanggan = pelangganService.get(pegawai, hariAwal, hariAkhir);
 
-		return rekapHarian(listPelanggan, hari);
+		return rekapHarian(listPelanggan, hariAkhir);
 	}
 	
 	private List<Pelanggan> rekapHarian(List<Pelanggan> list, Date hari) throws EmptyIdException {

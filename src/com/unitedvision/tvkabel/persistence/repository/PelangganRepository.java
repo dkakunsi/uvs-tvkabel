@@ -14,7 +14,7 @@ import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 
 public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
-	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar = :tanggalBayar AND id_pegawai = :idPegawai) ORDER BY kode";
+	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE (tanggal_bayar BETWEEN :tanggalBayarAwal AND :tanggalBayarAkhir) AND id_pegawai = :idPegawai) ORDER BY kode";
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
 	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.kelurahan, p.alamat.lingkungan";
 	String findByAlamatOrderedNative = "SELECT * FROM pelanggan p WHERE p.id_perusahaan = :idPerusahaan AND p.status = :status ORDER BY p.id_kelurahan, p.lingkungan, p.kode";
@@ -50,7 +50,7 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	@Query (value = findByTanggalMulai, nativeQuery = true)
 	List<Pelanggan> findByTanggalMulai(@Param("status") Status status, @Param("tanggal") int tanggal);
 	@Query (value = findByPembayaran, nativeQuery = true)
-	List<Pelanggan> findByPembayaran(@Param("idPegawai") int idPegawai, @Param("tanggalBayar") String tanggalBayar);
+	List<Pelanggan> findByPembayaran(@Param("idPegawai") int idPegawai, @Param("tanggalBayarAwal") String tanggalBayarAwal, @Param("tanggalBayarAkhir") String tanggalBayarAkhir);
 
 	@Query (summerizeEstimasiPemasukanBulanan)
 	long sumarizeEstimasiPemasukanBulanan(Perusahaan perusahaan, Status status);
