@@ -4,9 +4,6 @@ import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -16,25 +13,15 @@ import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.core.document.pdf.CustomAbstractPdfView;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
-public class KartuPelangganPdfView extends CustomAbstractPdfView {
-	private Perusahaan perusahaan;
+public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	private boolean contained;
-	private float[] columnWidths = {3.5f, 5f, 4f, 3.5f};
-	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
-	public static Font fontTableContent = new Font(Font.TIMES_ROMAN, 11);
 	
-	@Override
-	protected void buildPdfDocument(Map<String, Object> model, Document doc,
-			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		create(model, doc);
+	public void setContained(boolean bool) {
+		this.contained = bool;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -57,40 +44,13 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		}
 	}
 	
-	private void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
+	protected void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
 		if (perusahaan == null)
 			setPerusahaan(pelanggan.getPerusahaan());
-
-		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
-		createPage(doc, pelanggan);
+		super.createCard(doc, pelanggan);
 	}
 	
-	public void setPerusahaan(Perusahaan perusahaan) {
-		this.perusahaan = perusahaan;
-	}
-	
-	public void setContained(boolean bool) {
-		this.contained = bool;
-	}
-	
-	protected void createPage(Document doc, Pelanggan pelanggan) throws DocumentException {
-		doc.newPage();
-
-		Paragraph paragraph = new Paragraph();
-		createTitle(paragraph);
-		createHeadTable(paragraph, pelanggan);
-		createPembayaranTable(paragraph, pelanggan);
-		doc.add(paragraph);
-	}
-	
-	protected void createTitle(Paragraph paragraph) throws DocumentException {
-		paragraph.setAlignment(Element.ALIGN_CENTER);
-		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
-		paragraph.add(new Paragraph("PT. Aspetika Manasa Sulut - Manado", new Font(Font.TIMES_ROMAN, 8)));
-		//paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
-	}
-	
-	private void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
+	protected void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
@@ -137,7 +97,7 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		paragraph.add(table);
 	}
 
-	private void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
+	protected void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
@@ -176,17 +136,6 @@ public class KartuPelangganPdfView extends CustomAbstractPdfView {
 		insertEmptyCell(table, i);
 	}
 
-	private void insertEmptyCell(PdfPTable table, int i) {
-		for (int x = i; x <= 12; x++) {
-			String month = Month.of(x).name();
-			
-			insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-		}
-	}
-	
 	@Override
 	protected void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int border) {
 		PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));

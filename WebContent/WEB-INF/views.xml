@@ -6,6 +6,7 @@
 	<bean id="pdfException" class="com.unitedvision.tvkabel.core.document.pdf.ExceptionPdfView" />
 
 	<bean id="pdfKartu" class="com.unitedvision.tvkabel.core.document.pdf.KartuPelangganPdfView" />
+	<bean id="pdfKartuDefault" class="com.unitedvision.tvkabel.core.document.pdf.DefaultKartuPelangganPdfView" />
 
 	<bean id="pdfHari" class="com.unitedvision.tvkabel.core.document.pdf.HariPdfView" />
 	<bean id="pdfBulan" class="com.unitedvision.tvkabel.core.document.pdf.BulanPdfView" />

@@ -179,6 +179,19 @@ public class PrintController extends AbstractController {
 		}
 	}
 
+	@RequestMapping(value = "/pelanggan/kartu/empty", method = RequestMethod.POST)
+	public ModelAndView printKartuPelangganKosong(@RequestParam Integer idPerusahaan, Map<String, Object> model) {
+		try {
+			model.put("perusahaan", perusahaanService.getOne(idPerusahaan));
+
+			return new ModelAndView("pdfKartuDefault", model);
+		} catch(ApplicationException e) {
+			model.put("message", e.getMessage());
+
+			return new ModelAndView("pdfException", model);
+		}
+	}
+
 	@RequestMapping(value = "/pelanggan/kartu/aktif", method = RequestMethod.POST)
 	public ModelAndView printKartuPelangganAktif(@RequestParam Integer idPerusahaan, @RequestParam boolean pembayaran,
 			Map<String, Object> model) {
