@@ -2,8 +2,6 @@ package com.unitedvision.tvkabel.web.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -151,7 +149,7 @@ public class PelangganController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/activated/master", method = RequestMethod.PUT)
-	public @ResponseBody RestResult activate(@RequestBody Integer id, HttpServletResponse response) {
+	public @ResponseBody RestResult activate(@RequestBody Integer id) {
 		try {
 			Pelanggan pelanggan = pelangganService.getOne(id);
 
@@ -164,7 +162,7 @@ public class PelangganController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/passivated/master", method = RequestMethod.PUT)
-	public @ResponseBody RestResult passivate(@RequestBody Integer id, HttpServletResponse response) {
+	public @ResponseBody RestResult passivate(@RequestBody Integer id) {
 		try {
 			Pelanggan pelanggan = pelangganService.getOne(id);
 
@@ -177,7 +175,20 @@ public class PelangganController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/banned/master", method = RequestMethod.PUT)
-	public @ResponseBody RestResult ban(@RequestBody Integer id, HttpServletResponse response) {
+	public @ResponseBody RestResult ban(@RequestBody Integer id) {
+		try {
+			Pelanggan pelanggan = pelangganService.getOne(id);
+
+			pelangganService.banned(pelanggan);
+			
+			return RestResult.create("Berhasil!");
+		} catch (ApplicationException e) {
+			return RestResult.create(e.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/free/master", method = RequestMethod.PUT)
+	public @ResponseBody RestResult free(@RequestBody Integer id) {
 		try {
 			Pelanggan pelanggan = pelangganService.getOne(id);
 
@@ -190,7 +201,7 @@ public class PelangganController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/removed/master", method = RequestMethod.PUT)
-	public @ResponseBody RestResult remove(@RequestBody Integer id, HttpServletResponse response) {
+	public @ResponseBody RestResult remove(@RequestBody Integer id) {
 		try {
 			Pelanggan pelanggan = pelangganService.getOne(id);
 			

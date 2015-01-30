@@ -16,6 +16,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	void activate(Pelanggan pelanggan) throws ApplicationException;
 	void passivate(Pelanggan pelanggan) throws ApplicationException;
 	void banned(Pelanggan pelanggan) throws ApplicationException;
+	void free(Pelanggan pelanggan) throws ApplicationException;
 	void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
 	void recountTunggakan() throws ApplicationException;
 	void recountTunggakan(int tanggal) throws ApplicationException;

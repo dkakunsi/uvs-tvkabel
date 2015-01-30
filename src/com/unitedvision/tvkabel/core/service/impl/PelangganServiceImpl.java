@@ -120,6 +120,17 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	public void free(Pelanggan pelanggan) throws ApplicationException {
+		if (pelanggan.getStatus().equals(Status.GRATIS))
+			throw new StatusChangeException("Tidak menggratiskan pelanggan.<br />"
+					+ "Karena pelanggan merupakan pelanggan gratis");
+
+		pelanggan.setStatus(Status.GRATIS);
+
+		save(pelanggan);
+	}
+	
+	@Override
 	public void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = pelanggan.getAlamat();
 		alamat.setLatitude(latitude);;
