@@ -40,7 +40,7 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("08/20/2012"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, 1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -68,7 +68,7 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, 1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -87,7 +87,7 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, 1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());
@@ -109,7 +109,7 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
-		Pelanggan pelanggan = new Pelanggan(1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan(1, 1, null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		assertEquals(Status.AKTIF, pelanggan.getStatus());
 		assertEquals(1, pelanggan.getId());

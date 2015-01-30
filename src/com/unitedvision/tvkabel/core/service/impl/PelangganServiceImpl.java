@@ -142,6 +142,9 @@ public class PelangganServiceImpl implements PelangganService {
 		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		
 		for (Pelanggan pelanggan : listPelanggan) {
+			if (pelanggan.getStatus().equals(Status.GRATIS)) {
+				pembayaranService.pay(pelanggan);
+			}
 			recountTunggakan(pelanggan);
 		}
 	}
@@ -198,6 +201,20 @@ public class PelangganServiceImpl implements PelangganService {
 		return pelangganRepository.findByPerusahaanAndStatusOrderByKodeAsc(perusahaan, status);
 	}
 
+	@Override
+	public List<Pelanggan> get(Perusahaan perusahaan, int nomorBuku, int pageNumber) throws EntityNotExistException {
+		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
+
+		return pelangganRepository.findByPerusahaanAndNomorBukuContainingOrderByKodeAsc(perusahaan, nomorBuku, page);
+	}
+	
+	@Override
+	public List<Pelanggan> get(Perusahaan perusahaan, Status status, int nomorBuku, int pageNumber) throws EntityNotExistException {
+		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
+
+		return pelangganRepository.findByPerusahaanAndStatusAndNomorBukuContainingOrderByKodeAsc(perusahaan, status, nomorBuku, page);
+	}
+	
 	@Override
 	public List<Pelanggan> get(Perusahaan perusahaan, Status status, int pageNumber) throws EntityNotExistException {
 		PageRequest page = new PageRequest(pageNumber, PageSizeUtil.DATA_NUMBER);
@@ -270,6 +287,16 @@ public class PelangganServiceImpl implements PelangganService {
 		return pelangganRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan, status, kode);
 	}
 
+	@Override
+	public long countByNomorBuku(Perusahaan perusahaan, int nomorBuku) {
+		return pelangganRepository.countByPerusahaanAndNomorBukuContaining(perusahaan, nomorBuku);
+	}
+	
+	@Override
+	public long countByNomorBuku(Perusahaan perusahaan, Status status, int nomorBuku) {
+		return pelangganRepository.countByPerusahaanAndStatusAndNomorBukuContaining(perusahaan, status, nomorBuku);
+	}
+	
 	@Override
 	public long countByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) {
 		return pelangganRepository.countByPerusahaanAndStatusAndDetail_Tunggakan(perusahaan, status, tunggakan);

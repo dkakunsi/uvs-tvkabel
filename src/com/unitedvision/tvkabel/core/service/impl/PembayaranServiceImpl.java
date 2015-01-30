@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.validator.Validator;
@@ -24,8 +25,6 @@ import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
 import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.PageSizeUtil;
@@ -36,11 +35,9 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Autowired
 	private PelangganService pelangganService;
 	@Autowired
+	private PegawaiService pegawaiService;
+	@Autowired
 	private PembayaranRepository pembayaranRepository;
-	@Autowired
-	private PelangganRepository pelangganRepository;
-	@Autowired
-	private PegawaiRepository pegawaiRepository;
 	@Autowired
 	private Validator validator;
 
@@ -64,18 +61,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 		}
 	};
 
-	/**
-	 * Create list of {@link Pembayaran}.
-	 * @param pelanggan
-	 * @param pegawai
-	 * @param jumlahPembayaran
-	 * @param jumlahBulan
-	 * @throws EntityNotExistException the given entity is not present in database.
-	 * @throws EmptyIdException id passed to entity cannot be negative.
-	 * @throws NotPayableCustomerException {@link Pelanggan.Status} is not {@code AKTIF}.
-	 * @throws UnpaidBillException the given {@link Pembayaran} cannot be paid.
-	 * @throws DataDuplicationException the given {@link Pembayaran} have been paid.
-	 */
 	public List<Pembayaran> createListPembayaran(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws EntityNotExistException, EmptyIdException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
 		Tagihan tagihan = getPayableTagihan(pelanggan);
 
@@ -106,6 +91,21 @@ public class PembayaranServiceImpl implements PembayaranService {
 		pelangganService.recountTunggakan(pembayaran.getPelanggan());
 		
 		return pembayaran;
+	}
+	
+	@Override
+	public void pay(Pelanggan pelanggan) throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+		Pegawai pegawai = pegawaiService.getOne(pelanggan.getPerusahaan());
+		
+		Date now = DateUtil.getSimpleNow();
+		Tagihan last = Tagihan.create(now);
+		Tagihan first = getPayableTagihan(pelanggan);
+		
+		int selisih = last.compareWith(first);
+		
+		if (selisih >= 0) {
+			pay(pelanggan, pegawai, 0, selisih);
+		}
 	}
 	
 	@Override

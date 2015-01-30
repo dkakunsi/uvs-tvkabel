@@ -65,7 +65,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan pelanggan = newPelanggan;
@@ -89,7 +89,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
@@ -116,7 +116,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
@@ -148,7 +148,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
@@ -175,7 +175,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
@@ -208,7 +208,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
@@ -236,7 +236,7 @@ public class PelangganServiceTest {
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
+		Pelanggan newPelanggan = new Pelanggan(0, 1, perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);

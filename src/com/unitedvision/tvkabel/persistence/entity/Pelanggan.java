@@ -35,6 +35,9 @@ import com.unitedvision.tvkabel.util.DateUtil;
 @Entity
 @Table(name = "pelanggan")
 public final class Pelanggan extends CodableDomain implements Removable {
+	/** Registration number */
+	private int nomorBuku;
+	
 	/** {@link Perusahaan} where customer subscribes */
 	private Perusahaan perusahaan;
 
@@ -84,9 +87,10 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 * @throws EmptyIdException {@code id} is negative.
 	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Pelanggan(int id, Perusahaan perusahaan, String kode, String nama, String profesi, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
+	public Pelanggan(int id, int nomorBuku, Perusahaan perusahaan, String kode, String nama, String profesi, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
 		super();
 		setId(id);
+		setNomorBuku(nomorBuku);
 		setPerusahaan(perusahaan);
 		setKode(kode);
 		setNama(nama);
@@ -110,6 +114,23 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		return super.getKode();
 	}
 	
+	/**
+	 * Return registration number.
+	 * @return
+	 */
+	@Column(name = "nomor_buku")
+	public int getNomorBuku() {
+		return nomorBuku;
+	}
+
+	/**
+	 * Set registration number.
+	 * @param nomorBuku
+	 */
+	public void setNomorBuku(int nomorBuku) {
+		this.nomorBuku = nomorBuku;
+	}
+
 	/**
 	 * Return {@link Perusahaan} instance.
 	 * @return perusahaan
@@ -749,7 +770,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	/**
 	 * Pelanggan status
 	 * 
-	 * @author Dessy Chsristoper Kakunsi
+	 * @author Deddy Christoper Kakunsi
 	 *
 	 */
 	public enum Status {
@@ -760,7 +781,9 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		/** HUTANG */
 		PUTUS,
 		/** REMOVED from database (not deleted) */
-		REMOVED;
+		REMOVED,
+		/** FREE OF CHARGE */
+		GRATIS;
 		
 		/**
 		 * Returns {@link Status} from the given string.

@@ -63,6 +63,12 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	public Pegawai getOne(Perusahaan perusahaan) throws EntityNotExistException {
+		List<Pegawai> list = get(perusahaan);
+		return list.get(0);
+	}	
+	
+	@Override
 	public List<Pegawai> get(Perusahaan perusahaan) throws EntityNotExistException {
 		return pegawaiRepository.findByPerusahaanAndStatus(perusahaan, Status.AKTIF);
 	}

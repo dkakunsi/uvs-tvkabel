@@ -30,6 +30,9 @@ import com.unitedvision.tvkabel.exception.EmptyIdException;
 public final class Perusahaan extends CodableDomain {
 	/** Name. */
 	private String nama;
+	
+	/** Company name. */
+	private String namaPT;
 
 	/** Address */
 	private Alamat alamat;
@@ -114,6 +117,23 @@ public final class Perusahaan extends CodableDomain {
 	 */
 	public void setNama(String nama) {
 		this.nama = nama;
+	}
+	
+	/**
+	 * Return Company name.
+	 * @return
+	 */
+	@Column(name = "nama_pt")
+	public String getNamaPT() {
+		return namaPT;
+	}
+
+	/**
+	 * Set Company name.
+	 * @param namaPT
+	 */
+	public void setNamaPT(String namaPT) {
+		this.namaPT = namaPT;
 	}
 
 	/**

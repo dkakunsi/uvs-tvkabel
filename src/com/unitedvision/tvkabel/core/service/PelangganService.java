@@ -24,6 +24,8 @@ public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
 
+	List<Pelanggan> get(Perusahaan perusahaan, int nomorBuku, int page) throws EntityNotExistException;
+	List<Pelanggan> get(Perusahaan perusahaan, Status status, int nomorBuku, int page) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Status status) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, int page) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
@@ -40,9 +42,11 @@ public interface PelangganService extends Service<Pelanggan> {
 
 	long count(Perusahaan perusahaan, Status status);
 	long countByNama(Perusahaan perusahaan, String nama);
-	long countByKode(Perusahaan perusahaan, String kode);
 	long countByNama(Perusahaan perusahaan, Status status, String nama);
+	long countByKode(Perusahaan perusahaan, String kode);
 	long countByKode(Perusahaan perusahaan, Status status, String kode);
+	long countByNomorBuku(Perusahaan perusahaan, int nomorBuku);
+	long countByNomorBuku(Perusahaan perusahaan, Status status, int nomorBuku);
 	long countByTunggakan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByTunggakanGreaterThan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByTunggakanLessThan(Perusahaan perusahaan, Status status, int tunggakan);

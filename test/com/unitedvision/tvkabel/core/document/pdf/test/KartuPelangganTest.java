@@ -42,7 +42,7 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
             Detail detail = new Detail(new Date(), 1, 50000, 0);
             Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
-            Pelanggan pelanggan = new Pelanggan(1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", kelurahan, alamat, kontak, detail, Pelanggan.Status.AKTIF);
+            Pelanggan pelanggan = new Pelanggan(1, 1, perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", kelurahan, alamat, kontak, detail, Pelanggan.Status.AKTIF);
             Pegawai pegawai = new Pegawai(0, "PG001", perusahaan, "Test", null, Pegawai.Status.AKTIF);
             
             Tagihan tagihan = new Tagihan(2015, Month.JANUARY);

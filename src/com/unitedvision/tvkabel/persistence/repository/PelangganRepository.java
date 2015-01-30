@@ -25,6 +25,9 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	Pelanggan findByPerusahaanAndKode(Perusahaan perusahaan, String kode) throws EntityNotExistException;
 	Pelanggan findByPerusahaanAndNama(Perusahaan perusahaan, String nama) throws EntityNotExistException;
 
+	List<Pelanggan> findByPerusahaanAndNomorBukuContainingOrderByKodeAsc(Perusahaan perusahaan, int nomorBuku, Pageable page);
+	List<Pelanggan> findByPerusahaanAndStatusAndNomorBukuContainingOrderByKodeAsc(Perusahaan perusahaan, Status status, int nomorBuku, Pageable page);
+
 	List<Pelanggan> findByPerusahaanAndKodeContainingOrderByKodeAsc(Perusahaan perusahaan, String kode, Pageable page);
 	List<Pelanggan> findByPerusahaanAndNamaContainingOrderByKodeAsc(Perusahaan perusahaan, String nama, Pageable page);
 	List<Pelanggan> findByPerusahaanAndStatusOrderByKodeAsc(Perusahaan perusahaan, Status status);
@@ -36,12 +39,17 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 
 	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakan);
 
-	long countByPerusahaanAndStatusAndNamaContaining(Perusahaan perusahaan, Status status, String nama);
-	long countByPerusahaanAndStatusAndKodeContaining(Perusahaan perusahaan, Status status, String kode);
 	long countByPerusahaanAndStatus(Perusahaan perusahaan, Status status);
-	long countByPerusahaanAndKodeContaining(Perusahaan perusahaan, String kode);
+
 	long countByPerusahaanAndNamaContaining(Perusahaan perusahaan, String nama);
+	long countByPerusahaanAndStatusAndNamaContaining(Perusahaan perusahaan, Status status, String nama);
 	
+	long countByPerusahaanAndKodeContaining(Perusahaan perusahaan, String kode);
+	long countByPerusahaanAndStatusAndKodeContaining(Perusahaan perusahaan, Status status, String kode);
+
+	long countByPerusahaanAndNomorBukuContaining(Perusahaan perusahaan, int nomorBuku);
+	long countByPerusahaanAndStatusAndNomorBukuContaining(Perusahaan perusahaan, Status status, int nomorBuku);
+
 	long countByPerusahaanAndStatusAndDetail_Tunggakan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanGreaterThan(Perusahaan perusahaan, Status status, int tunggakan);
 	long countByPerusahaanAndStatusAndDetail_TunggakanLessThan(Perusahaan perusahaan, Status status, int tunggakan);

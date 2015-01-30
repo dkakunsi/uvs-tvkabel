@@ -13,7 +13,9 @@ public interface PegawaiService extends Service<Pegawai> {
 	Pegawai getOneByNama(Perusahaan perusahaan, String nama) throws EntityNotExistException;
 	Pegawai getOneByKode(Perusahaan perusahaan, String kode) throws EntityNotExistException;
 	Pegawai getOneByUsername(String username) throws EntityNotExistException;
-	
+
+	Pegawai getOne(Perusahaan perusahaan) throws EntityNotExistException;
+
 	List<Pegawai> get(Perusahaan perusahaan) throws EntityNotExistException;
 	
 	List<Pegawai> getByNama(Perusahaan perusahaan, String nama, int page) throws EntityNotExistException;

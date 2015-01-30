@@ -24,6 +24,7 @@ import com.unitedvision.tvkabel.web.rest.RestResult;
 @Controller
 @RequestMapping("/api/pelanggan")
 public class PelangganController extends AbstractController {
+	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public @ResponseBody PelangganRestResult get(@PathVariable Integer id) {
 		try {
@@ -115,6 +116,26 @@ public class PelangganController extends AbstractController {
 		
 		return ListPelangganRestResult.create("Berhasil!", list, page, total, count);
 	}
+
+	@RequestMapping(value = "/perusahaan/{perusahaan}/nomor/{nomorBuku}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByNomorBuku(@PathVariable Integer perusahaan, @PathVariable Integer nomorBuku, @PathVariable Integer page) throws ApplicationException {
+		List<Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), nomorBuku, page);
+		long total = pelangganService.countByNomorBuku(getPerusahaan(perusahaan), nomorBuku);
+		long count = PageSizeUtil.getCounter(page, list.size());
+		
+		return ListPelangganRestResult.create("Berhasil!", list, page, total, count);
+	}
+
+	@RequestMapping(value = "/perusahaan/{perusahaan}/nomor/{nomorBuku}/status/{status}/page/{page}", method = RequestMethod.GET)
+	public @ResponseBody ListPelangganRestResult getByNomorBuku(@PathVariable Integer perusahaan, @PathVariable String status, @PathVariable Integer nomorBuku, @PathVariable Integer page) throws ApplicationException {
+		final Status _status = Status.get(status);
+		List<Pelanggan> list = pelangganService.get(getPerusahaan(perusahaan), _status, nomorBuku, page);
+		long total = pelangganService.countByNomorBuku(getPerusahaan(perusahaan), _status, nomorBuku);
+		long count = PageSizeUtil.getCounter(page, list.size());
+		
+		return ListPelangganRestResult.create("Berhasil!", list, page, total, count);
+	}
+	
 	
 	@RequestMapping(value = "/{id}/location/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
 	public @ResponseBody RestResult setMapLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) {
