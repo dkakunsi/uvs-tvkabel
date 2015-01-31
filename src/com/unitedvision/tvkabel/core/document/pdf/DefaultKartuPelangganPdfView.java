@@ -63,7 +63,10 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 	protected void createTitle(Paragraph paragraph) throws DocumentException {
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
-		paragraph.add(new Paragraph("PT. Aspetika Manasa Sulut - Manado", new Font(Font.TIMES_ROMAN, 8)));
+		String namaPT = perusahaan.getNamaPT();
+		if (!namaPT.equals("")) {
+			paragraph.add(new Paragraph(namaPT, new Font(Font.TIMES_ROMAN, 8)));
+		}
 		//paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
 	}
 
