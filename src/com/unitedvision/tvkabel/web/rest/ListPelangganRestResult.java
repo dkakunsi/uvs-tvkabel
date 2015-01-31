@@ -27,4 +27,8 @@ public class ListPelangganRestResult extends ListRestResult {
 	public static ListPelangganRestResult create(String message, List<Pelanggan> list, int page, long total, long count) {
 		return new ListPelangganRestResult(message, list, page, total, count);
 	}
+
+	public static ListPelangganRestResult create(String message) {
+		return new ListPelangganRestResult(message);
+	}
 }

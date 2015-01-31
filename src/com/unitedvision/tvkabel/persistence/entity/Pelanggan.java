@@ -36,7 +36,7 @@ import com.unitedvision.tvkabel.util.DateUtil;
 @Table(name = "pelanggan")
 public final class Pelanggan extends CodableDomain implements Removable {
 	/** Registration number */
-	private int nomorBuku;
+	private String nomorBuku;
 	
 	/** {@link Perusahaan} where customer subscribes */
 	private Perusahaan perusahaan;
@@ -87,7 +87,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 * @throws EmptyIdException {@code id} is negative.
 	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Pelanggan(int id, int nomorBuku, Perusahaan perusahaan, String kode, String nama, String profesi, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
+	public Pelanggan(int id, String nomorBuku, Perusahaan perusahaan, String kode, String nama, String profesi, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Detail detail, Status status) throws EmptyIdException, EmptyCodeException {
 		super();
 		setId(id);
 		setNomorBuku(nomorBuku);
@@ -119,7 +119,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 * @return
 	 */
 	@Column(name = "nomor_buku")
-	public int getNomorBuku() {
+	public String getNomorBuku() {
 		return nomorBuku;
 	}
 
@@ -127,7 +127,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 * Set registration number.
 	 * @param nomorBuku
 	 */
-	public void setNomorBuku(int nomorBuku) {
+	public void setNomorBuku(String nomorBuku) {
 		this.nomorBuku = nomorBuku;
 	}
 

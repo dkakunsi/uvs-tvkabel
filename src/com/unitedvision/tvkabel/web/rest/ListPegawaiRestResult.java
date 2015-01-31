@@ -27,4 +27,8 @@ public class ListPegawaiRestResult extends ListRestResult {
 	public static ListPegawaiRestResult create(String message, List<Pegawai> list, int page, long total, long count) {
 		return new ListPegawaiRestResult(message, list, page, total, count);
 	}
+
+	public static ListPegawaiRestResult create(String message) {
+		return new ListPegawaiRestResult(message);
+	}
 }

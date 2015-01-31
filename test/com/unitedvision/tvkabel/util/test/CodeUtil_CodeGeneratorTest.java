@@ -46,7 +46,7 @@ public class CodeUtil_CodeGeneratorTest {
 		
 		Kelurahan kelurahanEntity = new Kelurahan(0, null, "Winangun 1");
 		Alamat alamatValue = new Alamat(6, "", 0, 0);
-		Pelanggan pelanggan = new Pelanggan(0, 1, null, "", "", "", kelurahanEntity, alamatValue, null, null, null);
+		Pelanggan pelanggan = new Pelanggan(0, "1", null, "", "", "", kelurahanEntity, alamatValue, null, null, null);
 		
 		String generatedKode = codeGenerator.createKode(pelanggan);
 		
