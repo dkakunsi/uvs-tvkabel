@@ -24,9 +24,13 @@ import com.unitedvision.tvkabel.web.rest.RestResult;
 public class PegawaiController extends AbstractController {
 	@RequestMapping(value = "/perusahaan/{perusahaan}", method = RequestMethod.GET)
 	public @ResponseBody ListPegawaiRestResult getAll(@PathVariable Integer perusahaan) throws ApplicationException {
-		List<Pegawai> list = pegawaiService.get(getPerusahaan(perusahaan));
+		try {
+			List<Pegawai> list = pegawaiService.get(getPerusahaan(perusahaan));
 		
-		return ListPegawaiRestResult.create("Berhasil!", list);
+			return ListPegawaiRestResult.create("Berhasil!", list);
+		} catch (ApplicationException e) {
+			return ListPegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}	
 	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -49,11 +53,15 @@ public class PegawaiController extends AbstractController {
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/kode/{kode}/page/{page}", method = RequestMethod.GET)
 	public @ResponseBody ListPegawaiRestResult getByKode(@PathVariable Integer perusahaan, @PathVariable String kode, @PathVariable Integer page) throws ApplicationException {
-		List<Pegawai> list = pegawaiService.getByKode(getPerusahaan(perusahaan), kode, page);
-		long total = pegawaiService.countByKode(getPerusahaan(perusahaan), kode);
-		long count = PageSizeUtil.getCounter(page, list.size());
-		
-		return ListPegawaiRestResult.create("Berhasil!", list, page, total, count);
+		try {
+			List<Pegawai> list = pegawaiService.getByKode(getPerusahaan(perusahaan), kode, page);
+			long total = pegawaiService.countByKode(getPerusahaan(perusahaan), kode);
+			long count = PageSizeUtil.getCounter(page, list.size());
+
+			return ListPegawaiRestResult.create("Berhasil!", list, page, total, count);
+		} catch (ApplicationException e) {
+			return ListPegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/nama/{nama}", method = RequestMethod.GET)
@@ -67,11 +75,15 @@ public class PegawaiController extends AbstractController {
 	
 	@RequestMapping(value = "/perusahaan/{perusahaan}/nama/{nama}/page/{page}", method = RequestMethod.GET)
 	public @ResponseBody ListPegawaiRestResult getByNama(@PathVariable Integer perusahaan, @PathVariable String nama, @PathVariable Integer page) throws ApplicationException {
-		List<Pegawai> list = pegawaiService.getByNama(getPerusahaan(perusahaan), nama, page);
-		long total = pegawaiService.countByNama(getPerusahaan(perusahaan), nama);
-		long count = PageSizeUtil.getCounter(page, list.size());
-		
-		return ListPegawaiRestResult.create("Berhasil!", list, page, total, count);
+		try {
+			List<Pegawai> list = pegawaiService.getByNama(getPerusahaan(perusahaan), nama, page);
+			long total = pegawaiService.countByNama(getPerusahaan(perusahaan), nama);
+			long count = PageSizeUtil.getCounter(page, list.size());
+
+			return ListPegawaiRestResult.create("Berhasil!", list, page, total, count);
+		} catch (ApplicationException e) {
+			return ListPegawaiRestResult.create(String.format("Gagal! %s", e.getMessage()));
+		}
 	}
 
 	@RequestMapping(value = "/perusahaan/{perusahaan}/master", method = RequestMethod.POST)
