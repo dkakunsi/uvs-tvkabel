@@ -30,7 +30,7 @@ public class EmptyKartuPelangganTest extends DefaultKartuPelangganPdfView {
             Kelurahan kelurahan = new Kelurahan(0, null, "Paniki Bawah");
             Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
-            Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
+            Perusahaan perusahaan = new Perusahaan(1, "COM1", "TVK. GALAU", "PT. MOVE ON", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
 
             Map<String, Object> model = new HashMap<>();
             model.put("perusahaan", perusahaan);

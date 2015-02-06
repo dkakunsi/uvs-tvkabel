@@ -9,12 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.KartuPelangganPdfView;
+import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Kontak;
@@ -31,7 +37,17 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
 
 	public static void main(String[] args) {
         Document document = kartu.newDocument();
-
+        //create(document);
+        try {
+			createWithDb(document);
+		} catch (EntityNotExistException e) {
+			e.printStackTrace();
+		}
+        System.out.println("DONE...");
+	}
+	
+	@SuppressWarnings("unused")
+	private static void create(Document document) {
         try {
             PdfWriter.getInstance(document,
                 new FileOutputStream("E:\\test.pdf"));
@@ -41,7 +57,7 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
             Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
             Detail detail = new Detail(new Date(), 1, 50000, 0);
-            Perusahaan perusahaan = new Perusahaan(1, "COM1", "PT. GALAU", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
+            Perusahaan perusahaan = new Perusahaan(1, "COM1", "TVK. GALAU", "PT. MOVE ON", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
             Pelanggan pelanggan = new Pelanggan(1, "1", perusahaan, "PLGT1", "Deddy Kakunsi", "Programmer", kelurahan, alamat, kontak, detail, Pelanggan.Status.AKTIF);
             Pegawai pegawai = new Pegawai(0, "PG001", perusahaan, "Test", null, Pegawai.Status.AKTIF);
             
@@ -69,10 +85,36 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
 		} catch (EmptyCodeException e) {
 			e.printStackTrace();
 		}
-        
-        System.out.println("DONE...");
 	}
-	
+
+	private static void createWithDb(Document document) throws EntityNotExistException {
+		@SuppressWarnings("resource")
+		ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
+		PelangganService pelangganService = appContext.getBean(PelangganService.class);
+
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("E:\\test.pdf"));
+
+            document.open();
+            
+            Pelanggan pelanggan = pelangganService.getOne(35);
+            pelanggan = pelangganService.cetakKartu(pelanggan);
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("pelanggan", pelanggan);
+            model.put("pembayaran", true);
+            
+            kartu.create(model, document);
+            
+            document.close();
+
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+		}
+	}
+
 	@Override
 	protected Document newDocument() {
 		return super.newDocument();

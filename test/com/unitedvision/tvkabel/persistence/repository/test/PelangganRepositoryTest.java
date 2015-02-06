@@ -42,6 +42,15 @@ public class PelangganRepositoryTest {
 	private KelurahanRepository kelurahanRepository;
 	
 	@Test
+	public void test_Get() {
+		Pelanggan pelanggan = pelangganRepository.getOne(35);
+		Perusahaan perusahaan = pelanggan.getPerusahaan();
+		
+		assertNotNull(perusahaan.getNamaPT());
+		assertNotEquals("", perusahaan.getNamaPT());
+	}
+	
+	@Test
 	public void testCountEstimasi() {
 		Perusahaan perusahaan = perusahaanRepository.getOne(17);
 		long hasil = pelangganRepository.sumarizeEstimasiPemasukanBulanan(perusahaan, Status.AKTIF);

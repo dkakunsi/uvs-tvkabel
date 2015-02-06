@@ -49,4 +49,12 @@ public class PerusahaanRepositoryTest {
 			assertEquals("Email yang anda masukkan sudah digunakan.", ex.getMessage());
 		}
 	}
+	
+	@Test
+	public void testGet() {
+		Perusahaan perusahaan = perusahaanRepository.getOne(17);
+		
+		assertNotNull(perusahaan.getNamaPT());
+		assertNotEquals("", perusahaan.getNamaPT());
+	}
 }

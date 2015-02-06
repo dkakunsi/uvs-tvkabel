@@ -64,7 +64,7 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		paragraph.add(new Paragraph(String.format("%s", perusahaan.getNama()), new Font(Font.TIMES_ROMAN, 14, Font.BOLD)));
 		String namaPT = perusahaan.getNamaPT();
-		if (!namaPT.equals("")) {
+		if (namaPT != null && !namaPT.equals("")) {
 			paragraph.add(new Paragraph(namaPT, new Font(Font.TIMES_ROMAN, 8)));
 		}
 		//paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));

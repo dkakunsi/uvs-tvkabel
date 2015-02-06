@@ -39,7 +39,7 @@ public class PerusahaanTest {
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
-		Perusahaan perusahaan = new Perusahaan(1, "1", "1", kelurahan, alamat, kontak, 1000L, Status.AKTIF);
+		Perusahaan perusahaan = new Perusahaan(1, "1", "1", "PT. 1", kelurahan, alamat, kontak, 1000L, Status.AKTIF);
 		
 		assertEquals(1, perusahaan.getId());
 		assertEquals("1", perusahaan.getKode());

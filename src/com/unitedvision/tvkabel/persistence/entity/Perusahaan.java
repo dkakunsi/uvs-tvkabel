@@ -78,11 +78,12 @@ public final class Perusahaan extends CodableDomain {
 	 * @throws EmptyIdException {@code id} is negative.
 	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Perusahaan(int id, String kode, String nama, Kelurahan kelurahan, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyIdException, EmptyCodeException {
+	public Perusahaan(int id, String kode, String nama, String namaPT, Kelurahan kelurahan, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyIdException, EmptyCodeException {
 		super();
 		setId(id);
 		setKode(kode);
 		setNama(nama);
+		setNamaPT(namaPT);
 		setKelurahan(kelurahan);
 		setAlamat(alamat);
 		setKontak(kontak);
