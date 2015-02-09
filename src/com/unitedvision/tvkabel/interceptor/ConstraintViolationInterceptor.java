@@ -24,6 +24,12 @@ public class ConstraintViolationInterceptor {
 				throw new PersistenceException("Username yang anda masukkan sudah digunakan.");
 			} else if (message.contains("email")) {
 				throw new PersistenceException("Email yang anda masukkan sudah digunakan.");
+			} else if (message.contains("kode")) {
+				throw new PersistenceException("Kode yang anda masukkan sudah digunakan.");
+			} else if (message.contains("nomor_buku")) {
+				throw new PersistenceException("Nomor Buku yang anda masukkan sudah digunakan.");
+			} else if (message.contains("nama")) {
+				throw new PersistenceException("Nama yang anda masukkan sudah digunakan.");
 			}
 		}
 	}

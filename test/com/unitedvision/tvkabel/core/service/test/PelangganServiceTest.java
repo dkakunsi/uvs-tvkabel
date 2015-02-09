@@ -22,6 +22,7 @@ import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
 import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
@@ -79,6 +80,63 @@ public class PelangganServiceTest {
 		assertEquals(DateUtil.getYear(now), DateUtil.getYear(date));
 		assertEquals(DateUtil.getMonth(now), DateUtil.getMonth(date));
 		assertEquals(DateUtil.getDay(now), DateUtil.getDay(date));
+	}
+
+	@Test
+	public void insertPelanggan_KodeException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
+		Kelurahan kelurahan = kelurahanService.getOne(22);
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		Detail detail = new Detail(new Date(), 1, 50000, 0);
+
+		Pelanggan newPelanggan = new Pelanggan(0, "XXX", perusahaan, "WS05001", "Belum Ada", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
+
+		try {
+			pelangganService.save(newPelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Kode yang anda masukkan sudah digunakan.", message);
+		}
+	}
+
+	@Test
+	public void insertPelanggan_NomorBukuException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
+		Kelurahan kelurahan = kelurahanService.getOne(22);
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		Detail detail = new Detail(new Date(), 1, 50000, 0);
+
+		Pelanggan newPelanggan = new Pelanggan(0, "---", perusahaan, "XXX", "Belum Ada", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		
+		try {
+			pelangganService.save(newPelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Nomor Buku yang anda masukkan sudah digunakan.", message);
+		}
+	}
+
+	@Test
+	public void insertPelanggan_NamaException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
+		Kelurahan kelurahan = kelurahanService.getOne(22);
+		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		Detail detail = new Detail(new Date(), 1, 50000, 0);
+
+		Pelanggan newPelanggan = new Pelanggan(0, "-------", perusahaan, "---", "Kel. Walewangko-Mandagi", "Pengamen",
+				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		
+		try {
+			pelangganService.save(newPelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Nama yang anda masukkan sudah digunakan.", message);
+		}
 	}
 
 	@Test
