@@ -19,7 +19,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	void free(Pelanggan pelanggan) throws ApplicationException;
 	void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
 	void recountTunggakan() throws ApplicationException;
-	void recountTunggakan(int tanggal) throws ApplicationException;
+	void recountTunggakan(String tanggal) throws ApplicationException;
 	void recountTunggakan(Pelanggan pelanggan) throws EntityNotExistException;
 	
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
@@ -32,7 +32,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
 	List<Pelanggan> get(Pegawai pegawai, Date tanggalBayarAwal, Date tanggalBayarAkhir) throws EntityNotExistException;
 	List<Pelanggan> get(Perusahaan perusahaan, Date tanggalBayarAwal, Date tanggalBayarAkhir) throws EntityNotExistException;
-	List<Pelanggan> get(Status status, int tanggal) throws EntityNotExistException;
+	List<Pelanggan> get(Status status, String tanggal) throws EntityNotExistException;
 	List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status);
 
 	List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) throws EntityNotExistException;

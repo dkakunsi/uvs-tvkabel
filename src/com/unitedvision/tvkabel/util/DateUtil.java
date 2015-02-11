@@ -418,6 +418,30 @@ public class DateUtil {
 	}
 	
 	/**
+	 * Convert {@code day} into String representation
+	 * @param day
+	 * @return
+	 */
+	public static String getDayString(int day) {
+		String strInt = String.valueOf(day);
+		
+		if (strInt.length() == 1)
+			return String.format("0%s", strInt);
+		return strInt;
+	}
+	
+	/**
+	 * Return day in {@code String} representation.
+	 * @param date
+	 * @return
+	 */
+	public static String getDayString(Date date) {
+		int day = getDay(date);
+		
+		return getDayString(day);
+	}
+	
+	/**
 	 * Return day of now in {@code int} representation from {@code Date}.
 	 * @return day in {@code int} representation
 	 */

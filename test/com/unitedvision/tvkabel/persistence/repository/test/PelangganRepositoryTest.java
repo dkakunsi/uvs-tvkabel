@@ -86,7 +86,7 @@ public class PelangganRepositoryTest {
 	
 	@Test
 	public void testGetByTanggalCont() {
-		int tanggal = 12;
+		String tanggal = "1";
 		
 		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF, tanggal);
 		
@@ -231,5 +231,16 @@ public class PelangganRepositoryTest {
 			System.out.println(String.format("%s, %s, %d", en.getKode(), en.getNamaKelurahan(), en.getLingkungan()));
 		}
 		assertEquals(limit[counter], i);
+	}
+	
+	@Test
+	public void testGetByTanggalMulai_Like() {
+		String tanggal = "1";
+		
+		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF, tanggal);
+		
+		assertNotNull(listPelanggan);
+		assertNotEquals(0, listPelanggan.size());
+		assertEquals(1, listPelanggan.size());
 	}
 }

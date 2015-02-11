@@ -188,7 +188,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
-	public Pembayaran getLast(Pelanggan pelanggan) throws EntityNotExistException {
+	public Pembayaran getLast(Pelanggan pelanggan) {
 		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan);
 	}
 

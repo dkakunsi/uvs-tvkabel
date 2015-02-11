@@ -455,4 +455,22 @@ public class PelangganServiceTest {
 		assertNotNull(listPelanggan);
 		assertNotEquals(0, listPelanggan.size());
 	}
+	
+	@Test
+	public void testGetByTanggal_Like() throws EntityNotExistException {
+		String tanggal = "01";
+		
+		List<Pelanggan> listPelanggan = pelangganService.get(Status.AKTIF, tanggal);
+		
+		assertNotNull(listPelanggan);
+		assertNotEquals(0, listPelanggan.size());
+		assertEquals(1, listPelanggan.size());
+	}
+	
+	@Test
+	public void testRecountTunggakan_WithTanggal() throws ApplicationException {
+		String tanggal = "1";
+		
+		pelangganService.recountTunggakan(tanggal);
+	}
 }

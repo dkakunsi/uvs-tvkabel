@@ -51,7 +51,7 @@ public class PageController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/admin/tunggakan/recount/{kode}/{tanggal}", method = RequestMethod.GET)
-	public @ResponseBody RestResult recountTunggakanWithTanggal(@PathVariable String kode, @PathVariable Integer tanggal, Map<String, Object> model) {
+	public @ResponseBody RestResult recountTunggakanWithTanggal(@PathVariable String kode, @PathVariable String tanggal, Map<String, Object> model) {
 		String message;
 		try {
 			if (!kode.equals(CodeUtil.getKode())) {

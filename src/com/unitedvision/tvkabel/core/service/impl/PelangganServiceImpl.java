@@ -16,8 +16,11 @@ import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.exception.UnpaidBillException;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
@@ -108,12 +111,9 @@ public class PelangganServiceImpl implements PelangganService {
 					+ "Karena pelanggan merupakan pelanggan putus");
 
 		pelanggan.setStatus(Status.PUTUS);
-		Pembayaran last = null;
-		try {
-			last = pembayaranService.getLast(pelanggan);
-		} catch (EntityNotExistException e) {
-			//nothing to do
-		}
+
+		Pembayaran last = pembayaranService.getLast(pelanggan);
+
 		pelanggan.countTunggakan(last);
 		
 		save(pelanggan);
@@ -145,17 +145,27 @@ public class PelangganServiceImpl implements PelangganService {
 	public void recountTunggakan() throws ApplicationException {
 		Date now = DateUtil.getNow();
 
-		recountTunggakan(DateUtil.getDay(now));
+		recountTunggakan(DateUtil.getDayString(now));
 	}
 	
 	@Override
-	public void recountTunggakan(int tanggal) throws ApplicationException {
+	public void recountTunggakan(String tanggal) throws ApplicationException {
+		recountTunggakanStatusAktif(tanggal);
+		recountTunggakanStatusGratis(tanggal);
+	}
+	
+	private void recountTunggakanStatusAktif(String tanggal) throws EntityNotExistException {
 		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		
+		for (Pelanggan pelanggan : listPelanggan)
+			recountTunggakan(pelanggan);
+	}
+	
+	private void recountTunggakanStatusGratis(String tanggal) throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+		List<Pelanggan> listPelanggan = get(Status.GRATIS, tanggal);
+		
 		for (Pelanggan pelanggan : listPelanggan) {
-			if (pelanggan.getStatus().equals(Status.GRATIS)) {
-				pembayaranService.pay(pelanggan);
-			}
+			pembayaranService.pay(pelanggan);
 			recountTunggakan(pelanggan);
 		}
 	}
@@ -203,7 +213,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public List<Pelanggan> get(Status status, int tanggal) throws EntityNotExistException {
+	public List<Pelanggan> get(Status status, String tanggal) throws EntityNotExistException {
 		return pelangganRepository.findByTanggalMulai(status, tanggal);
 	}
 	

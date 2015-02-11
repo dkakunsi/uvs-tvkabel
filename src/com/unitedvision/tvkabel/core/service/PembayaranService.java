@@ -76,9 +76,8 @@ public interface PembayaranService extends Service<Pembayaran> {
 	 * Return the last payment of a customer.
 	 * @param pelanggan
 	 * @return
-	 * @throws EntityNotExistException
 	 */
-	Pembayaran getLast(Pelanggan pelanggan) throws EntityNotExistException;
+	Pembayaran getLast(Pelanggan pelanggan);
 
 	/**
 	 * Create list pembayaran, when customer pay multiple bill. 
