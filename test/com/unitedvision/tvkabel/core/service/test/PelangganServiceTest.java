@@ -59,7 +59,7 @@ public class PelangganServiceTest {
 	private Validator validator;
 	
 	@Test
-	public void insertPelangganSuccess() throws ApplicationException {
+	public void insertPelanggan_Success() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(1, "Detail", 0, 0);
@@ -133,6 +133,49 @@ public class PelangganServiceTest {
 		
 		try {
 			pelangganService.save(newPelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Nama yang anda masukkan sudah digunakan.", message);
+		}
+	}
+
+	@Test
+	@Ignore
+	public void updatePelanggan_Success() throws ApplicationException { }
+
+	@Test
+	public void updatePelanggan_KodeException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		pelanggan.setKode("WS02018");
+		
+		try {
+			pelangganService.save(pelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Kode yang anda masukkan sudah digunakan.", message);
+		}
+	}
+
+	@Test
+	public void updatePelanggan_NomorBukuException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		pelanggan.setNomorBuku("17");
+		
+		try {
+			pelangganService.save(pelanggan);
+		} catch (ApplicationException e) {
+			String message = e.getMessage();
+			assertEquals("Nomor Buku yang anda masukkan sudah digunakan.", message);
+		}
+	}
+
+	@Test
+	public void updatePelanggan_NamaException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		Pelanggan pelanggan = pelangganService.getOne(35);
+		pelanggan.setNama("Engelbert Koagow");
+		
+		try {
+			pelangganService.save(pelanggan);
 		} catch (ApplicationException e) {
 			String message = e.getMessage();
 			assertEquals("Nama yang anda masukkan sudah digunakan.", message);

@@ -5,6 +5,7 @@ import javax.persistence.PersistenceException;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -19,18 +20,36 @@ public class ConstraintViolationInterceptor {
 		
 		if (throwable instanceof ConstraintViolationException) {
 			final String message = throwable.getMessage();
-
-			if (message.contains("username")) {
-				throw new PersistenceException("Username yang anda masukkan sudah digunakan.");
-			} else if (message.contains("email")) {
-				throw new PersistenceException("Email yang anda masukkan sudah digunakan.");
-			} else if (message.contains("kode")) {
-				throw new PersistenceException("Kode yang anda masukkan sudah digunakan.");
-			} else if (message.contains("nomor_buku")) {
-				throw new PersistenceException("Nomor Buku yang anda masukkan sudah digunakan.");
-			} else if (message.contains("nama")) {
-				throw new PersistenceException("Nama yang anda masukkan sudah digunakan.");
-			}
+			throw new PersistenceException(createMessage(message));
 		}
+	}
+	
+
+	@AfterThrowing(
+		pointcut = "execution(public * com.unitedvision.tvkabel.persistence.repository.*.save(..))",
+		throwing = "ex")
+	public void errorThrown(DataIntegrityViolationException ex) throws PersistenceException {
+		final Throwable throwable = ex.getCause();
+		
+		if (throwable instanceof ConstraintViolationException) {
+			final String message = throwable.getMessage();
+			throw new PersistenceException(createMessage(message));
+		}
+	}
+	
+	private String createMessage(String key) {
+		if (key.contains("username")) {
+			return "Username yang anda masukkan sudah digunakan.";
+		} else if (key.contains("email")) {
+			return "Email yang anda masukkan sudah digunakan.";
+		} else if (key.contains("kode")) {
+			return "Kode yang anda masukkan sudah digunakan.";
+		} else if (key.contains("nomor_buku")) {
+			return "Nomor Buku yang anda masukkan sudah digunakan.";
+		} else if (key.contains("nama")) {
+			return "Nama yang anda masukkan sudah digunakan.";
+		}
+		
+		return "";
 	}
 }
