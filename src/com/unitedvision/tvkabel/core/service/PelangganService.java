@@ -20,7 +20,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
 	void recountTunggakan() throws ApplicationException;
 	void recountTunggakan(String tanggal) throws ApplicationException;
-	void recountTunggakan(Pelanggan pelanggan) throws EntityNotExistException;
+	void recountTunggakan(Pelanggan pelanggan);
 	
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;

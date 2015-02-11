@@ -98,9 +98,8 @@ public interface PembayaranService extends Service<Pembayaran> {
 	 * Return the payable bill of a customer. Technically last payment + 1.
 	 * @param pelanggan
 	 * @return
-	 * @throws EntityNotExistException
 	 */
-	Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException;
+	Tagihan getPayableTagihan(Pelanggan pelanggan);
 
 	List<Pembayaran> get(Pelanggan pelanggan, int tahun) throws EntityNotExistException;
 	List<Pembayaran> get(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir, int page) throws EntityNotExistException;

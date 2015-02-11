@@ -355,6 +355,10 @@ public final class Pembayaran extends CodableDomain {
 		return kode;
 	}
 	
+	public Pembayaran copy() throws EmptyIdException {
+		return new Pembayaran(id, kode, tanggalBayar, pelanggan, pegawai, jumlahBayar, tagihan);
+	}
+	
 	/**
 	 * Converts {@code id} to string representation with specified format.
 	 * @param id

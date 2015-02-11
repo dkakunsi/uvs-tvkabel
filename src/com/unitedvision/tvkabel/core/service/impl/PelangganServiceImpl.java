@@ -83,8 +83,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public void activate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.AKTIF))
-			throw new StatusChangeException("Tidak mengaktivasi pelanggan.<br />"
-					+ "Karena pelanggan merupakan pelanggan aktif");
+			throw new StatusChangeException("Tidak mengaktivasi pelanggan. Karena pelanggan merupakan pelanggan aktif");
 		
 		pelanggan.setStatus(Status.AKTIF);
 		pelanggan.getDetail().setTanggalMulai(DateUtil.getNow());
@@ -96,8 +95,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public void passivate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.BERHENTI))
-			throw new StatusChangeException("Tidak memutuskan pelanggan.<br />"
-					+ "Karena pelanggan merupakan pelanggan berhenti");
+			throw new StatusChangeException("Tidak memutuskan pelanggan. Karena pelanggan merupakan pelanggan berhenti");
 
 		pelanggan.setStatus(Status.BERHENTI);
 		
@@ -107,8 +105,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public void banned(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
 		if (pelanggan.getStatus().equals(Status.PUTUS))
-			throw new StatusChangeException("Tidak mem-banned pelanggan.<br />"
-					+ "Karena pelanggan merupakan pelanggan putus");
+			throw new StatusChangeException("Tidak mem-banned pelanggan. Karena pelanggan merupakan pelanggan putus");
 
 		pelanggan.setStatus(Status.PUTUS);
 
@@ -122,8 +119,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public void free(Pelanggan pelanggan) throws ApplicationException {
 		if (pelanggan.getStatus().equals(Status.GRATIS))
-			throw new StatusChangeException("Tidak menggratiskan pelanggan.<br />"
-					+ "Karena pelanggan merupakan pelanggan gratis");
+			throw new StatusChangeException("Tidak menggratiskan pelanggan. Karena pelanggan merupakan pelanggan gratis");
 
 		pelanggan.setStatus(Status.GRATIS);
 
@@ -171,7 +167,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void recountTunggakan(Pelanggan pelanggan) throws EntityNotExistException {
+	public void recountTunggakan(Pelanggan pelanggan) {
 		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
 		
 		if (pembayaran == null) {

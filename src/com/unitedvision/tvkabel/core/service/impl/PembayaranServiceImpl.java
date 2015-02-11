@@ -189,11 +189,18 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 	@Override
 	public Pembayaran getLast(Pelanggan pelanggan) {
-		return pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan);
+		try {
+			Pembayaran pembayaran = pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan);
+			if (pembayaran == null)
+				return null;
+			return pembayaran.copy();
+		} catch (EmptyIdException e) { 
+			return null;
+		}
 	}
 
 	@Override
-	public Tagihan getPayableTagihan(Pelanggan pelanggan) throws EntityNotExistException {
+	public Tagihan getPayableTagihan(Pelanggan pelanggan) {
 		Pembayaran pembayaran = getLast(pelanggan);
 
 		Tagihan tagihan;
