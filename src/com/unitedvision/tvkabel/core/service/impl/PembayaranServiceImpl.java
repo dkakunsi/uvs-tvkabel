@@ -23,6 +23,7 @@ import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
@@ -81,8 +82,10 @@ public class PembayaranServiceImpl implements PembayaranService {
 	
 	@Override
 	public Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
-		if (!(pembayaran.getPelanggan().getStatus().equals(Pelanggan.Status.AKTIF)))
-			throw new NotPayableCustomerException("Status BUKAN merupakan pelanggan AKTIF");
+		Status status = pembayaran.getPelanggan().getStatus();
+		
+		if (!(status.equals(Pelanggan.Status.AKTIF)) && !(status.equals(Pelanggan.Status.GRATIS)))
+			throw new NotPayableCustomerException(String.format("Gagal! Status Pelanggan adalah %s", status.toString()));
 
 		//validator.validate(pembayaran);
 
