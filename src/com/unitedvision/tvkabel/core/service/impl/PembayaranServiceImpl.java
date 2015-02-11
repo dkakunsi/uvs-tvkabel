@@ -107,6 +107,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 		int selisih = last.compareWith(first);
 		
 		if (selisih >= 0) {
+			selisih++;
 			pay(pelanggan, pegawai, 0, selisih);
 		}
 	}

@@ -146,7 +146,7 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public void recountTunggakan(String tanggal) throws ApplicationException {
-		
+		tanggal = DateUtil.getDayString(tanggal);
 		recountTunggakanStatusAktif(tanggal);
 		recountTunggakanStatusGratis(tanggal);
 	}
