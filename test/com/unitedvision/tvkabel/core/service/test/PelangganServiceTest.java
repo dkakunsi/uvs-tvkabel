@@ -16,6 +16,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.service.KelurahanService;
+import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
@@ -29,7 +30,9 @@ import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
 import com.unitedvision.tvkabel.persistence.entity.Alamat;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Kontak;
+import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
@@ -45,6 +48,8 @@ import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 public class PelangganServiceTest {
 	@Autowired
 	private PelangganService pelangganService;
+	@Autowired
+	private PegawaiService pegawaiService;
 	@Autowired
 	private PembayaranService pembayaranService;
 	@Autowired
@@ -458,7 +463,8 @@ public class PelangganServiceTest {
 	
 	@Test
 	public void testGetByTanggal_Like() throws EntityNotExistException {
-		String tanggal = "01";
+		String tanggal = "22";
+		tanggal = DateUtil.getDayString(tanggal);
 		
 		List<Pelanggan> listPelanggan = pelangganService.get(Status.AKTIF, tanggal);
 		
@@ -472,5 +478,12 @@ public class PelangganServiceTest {
 		String tanggal = "1";
 		
 		pelangganService.recountTunggakan(tanggal);
+
+		Pegawai pegawai = pegawaiService.getOne(14);
+		Date now = DateUtil.getNow();
+		List<Pembayaran> listPembayaran = pembayaranService.get(pegawai, now, now, 1);
+		
+		assertNotNull(listPembayaran);
+		assertEquals(0, listPembayaran.size());
 	}
 }

@@ -57,7 +57,7 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	@Query(value = findByAlamatOrderedNative, nativeQuery = true)
 	List<Pelanggan> findByPerusahaanAndStatusOrderByAlamat(@Param("idPerusahaan") int idPerusahaan, @Param("status") Status status);
 	@Query (value = findByTanggalMulai, nativeQuery = true)
-	List<Pelanggan> findByTanggalMulai(@Param("status") Status status, @Param("tanggal") String tanggal);
+	List<Pelanggan> findByTanggalMulai(@Param("status") int status, @Param("tanggal") String tanggal);
 	@Query (value = findByPembayaran, nativeQuery = true)
 	List<Pelanggan> findByPembayaran(@Param("idPegawai") int idPegawai, @Param("tanggalBayarAwal") String tanggalBayarAwal, @Param("tanggalBayarAkhir") String tanggalBayarAkhir);
 	@Query (value = findByPembayaranWithoutPegawai, nativeQuery = true)

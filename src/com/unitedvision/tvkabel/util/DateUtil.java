@@ -424,10 +424,18 @@ public class DateUtil {
 	 */
 	public static String getDayString(int day) {
 		String strInt = String.valueOf(day);
-		
-		if (strInt.length() == 1)
-			return String.format("0%s", strInt);
-		return strInt;
+		return getDayString(strInt);
+	}
+	
+	/**
+	 * Convert {@code day} into String representation
+	 * @param str
+	 * @return
+	 */
+	public static String getDayString(String str) {
+		if (str.length() == 1)
+			return String.format("-0%s", str);
+		return String.format("-%s", str);
 	}
 	
 	/**

@@ -146,6 +146,7 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public void recountTunggakan(String tanggal) throws ApplicationException {
+		
 		recountTunggakanStatusAktif(tanggal);
 		recountTunggakanStatusGratis(tanggal);
 	}
@@ -210,7 +211,7 @@ public class PelangganServiceImpl implements PelangganService {
 	
 	@Override
 	public List<Pelanggan> get(Status status, String tanggal) throws EntityNotExistException {
-		return pelangganRepository.findByTanggalMulai(status, tanggal);
+		return pelangganRepository.findByTanggalMulai(status.ordinal(), tanggal);
 	}
 	
 	@Override

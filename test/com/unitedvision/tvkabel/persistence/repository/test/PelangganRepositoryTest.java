@@ -88,7 +88,7 @@ public class PelangganRepositoryTest {
 	public void testGetByTanggalCont() {
 		String tanggal = "1";
 		
-		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF, tanggal);
+		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF.ordinal(), tanggal);
 		
 		assertNotEquals(0, listPelanggan.size());
 	}
@@ -236,8 +236,9 @@ public class PelangganRepositoryTest {
 	@Test
 	public void testGetByTanggalMulai_Like() {
 		String tanggal = "1";
+		tanggal = DateUtil.getDayString(tanggal);
 		
-		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF, tanggal);
+		List<Pelanggan> listPelanggan = pelangganRepository.findByTanggalMulai(Status.AKTIF.ordinal(), tanggal);
 		
 		assertNotNull(listPelanggan);
 		assertNotEquals(0, listPelanggan.size());
