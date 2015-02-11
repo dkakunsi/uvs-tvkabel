@@ -1,5 +1,6 @@
 package com.unitedvision.tvkabel.web.controller;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.util.CodeUtil;
+import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.web.rest.RestResult;
 
 @Controller
@@ -67,6 +69,26 @@ public class PageController extends AbstractController {
 		return RestResult.create(message);
 	}
 
+	@RequestMapping(value = "/admin/tunggakan/recount/now/{kode}", method = RequestMethod.GET)
+	public @ResponseBody RestResult recountTunggakanNow(@PathVariable String kode, Map<String, Object> model) {
+		String message;
+		try {
+			if (!kode.equals(CodeUtil.getKode())) {
+				message = "Gagal! Anda tidak punya otoritas!";
+			} else {
+				Date now = DateUtil.getNow();
+				String tanggal = DateUtil.getDayString(now);
+
+				pelangganService.recountTunggakan(tanggal);
+				message = "Berhasil!";
+			}
+		} catch (ApplicationException e) {
+			message = String.format("Gagal! %s", e.getMessage());
+		}
+
+		return RestResult.create(message);
+	}
+	
 	@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}/{idKelurahan}/{lingkungan}", method = RequestMethod.GET)
 	public @ResponseBody RestResult resetKode(@PathVariable String kode, @PathVariable Integer idPerusahaan, @PathVariable Integer idKelurahan, @PathVariable Integer lingkungan) {
 		String message;

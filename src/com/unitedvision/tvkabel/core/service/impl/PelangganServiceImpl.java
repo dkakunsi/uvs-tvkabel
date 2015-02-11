@@ -139,9 +139,9 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public void recountTunggakan() throws ApplicationException {
-		Date now = DateUtil.getNow();
-
-		recountTunggakan(DateUtil.getDayString(now));
+		for (int i = 1; i <= 31; i++) {
+			recountTunggakan(Integer.toString(i));
+		}
 	}
 	
 	@Override
