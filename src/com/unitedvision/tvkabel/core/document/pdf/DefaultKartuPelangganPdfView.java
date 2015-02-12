@@ -118,20 +118,23 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Pelanggan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
 		insertCell(table, "Penagih", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
 
-		insertEmptyCell(table, 1);
+		insertEmptyCells(table, 1);
 
 		paragraph.add(table);
 	}
 	
-	protected void insertEmptyCell(PdfPTable table, int i) {
+	protected void insertEmptyCells(PdfPTable table, int i) {
 		for (int x = i; x <= 12; x++) {
 			String month = Month.of(x).name();
-			
-			insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-			insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+			insertEmptyCell(table, month);
 		}
+	}
+	
+	protected void insertEmptyCell(PdfPTable table, String month) {
+		insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+		insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+		insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+		insertCell(table, "", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 	}
 	
 	@Override

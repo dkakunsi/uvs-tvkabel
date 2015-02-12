@@ -223,4 +223,80 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 		return tagihan;
 	}
+	
+	/**
+	 * Class to verify {@code Pembayaran}.
+	 * @author Deddy Christoper Kakunsi
+	 *
+	 */
+	public static class Verifier {
+		
+		/**
+		 * Set the default {@link Pembayaran} value when it is not found.
+		 * @param listPembayaran
+		 * @throws EmptyIdException 
+		 */
+		public static List<Pembayaran> createEmptyListPembayaran() {
+			List<Pembayaran> listPembayaran = new ArrayList<>();
+			
+			for (int i = Month.JANUARY.getValue(); i <= Month.DECEMBER.getValue(); i++) {
+				listPembayaran.add(createDefaultPembayaran(0, Month.of(i)));
+			}
+			
+			return listPembayaran;
+		}
+		
+		public static List<Pembayaran> verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) {
+			verifyPembayaranFirst(listPembayaran);
+			verifyPembayaranLast(listPembayaran);
+			
+			return listPembayaran;
+		}
+
+		/**
+		 * Set the default {@link Pembayaran} value when it is not starts from JANUARY
+		 * @param listPembayaran
+		 * @throws EmptyIdException 
+		 */
+		private static void verifyPembayaranFirst(List<Pembayaran> listPembayaran) {
+			Pembayaran pembayaranEntity = listPembayaran.get(0);
+			
+			if (pembayaranEntity.getBulan() != Month.JANUARY) {
+				for (int i = Month.JANUARY.getValue(); i < pembayaranEntity.getBulan().getValue(); i++) {
+					listPembayaran.add(0, createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
+				}
+			}
+		}
+		
+		/**
+		 * Set the default {@link Pembayaran} value when it is not ends to DECEMBER
+		 * @param listPembayaran
+		 * @throws EmptyIdException 
+		 */
+		private static void verifyPembayaranLast(List<Pembayaran> listPembayaran) {
+			Pembayaran pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
+
+			if (pembayaranEntity.getBulan() != Month.DECEMBER) {
+				for (int i = pembayaranEntity.getBulan().getValue(); i < Month.DECEMBER.getValue(); i++) {
+					listPembayaran.add(createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
+				}
+			}
+		}
+		
+		/**
+		 * Create default {@code Pembayaran}, using empty detail.
+		 * @param tahun
+		 * @param bulan
+		 * @return
+		 */
+		private static Pembayaran createDefaultPembayaran(int tahun, Month bulan) {
+			Tagihan tagihan = new Tagihan(tahun, bulan);
+
+			try {
+				return new Pembayaran(0, "default", DateUtil.getNow(), new Pelanggan(), new Pegawai(), 0, tagihan);
+			} catch (EmptyIdException e) {
+				return null; //Never called
+			}
+		}
+	}
 }

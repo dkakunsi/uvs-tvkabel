@@ -19,7 +19,6 @@ import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @Service
@@ -59,80 +58,27 @@ public class RekapServiceImpl implements RekapService {
 		
 		return list;
 	}
+
+	@Override
+	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException {
+		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.AKTIF);
+
+		return rekapTahunan(listPelanggan, tahun);
+	}
 	
-	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) throws EmptyIdException {
+	private List<Pelanggan> rekapTahunan(List<Pelanggan> list, int tahun) {
  		for (Pelanggan pelanggan : list) {
  			List<Pembayaran> listPembayaran;
 			try {
 				listPembayaran = pembayaranService.get(pelanggan, tahun);
-	 			verifyListPembayaran(listPembayaran, tahun, pelanggan);
+	 			PembayaranServiceImpl.Verifier.verifyListPembayaran(listPembayaran, tahun, pelanggan);
 			} catch (EntityNotExistException e) {
-				listPembayaran = new ArrayList<>();
-				verifyPembayaranEmpty(listPembayaran);
+				listPembayaran = PembayaranServiceImpl.Verifier.createEmptyListPembayaran();
 			}
  			pelanggan.setListPembayaran(listPembayaran); 
  		} 
  		 
  		return list; 
-	}
-	
-	private void verifyListPembayaran(List<Pembayaran> listPembayaran, int tahun, Pelanggan pelanggan) throws EmptyIdException {
-		verifyPembayaranFirst(listPembayaran);
-		verifyPembayaranLast(listPembayaran);
-	}
-
-	/**
-	 * Set the default {@link Pembayaran} value when it is not starts from JANUARY
-	 * @param listPembayaran
-	 * @throws EmptyIdException 
-	 */
-	private void verifyPembayaranFirst(List<Pembayaran> listPembayaran) throws EmptyIdException {
-		Pembayaran pembayaranEntity = listPembayaran.get(0);
-		
-		if (pembayaranEntity.getBulan() != Month.JANUARY) {
-			for (int i = Month.JANUARY.getValue(); i < pembayaranEntity.getBulan().getValue(); i++) {
-				listPembayaran.add(0, createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
-			}
-		}
-	}
-	
-	/**
-	 * Set the default {@link Pembayaran} value when it is not ends to DECEMBER
-	 * @param listPembayaran
-	 * @throws EmptyIdException 
-	 */
-	private void verifyPembayaranLast(List<Pembayaran> listPembayaran) throws EmptyIdException {
-		Pembayaran pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
-
-		if (pembayaranEntity.getBulan() != Month.DECEMBER) {
-			for (int i = pembayaranEntity.getBulan().getValue(); i < Month.DECEMBER.getValue(); i++) {
-				listPembayaran.add(createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
-			}
-		}
-	}
-	
-	/**
-	 * Set the default {@link Pembayaran} value when it is not found
-	 * @param listPembayaran
-	 * @throws EmptyIdException 
-	 */
-	private void verifyPembayaranEmpty(List<Pembayaran> listPembayaran) throws EmptyIdException {
-		for (int i = Month.JANUARY.getValue(); i <= Month.DECEMBER.getValue(); i++) {
-			listPembayaran.add(createDefaultPembayaran(0, Month.of(i)));
-		}
-	}
-	
-	private Pembayaran createDefaultPembayaran(int tahun, Month bulan) throws EmptyIdException {
-		Tagihan tagihan = new Tagihan(tahun, bulan);
-
-		return new Pembayaran(0, "", DateUtil.getNow(), new Pelanggan(), new Pegawai(), 0, tagihan);
-	}
-
-	@Override
-	public List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException, EmptyIdException {
-		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.AKTIF);
-
-		return rekapTahunan(listPelanggan, tahun);
 	}
 
 	@Override

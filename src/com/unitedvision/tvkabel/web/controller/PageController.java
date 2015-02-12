@@ -89,7 +89,7 @@ public class PageController extends AbstractController {
 		return RestResult.create(message);
 	}
 	
-	@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}/{idKelurahan}/{lingkungan}", method = RequestMethod.GET)
+	//@RequestMapping(value = "/admin/kode/reset/{kode}/{idPerusahaan}/{idKelurahan}/{lingkungan}", method = RequestMethod.GET)
 	public @ResponseBody RestResult resetKode(@PathVariable String kode, @PathVariable Integer idPerusahaan, @PathVariable Integer idKelurahan, @PathVariable Integer lingkungan) {
 		String message;
 

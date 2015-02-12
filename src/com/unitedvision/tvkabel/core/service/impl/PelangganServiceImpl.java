@@ -333,11 +333,14 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	public Pelanggan cetakKartu(Pelanggan pelanggan) {
 		int tahun = DateUtil.getYearNow();
+		List<Pembayaran> listPembayaran;
 		try {
-			pelanggan.setListPembayaran((List<Pembayaran>)pembayaranService.get(pelanggan, tahun));
+			listPembayaran = pembayaranService.get(pelanggan, tahun);
+			PembayaranServiceImpl.Verifier.verifyListPembayaran(listPembayaran, tahun, pelanggan);
 		} catch (EntityNotExistException e) {
-			pelanggan.setListPembayaran(new ArrayList<>());
+			listPembayaran = new ArrayList<>();
 		}
+		pelanggan.setListPembayaran(listPembayaran);
 
 		return pelanggan;
 	}

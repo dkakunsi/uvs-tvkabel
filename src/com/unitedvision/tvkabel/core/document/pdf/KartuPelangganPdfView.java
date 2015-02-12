@@ -109,7 +109,7 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		if (contained) {
 			setContainedTable(table, pelanggan);
 		} else {
-			insertEmptyCell(table, 1);
+			insertEmptyCells(table, 1);
 		}
 
 		paragraph.add(table);
@@ -122,18 +122,23 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		if (list != null) {
 			for (Pembayaran pembayaran : list) {
 				String month = Month.of(i).name();
-				String tanggalBayar = DateUtil.toUserString(pembayaran.getTanggalBayar(), "-");
-				
-				insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-				insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-				insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-				insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+
+				if (pembayaran.getKode().equals("DEFAULT")) {
+					insertEmptyCell(table, month);
+				} else {
+					String tanggalBayar = DateUtil.toUserString(pembayaran.getTanggalBayar(), "-");
+					
+					insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+					insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+					insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+					insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+				}
 				
 				i++;
 			}
 		}
 		
-		insertEmptyCell(table, i);
+		insertEmptyCells(table, i);
 	}
 
 	@Override
