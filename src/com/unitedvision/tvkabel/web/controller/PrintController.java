@@ -154,13 +154,14 @@ public class PrintController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/pelanggan/kartu", method = RequestMethod.POST)
-	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam boolean pembayaran, @RequestParam String searchBy, @RequestParam String query,
+	public ModelAndView printKartuPelanggan(@RequestParam Integer idPerusahaan, @RequestParam boolean pembayaran, @RequestParam String searchBy, @RequestParam String query, @RequestParam int tahun,
 			Map<String, Object> model) {
 		try {
 			Pelanggan pelanggan = createPelanggan(searchBy, query, idPerusahaan);
 			
 			model.put("pembayaran", pembayaran);
-			model.put("pelanggan", pelangganService.cetakKartu(pelanggan));
+			model.put("pelanggan", pelangganService.cetakKartu(pelanggan, tahun));
+			model.put("tahun", tahun);
 
 			return new ModelAndView("pdfKartu", model);
 		} catch(ApplicationException e) {
@@ -191,6 +192,7 @@ public class PrintController extends AbstractController {
 			
 			model.put("pembayaran", pembayaran);
 			model.put("pelanggan", pelangganService.cetakKartu(listPelanggan));
+			model.put("tahun", DateUtil.getYearNow());
 
 			return new ModelAndView("pdfKartu", model);
 		} catch(ApplicationException e) {

@@ -53,6 +53,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	long countByTunggakanLessThan(Perusahaan perusahaan, Status status, int tunggakan);
 	
 	Pelanggan cetakKartu(Pelanggan pelanggan);
+	Pelanggan cetakKartu(Pelanggan pelanggan, int tahun);
 	List<Pelanggan> cetakKartu(List<Pelanggan> listPelanggan);
 	
 	String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, int lingkungan);

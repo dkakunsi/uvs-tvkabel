@@ -331,8 +331,23 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	public List<Pelanggan> cetakKartu(List<Pelanggan> listPelanggan) {
+		for (Pelanggan pelanggan : listPelanggan) {
+			cetakKartu(pelanggan);
+		}
+
+		return listPelanggan;
+	}
+
+	@Override
 	public Pelanggan cetakKartu(Pelanggan pelanggan) {
 		int tahun = DateUtil.getYearNow();
+		
+		return cetakKartu(pelanggan, tahun);
+	}
+	
+	@Override
+	public Pelanggan cetakKartu(Pelanggan pelanggan, int tahun) {
 		List<Pembayaran> listPembayaran;
 		try {
 			listPembayaran = pembayaranService.get(pelanggan, tahun);
@@ -343,15 +358,6 @@ public class PelangganServiceImpl implements PelangganService {
 		pelanggan.setListPembayaran(listPembayaran);
 
 		return pelanggan;
-	}
-
-	@Override
-	public List<Pelanggan> cetakKartu(List<Pelanggan> listPelanggan) {
-		for (Pelanggan pelanggan : listPelanggan) {
-			cetakKartu(pelanggan);
-		}
-
-		return listPelanggan;
 	}
 
 	@Override

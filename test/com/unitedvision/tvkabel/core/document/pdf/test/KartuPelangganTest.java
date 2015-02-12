@@ -97,12 +97,15 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
 
             document.open();
             
-            Pelanggan pelanggan = pelangganService.getOne(35);
-            pelanggan = pelangganService.cetakKartu(pelanggan);
+            Pelanggan pelanggan = pelangganService.getOne(903);
+            int tahun = 2015;
+
+            pelanggan = pelangganService.cetakKartu(pelanggan, tahun);
 
             Map<String, Object> model = new HashMap<>();
             model.put("pelanggan", pelanggan);
             model.put("pembayaran", true);
+            model.put("tahun", tahun);
             
             kartu.create(model, document);
             

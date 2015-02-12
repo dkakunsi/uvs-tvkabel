@@ -19,15 +19,21 @@ import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	private boolean contained;
+	private int tahun;
 	
 	public void setContained(boolean bool) {
 		this.contained = bool;
+	}
+	
+	public void setTahun(int tahun) {
+		this.tahun = tahun;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		Object modelPelanggan = model.get("pelanggan");
 		setContained((boolean)model.get("pembayaran"));
+		setTahun((int)model.get("tahun"));
 
 		if (modelPelanggan instanceof Pelanggan) {
 			createCard(doc, (Pelanggan)modelPelanggan);
@@ -90,9 +96,7 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 				align, 1, fontContent, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Tahun Tagih", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, 
-				Integer.toString(DateUtil.getYear(DateUtil.getNow())), 
-				align, 1, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, Integer.toString(tahun), align, 1, fontContent, Rectangle.NO_BORDER);
 
 		paragraph.add(table);
 	}
