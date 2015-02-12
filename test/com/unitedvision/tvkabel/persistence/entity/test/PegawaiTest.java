@@ -16,6 +16,14 @@ import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
 public class PegawaiTest {
 
 	@Test
+	public void codeUpperCased() throws EmptyCodeException {
+		Pegawai pegawai = new Pegawai();
+		pegawai.setKode("xxx");
+		
+		assertEquals("YYY", pegawai.getKode());
+	}
+	
+	@Test
 	public void createWithIdWorks() throws EmptyIdException {
 		Pegawai pegawaiDomain = new Pegawai();
 		pegawaiDomain.setId(1);;

@@ -29,4 +29,12 @@ public class CodableDomainTest {
 		CodableDomain codable = new Perusahaan();
 		codable.setKode("");
 	}
+	
+	@Test
+	public void testSetKode_AutomaticallyUpperCased() throws EmptyCodeException {
+		CodableDomain codable = new Perusahaan();
+		codable.setKode("xxx");
+		
+		assertEquals("YYY", codable.getKode());
+	}
 }

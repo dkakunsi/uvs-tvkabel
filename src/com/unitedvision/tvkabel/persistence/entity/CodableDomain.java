@@ -39,7 +39,7 @@ public abstract class CodableDomain extends Domain {
 	 * @return domain's code
 	 */
 	public String getKode() {
-		return kode;
+		return kode.toUpperCase();
 	}
 
 	/**
@@ -50,7 +50,7 @@ public abstract class CodableDomain extends Domain {
 	public void setKode(String kode) throws EmptyCodeException {
 		if ((kode == null) || (kode.equals("")))
 			throw new EmptyCodeException("kode cannot be null or an empty String");
-		this.kode = kode;
+		this.kode = kode.toUpperCase();
 	}
 	
 	@Override
