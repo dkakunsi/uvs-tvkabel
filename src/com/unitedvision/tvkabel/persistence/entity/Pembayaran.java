@@ -145,6 +145,7 @@ public final class Pembayaran extends CodableDomain {
 	 */
 	public void setPelanggan(Pelanggan pelanggan) {
 		this.pelanggan = pelanggan;
+		pelanggan.setPembayaranTerakhir(this);
 	}
 	
 	/**
@@ -152,7 +153,7 @@ public final class Pembayaran extends CodableDomain {
 	 */
 	private void setPelanggan() {
 		if (pelanggan == null)
-			pelanggan = new Pelanggan();
+			setPelanggan(new Pelanggan());
 	}
 
 	/**

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -64,6 +65,11 @@ public final class Pelanggan extends CodableDomain implements Removable {
 
 	/** List of {@link Pembayaran} made by customer. */
 	private List<Pembayaran> listPembayaran;
+
+	/**
+	 * Pembayaran terakhir, set object ini setelah melakukan proses pembayaran.
+	 */
+	private Pembayaran pembayaranTerakhir;
 
 	/**
 	 * Create empty instance.
@@ -323,6 +329,40 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 */
 	public void setListPembayaran(List<Pembayaran> listPembayaran) {
 		this.listPembayaran = listPembayaran;
+	}
+
+	/**
+	 * Return {@code pembayaranTerakhir}.
+	 * @return
+	 */
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pembayaran_terakhir", referencedColumnName = "id")
+	public Pembayaran getPembayaranTerakhir() {
+		return pembayaranTerakhir;
+	}
+
+	public void setPembayaranTerakhir(Pembayaran pembayaranTerakhir) {
+		this.pembayaranTerakhir = pembayaranTerakhir;
+	}
+	
+	private void setPembayaranTerakhir() {
+		if (pembayaranTerakhir == null)
+			setPembayaranTerakhir(new Pembayaran());
+	}
+	
+	@Transient
+	public int getIdPembayaranTerakhir() {
+		return pembayaranTerakhir.getId();
+	}
+	
+	public void setIdPembayaranTerakhir(int id) {
+		setPembayaranTerakhir();
+		try {
+			pembayaranTerakhir.setId(id);
+		} catch (EmptyIdException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Transient
