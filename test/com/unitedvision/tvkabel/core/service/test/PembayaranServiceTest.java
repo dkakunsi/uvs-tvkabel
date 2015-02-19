@@ -3,7 +3,6 @@ package com.unitedvision.tvkabel.core.service.test;
 import static org.junit.Assert.*;
 
 import java.time.Month;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -18,6 +17,7 @@ import com.unitedvision.tvkabel.core.service.PegawaiService;
 import com.unitedvision.tvkabel.core.service.PelangganService;
 import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
@@ -28,7 +28,6 @@ import com.unitedvision.tvkabel.persistence.entity.Pegawai;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.util.DateUtil;
 
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (classes = {SpringDataJpaConfig.class})
@@ -45,17 +44,20 @@ public class PembayaranServiceTest {
 	private PegawaiService pegawaiService;
 	
 	@Test
-	public void testDelete() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException {
+	public void testDelete() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
-
-		Pembayaran pembayaranTerakhir = pembayaranService.getLast(pelanggan);
+		Pembayaran pembayaranTerakhir = pelanggan.getPembayaranTerakhir();
 		assertEquals(2015, pembayaranTerakhir.getTahun());
-		assertEquals(Month.JANUARY, pembayaranTerakhir.getBulan());
-		
+		assertEquals(Month.FEBRUARY, pembayaranTerakhir.getBulan());
 		assertEquals(0, pelanggan.getTunggakan());
+
 		pembayaranService.delete(pembayaranTerakhir);
 
 		Pelanggan pelangganDeleted = pelangganService.getOne(35);
+		Pembayaran pembayaranTerakhirUpdated = pelangganDeleted.getPembayaranTerakhir();
+		assertEquals(2015, pembayaranTerakhirUpdated.getTahun());
+		assertEquals(Month.JANUARY, pembayaranTerakhirUpdated.getBulan());
+		assertNotNull(pelangganDeleted);
 		assertEquals(1, pelangganDeleted.getTunggakan());
 	}
 	
@@ -64,7 +66,7 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 		
-		assertEquals(Month.FEBRUARY, tagihan.getBulan());
+		assertEquals(Month.MARCH, tagihan.getBulan());
 		assertEquals(2015, tagihan.getTahun());
 	}
 	
@@ -73,25 +75,8 @@ public class PembayaranServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
 		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
-		assertEquals(Month.JANUARY, pembayaran.getBulan());
+		assertEquals(Month.FEBRUARY, pembayaran.getBulan());
 		assertEquals(2015, pembayaran.getTahun());
-	}
-	
-	@Test
-	public void testPay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
-		Date tanggalBayar = DateUtil.getSimpleNow();
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		Pegawai pegawai = pegawaiService.getOne(15);
-		long jumlahBayar = pelanggan.getIuran();
-		Tagihan tagihan = new Tagihan(2015, Month.FEBRUARY);
-
-		Pembayaran pembayaran = new Pembayaran(0, "", tanggalBayar, pelanggan, pegawai, jumlahBayar, tagihan);
-		assertEquals(0, pelanggan.getTunggakan());
-		
-		pembayaranService.pay(pembayaran);
-		Pelanggan pelangganUpdated = pelangganService.getOne(35);
-		assertEquals(-1, pelangganUpdated.getTunggakan());
-		assertEquals(pembayaran, pelangganUpdated.getPembayaranTerakhir());
 	}
 	
 	@Test

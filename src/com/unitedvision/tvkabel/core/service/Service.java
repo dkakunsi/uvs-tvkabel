@@ -23,9 +23,9 @@ public interface Service<T extends Domain> {
 	/**
 	 * Delete the given object from database.
 	 * @param domain
-	 * @throws EntityNotExistException 
+	 * @throws ApplicationException 
 	 */
-	void delete(T domain) throws EntityNotExistException;
+	void delete(T domain) throws ApplicationException;
 
 	/**
 	 * Get object from database identified by id.

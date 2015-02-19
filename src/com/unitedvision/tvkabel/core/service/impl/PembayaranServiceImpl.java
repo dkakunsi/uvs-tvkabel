@@ -134,8 +134,10 @@ public class PembayaranServiceImpl implements PembayaranService {
 		return pembayaran;
 	}
 	
-	private void validateAfterPay(Pembayaran pembayaran) {
-		pelangganService.recountTunggakan(pembayaran.getPelanggan());
+	private void validateAfterPay(Pembayaran pembayaran) throws DataDuplicationException {
+		Pelanggan pelanggan = pembayaran.getPelanggan();
+		pelangganService.updateLastPayment(pelanggan);
+		pelangganService.recountTunggakan(pelanggan);
 	}
 	
 	@Override
@@ -152,10 +154,14 @@ public class PembayaranServiceImpl implements PembayaranService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void delete(Pembayaran pembayaran) throws EntityNotExistException {
-		pembayaran = pembayaranRepository.findOne(pembayaran.getId());
+	public void delete(Pembayaran pembayaran) throws EntityNotExistException, DataDuplicationException {
+		Pelanggan pelanggan = pembayaran.getPelanggan();
+		pelanggan.setPembayaranTerakhir(null);
+		
 		pembayaranRepository.delete(pembayaran);
-		pelangganService.recountTunggakan(pembayaran.getPelanggan());
+
+		pelangganService.updateLastPayment(pelanggan);
+		pelangganService.recountTunggakan(pelanggan);
 	}
 
 	@Override

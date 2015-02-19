@@ -22,6 +22,7 @@ import com.unitedvision.tvkabel.core.service.PembayaranService;
 import com.unitedvision.tvkabel.core.service.PerusahaanService;
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
@@ -189,7 +190,7 @@ public class PelangganServiceTest {
 
 	@Test
 	public void bannedWorks() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
+		Perusahaan perusahaan = perusahaanService.getOne(17);
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(1, "Detail", 0, 0);
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
@@ -199,7 +200,6 @@ public class PelangganServiceTest {
 				kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
 		Pelanggan saved = pelangganService.save(newPelanggan);
-		
 		assertNotNull(saved);
 
 		//BANNED PROCESS
@@ -211,7 +211,7 @@ public class PelangganServiceTest {
 		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
 
 		Assert.assertEquals(Status.PUTUS, pelanggan.getStatus());
-		Assert.assertEquals(1, pelangganBanned.getTunggakan());
+		Assert.assertEquals(2, pelangganBanned.getTunggakan());
 	}
 	
 	@Test(expected = StatusChangeException.class)
@@ -384,7 +384,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testRecountTunggakan() throws EntityNotExistException {
+	public void testRecountTunggakan() throws EntityNotExistException, DataDuplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		
 		pelangganService.recountTunggakan(pelanggan);

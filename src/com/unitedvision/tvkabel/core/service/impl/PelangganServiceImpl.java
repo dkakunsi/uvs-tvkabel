@@ -107,13 +107,17 @@ public class PelangganServiceImpl implements PelangganService {
 		if (pelanggan.getStatus().equals(Status.PUTUS))
 			throw new StatusChangeException("Tidak mem-banned pelanggan. Karena pelanggan merupakan pelanggan putus");
 
+		updateLastPayment(pelanggan);
 		pelanggan.setStatus(Status.PUTUS);
-
-		Pembayaran last = pembayaranService.getLast(pelanggan);
-
-		pelanggan.countTunggakan(last);
+		pelanggan.countTunggakan();
 		
 		save(pelanggan);
+	}
+	
+	@Override
+	public void updateLastPayment(Pelanggan pelanggan) {
+		Pembayaran last = pembayaranService.getLast(pelanggan);
+		pelanggan.setPembayaranTerakhir(last);
 	}
 	
 	@Override
@@ -151,7 +155,7 @@ public class PelangganServiceImpl implements PelangganService {
 		recountTunggakanStatusGratis(tanggal);
 	}
 	
-	private void recountTunggakanStatusAktif(String tanggal) throws EntityNotExistException {
+	private void recountTunggakanStatusAktif(String tanggal) throws EntityNotExistException, DataDuplicationException {
 		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		
 		for (Pelanggan pelanggan : listPelanggan)
@@ -168,16 +172,9 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void recountTunggakan(Pelanggan pelanggan) {
-		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
-		
-		if (pembayaran == null) {
-			pelanggan.countTunggakan(); //secara otomatis atribut tanggalMulai digunakan sebagai tagihan awal(pertama)
-		} else {
-			pelanggan.countTunggakan(pembayaran);
-		}
-		
-		pelangganRepository.save(pelanggan);
+	public void recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException {
+		pelanggan.countTunggakan();
+		save(pelanggan);
 	};
 	
 	@Override

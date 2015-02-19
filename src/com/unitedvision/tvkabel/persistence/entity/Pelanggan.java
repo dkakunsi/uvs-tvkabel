@@ -545,13 +545,13 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		detail.setTunggakan(tunggakan);
 	}
 
-	public int countTunggakan(Pembayaran pembayaranTerakhir) {
+	public int countTunggakan() {
 		if (pembayaranTerakhir == null)
-			return countTunggakan();
+			return countDefaultTunggakan();
 		return countTunggakan(pembayaranTerakhir.getTagihan());
 	}
 
-	public int countTunggakan() {
+	public int countDefaultTunggakan() {
 		Tagihan def = Tagihan.create(detail.getTanggalMulai());
 
 		return countTunggakan(def);

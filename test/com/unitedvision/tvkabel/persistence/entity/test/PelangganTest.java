@@ -68,15 +68,11 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
+
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		assertEquals(Status.AKTIF, pelanggan.getStatus());
-		assertEquals(1, pelanggan.getId());
-		assertEquals("1", pelanggan.getKode());
-		
 		pelanggan.countTunggakan();
 		
-		assertEquals(12, pelanggan.getTunggakan());
+		assertEquals(13, pelanggan.getTunggakan());
 	}
 	
 	@Test
@@ -87,18 +83,16 @@ public class PelangganTest {
 		Alamat alamat = new Alamat(1, "", 0, 0);
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
+
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		assertEquals(Status.AKTIF, pelanggan.getStatus());
-		assertEquals(1, pelanggan.getId());
-		assertEquals("1", pelanggan.getKode());
 		
 		Pembayaran pembayaranTerakhir = new Pembayaran();
 		pembayaranTerakhir.setTagihan(new Tagihan(2014, Month.AUGUST));
 		
-		pelanggan.countTunggakan(pembayaranTerakhir);
+		pelanggan.setPembayaranTerakhir(pembayaranTerakhir);
+		pelanggan.countTunggakan();
 		
-		assertEquals(5, pelanggan.getTunggakan());
+		assertEquals(6, pelanggan.getTunggakan());
 	}
 	
 	@Test
@@ -111,14 +105,10 @@ public class PelangganTest {
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
-		assertEquals(Status.AKTIF, pelanggan.getStatus());
-		assertEquals(1, pelanggan.getId());
-		assertEquals("1", pelanggan.getKode());
-		
 		Tagihan tagihan = new Tagihan(2014, Month.AUGUST);
 		
 		pelanggan.countTunggakan(tagihan);
 		
-		assertEquals(5, pelanggan.getTunggakan());
+		assertEquals(6, pelanggan.getTunggakan());
 	}
 }

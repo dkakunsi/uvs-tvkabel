@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
 import com.unitedvision.tvkabel.persistence.entity.Pegawai;
@@ -20,7 +21,7 @@ public interface PelangganService extends Service<Pelanggan> {
 	void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
 	void recountTunggakan() throws ApplicationException;
 	void recountTunggakan(String tanggal) throws ApplicationException;
-	void recountTunggakan(Pelanggan pelanggan);
+	void recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException;
 	
 	Pelanggan getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pelanggan getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
@@ -58,4 +59,6 @@ public interface PelangganService extends Service<Pelanggan> {
 	
 	String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, int lingkungan);
 	String resetKode(Perusahaan perusahaan);
+	
+	void updateLastPayment(Pelanggan pelanggan);
 }
