@@ -38,7 +38,7 @@ public class AlamatTest extends AlamatPdfView {
             document.open();
             Perusahaan perusahaan = perusahaanService.getOne(17);
             Kelurahan kelurahan = kelurahanService.getOne(22);
-            List<Pelanggan> list = rekapService.rekapAlamat(perusahaan, Pelanggan.Status.BERHENTI, kelurahan, 1);
+            List<Pelanggan> list = rekapService.rekapAlamat(perusahaan, Pelanggan.Status.AKTIF, kelurahan, 1);
             
             Map<String, Object> model = new HashMap<>();
             model.put("listPelanggan", list);

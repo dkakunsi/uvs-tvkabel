@@ -78,17 +78,19 @@ public class HariPdfView extends CustomAbstractPdfView {
 	
 	@SuppressWarnings("unchecked")
 	protected void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
-		float[] columnWidths = {5f, 8f, 4f, 2f, 2f, 4f, 2f};
+		//float[] columnWidths = {5f, 8f, 4f, 2f, 2f, 4f, 2f};
+		float[] columnWidths = {2f, 5f, 4f, 1f, 1f, 2f, 2f, 3f};
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
-		insertCell(table, "Kode Pelanggan", align, 1, fontHeader, Rectangle.BOX);
-		insertCell(table, "Nama Pelanggan", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kelurahan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Lingk.", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Iuran", align, 1, fontHeader, Rectangle.BOX);
-		insertCell(table, "Jumlah Bulan", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Jumlah Bayar", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Total", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Akhir", align, 1, fontHeader, Rectangle.BOX);
 		table.setHeaderRows(1);
 
 		final List<Pelanggan> list = (List<Pelanggan>)model.get("rekap");
@@ -110,12 +112,19 @@ public class HariPdfView extends CustomAbstractPdfView {
 			}
 			insertCell(table, String.format("%d bulan", count), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, String.format("Rp %d", sum), align, 1, customFont, Rectangle.BOX);
+			
+			Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
+			if (terakhir != null) {
+				insertCell(table, terakhir.getTagihanStr(), align, 1, customFont, Rectangle.BOX);
+			} else {
+				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
+			}
 			total += sum;
 		}
 
-		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 6, fontContent, Rectangle.BOX);
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 7, fontContent, Rectangle.BOX);
 		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
-		insertCell(table, "Total Pembayaran", Element.ALIGN_RIGHT, 6, fontContent, Rectangle.BOX);
+		insertCell(table, "Total Pembayaran", Element.ALIGN_RIGHT, 7, fontContent, Rectangle.BOX);
 		insertCell(table, Long.toString(total), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);

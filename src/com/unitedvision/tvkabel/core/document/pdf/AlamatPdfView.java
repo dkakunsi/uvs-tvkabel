@@ -17,11 +17,18 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.CustomAbstractPdfView;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 
 public class AlamatPdfView extends CustomAbstractPdfView {
+	/**
+	 * Nama Kelurahan.
+	 */
 	private String kelurahan = "";
 	private int lingkungan = 0;
-	private float[] columnWidths = {3f, 8f, 3f, 2f};
+	private float[] columnWidths = {3f, 6f, 4f, 3f, 4f};
+	/**
+	 * Untuk menentukan apakah pelanggan merupakan yang pertama untuk alamat tertentu.
+	 */
 	private boolean first;
 
 	@Override
@@ -55,13 +62,13 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		
 		List<List<Pelanggan>> container = new ArrayList<>();
 		List<Pelanggan> part = new ArrayList<>();
-		/**
-		 * Divide {@code listPelanggan} into some list as much as {@link Kelurahan} and {@code lingkungan}.
-		 * So, every {@code listPelanggan} will contain {@link Pelanggan} with the same {@link Kelurahan} and {@code lingkungan}.
+		/*
+		 * Memisahkan {@code listPelanggan} menjadi beberapa list - sebanyak jumlah {@code lingkungan} untuk setiap {@link Kelurahan}.
+		 * Sehingga, setiap {@code listPelanggan} akan memuat data {@link Pelanggan} dengan {@link Kelurahan} dan {@code lingkungan} yang sama.
 		 */
 		for (Pelanggan pelanggan : (List<Pelanggan>) model.get("listPelanggan")) {
-			/**
-			 * Create a new list if {@code alamat} is changes and it's not the first loop.
+			/*
+			 * Buat list baru jika {@code alamat} berubah dan bukan merupakan yang pertama.
 			 */
 			if (changeAlamat(pelanggan) && first == false) {
 				container.add(part);
@@ -79,7 +86,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	}
 
 	/**
-	 * Create document for each {@link Alamat} and {@code lingkungan}.
+	 * Buat dokumenn untuk masing-masing {@link Alamat} dan {@code lingkungan}.
 	 * @param list
 	 * @param doc
 	 * @throws DocumentException
@@ -120,6 +127,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Tunggakan", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "Terakhir", align, 1, fontHeader, Rectangle.BOX);
 		table.setHeaderRows(1);
 
 		for (Pelanggan pelanggan : list) {
@@ -128,10 +136,19 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, createKontak(pelanggan), align, 1, customFont, Rectangle.BOX);
-			insertCell(table, String.format("%d bulan", pelanggan.getTunggakan()), align, 1, customFont, Rectangle.BOX);
+			
+			String tunggakan = Integer.toString(pelanggan.getTunggakan());
+			insertCell(table, String.format("%s bulan", tunggakan.replace("-", "+")), align, 1, customFont, Rectangle.BOX);
+			
+			Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
+			if (terakhir != null) {
+				insertCell(table, terakhir.getTagihanStr(), align, 1, customFont, Rectangle.BOX);
+			} else {
+				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
+			}
 		}
 
-		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 3, fontContent, Rectangle.BOX);
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 4, fontContent, Rectangle.BOX);
 		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);
