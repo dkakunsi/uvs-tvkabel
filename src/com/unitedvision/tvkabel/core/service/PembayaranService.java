@@ -43,13 +43,14 @@ public interface PembayaranService extends Service<Pembayaran> {
 	 * @param pegawai
 	 * @param jumlahPembayaran
 	 * @param jumlahBulan
+	 * @return Pembayaran terakhir.
 	 * @throws NotPayableCustomerException
 	 * @throws UnpaidBillException
 	 * @throws EntityNotExistException
 	 * @throws DataDuplicationException
 	 * @throws EmptyIdException
 	 */
-	void pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
+	Pembayaran pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
 	
 	/**
 	 * Payment method when customer pay multiple bill.
@@ -57,13 +58,14 @@ public interface PembayaranService extends Service<Pembayaran> {
 	 * @param pegawai
 	 * @param jumlahPembayaran
 	 * @param jumlahBulan
+	 * @return Pembayaran terakhir.
 	 * @throws NotPayableCustomerException
 	 * @throws UnpaidBillException
 	 * @throws EntityNotExistException
 	 * @throws DataDuplicationException
 	 * @throws EmptyIdException
 	 */
-	void payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
+	Pembayaran payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException, EmptyIdException;
 
 	/**
 	 * Update the given payment.

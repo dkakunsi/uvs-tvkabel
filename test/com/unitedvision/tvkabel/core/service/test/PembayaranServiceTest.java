@@ -91,6 +91,7 @@ public class PembayaranServiceTest {
 		pembayaranService.pay(pembayaran);
 		Pelanggan pelangganUpdated = pelangganService.getOne(35);
 		assertEquals(-1, pelangganUpdated.getTunggakan());
+		assertEquals(pembayaran, pelangganUpdated.getPembayaranTerakhir());
 	}
 	
 	@Test
@@ -100,11 +101,12 @@ public class PembayaranServiceTest {
 		long jumlahPembayaran = pelanggan.getIuran();
 		int jumlahBulan = 1;
 
-		pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
-		
+		assertEquals(0, pelanggan.getTunggakan());
+		Pembayaran last = pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
 		Pelanggan pelangganUpdated = pelangganService.getOne(35);
 		
-		assertEquals(-jumlahBulan, pelangganUpdated.getTunggakan());
+		assertEquals(-1, pelangganUpdated.getTunggakan());
+		assertEquals(last, pelangganUpdated.getPembayaranTerakhir());
 	}
 	
 	@Test
@@ -114,11 +116,12 @@ public class PembayaranServiceTest {
 		long jumlahPembayaran = pelanggan.getIuran();
 		int jumlahBulan = 3;
 
-		pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
-		
+		assertEquals(0, pelanggan.getTunggakan());
+		Pembayaran last = pembayaranService.pay(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
 		Pelanggan pelangganUpdated = pelangganService.getOne(35);
 		
 		assertEquals(-jumlahBulan, pelangganUpdated.getTunggakan());
+		assertEquals(last, pelangganUpdated.getPembayaranTerakhir());
 	}
 	
 	@Test
