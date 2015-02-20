@@ -3,7 +3,6 @@ package com.unitedvision.tvkabel.core.document.pdf.test;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +41,11 @@ public class BulanTest extends BulanPdfView {
             int tahun = 2015;
             
 			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapBulanan(perusahaan, month, tahun);
-
-            Month[] listBulan = {Month.SEPTEMBER, Month.OCTOBER, Month.NOVEMBER, Month.DECEMBER, Month.JANUARY};
             
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);
             model.put("bulan", bulan);
             model.put("tahun", 2015);
-            model.put("listBulan", Arrays.asList(listBulan));
             
             kartu.create(model, document);
             document.close();

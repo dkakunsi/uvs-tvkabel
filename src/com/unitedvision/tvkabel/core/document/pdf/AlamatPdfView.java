@@ -25,7 +25,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	 */
 	private String kelurahan = "";
 	private int lingkungan = 0;
-	private float[] columnWidths = {3f, 6f, 4f, 3f, 4f};
+	private float[] columnWidths = {1f, 3f, 6f, 3f, 3f, 4f};
 	/**
 	 * Untuk menentukan apakah pelanggan merupakan yang pertama untuk alamat tertentu.
 	 */
@@ -123,6 +123,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
+		insertCell(table, "Nomor", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.BOX);
@@ -133,25 +134,37 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		for (Pelanggan pelanggan : list) {
 			Font customFont = getCustomFont(pelanggan.getTunggakan());
 			
+			insertCell(table, createNomorBuku(pelanggan), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, createKontak(pelanggan), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, createTunggakan(pelanggan), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, createPembayaranTerakhir(pelanggan), align, 1, customFont, Rectangle.BOX);
 			
-			String tunggakan = Integer.toString(pelanggan.getTunggakan());
-			insertCell(table, String.format("%s bulan", tunggakan.replace("-", "+")), align, 1, customFont, Rectangle.BOX);
-			
-			Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
-			if (terakhir != null) {
-				insertCell(table, terakhir.getTagihanStr(), align, 1, customFont, Rectangle.BOX);
-			} else {
-				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
-			}
 		}
 
-		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 4, fontContent, Rectangle.BOX);
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 5, fontContent, Rectangle.BOX);
 		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);
+	}
+	
+	private String createNomorBuku(Pelanggan pelanggan) {
+		if (pelanggan.getNomorBuku() != null && !(pelanggan.getNomorBuku().equals("")))
+			return pelanggan.getNomorBuku();
+		return "";
+	}
+	
+	private String createTunggakan(Pelanggan pelanggan) {
+		String tunggakan = Integer.toString(pelanggan.getTunggakan()).replace("-", "+");
+		return String.format("%s bulan", tunggakan);
+	}
+	
+	private String createPembayaranTerakhir(Pelanggan pelanggan) {
+		Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
+		if (terakhir != null)
+			return terakhir.getTagihanStr();
+		return "";
 	}
 	
 	private String createKontak(Pelanggan pelanggan) {

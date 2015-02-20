@@ -1,17 +1,15 @@
 package com.unitedvision.tvkabel.core.document.pdf;
 
 import java.time.Month;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
-import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
@@ -21,19 +19,11 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	private boolean contained;
 	private int tahun;
 	
-	public void setContained(boolean bool) {
-		this.contained = bool;
-	}
-	
-	public void setTahun(int tahun) {
-		this.tahun = tahun;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		Object modelPelanggan = model.get("pelanggan");
-		setContained((boolean)model.get("pembayaran"));
-		setTahun((int)model.get("tahun"));
+		contained = (boolean)model.get("pembayaran");
+		tahun = (int)model.get("tahun");
 
 		if (modelPelanggan instanceof Pelanggan) {
 			createCard(doc, (Pelanggan)modelPelanggan);
@@ -45,14 +35,13 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	}
 	
 	private void createCard(Document doc, List<Pelanggan> listPelanggan) throws DocumentException {
-		for (Pelanggan pelanggan : listPelanggan) {
+		for (Pelanggan pelanggan : listPelanggan)
 			createCard(doc, pelanggan);
-		}
 	}
 	
 	protected void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
 		if (perusahaan == null)
-			setPerusahaan(pelanggan.getPerusahaan());
+			perusahaan = pelanggan.getPerusahaan();
 		super.createCard(doc, pelanggan);
 	}
 	
@@ -61,19 +50,13 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		table.setWidthPercentage(tablePercentage);
 		
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, pelanggan.getKode(), align, 3, fontHeader, Rectangle.NO_BORDER);
+		insertCell(table, createKodeDanNomorBuku(pelanggan), align, 3, fontHeader, Rectangle.NO_BORDER);
 
 		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, pelanggan.getNama(), align, 3, fontHeader, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.NO_BORDER);
-		String kontak = pelanggan.getTelepon();
-		if (!kontak.equals("")) {
-			kontak = String.format("%s, %s", kontak, pelanggan.getHp());
-		} else {
-			kontak = pelanggan.getHp();
-		}
-		insertCell(table, kontak, align, 3, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, createKontak(pelanggan), align, 3, fontContent, Rectangle.NO_BORDER);
 
 		insertCell(table, "Jmlh TV", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Integer.toString(pelanggan.getJumlahTv()), align, 1, fontContent, Rectangle.NO_BORDER);
@@ -91,9 +74,7 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		insertCell(table, pelanggan.getDetailAlamat(), align, 3, fontContent, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Tgl Mulai", align, 1, fontHeader, Rectangle.NO_BORDER);
-		insertCell(table, 
-				DateUtil.toUserString(pelanggan.getTanggalMulai(), "-"), 
-				align, 1, fontContent, Rectangle.NO_BORDER);
+		insertCell(table, createTanggalMulai(pelanggan), align, 1, fontContent, Rectangle.NO_BORDER);
 		
 		insertCell(table, "Tahun Tagih", align, 1, fontHeader, Rectangle.NO_BORDER);
 		insertCell(table, Integer.toString(tahun), align, 1, fontContent, Rectangle.NO_BORDER);
@@ -101,14 +82,8 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		paragraph.add(table);
 	}
 
-	protected void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan) {
-		PdfPTable table = new PdfPTable(columnWidths);
-		table.setWidthPercentage(tablePercentage);
-		
-		insertCell(table, "Bulan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
-		insertCell(table, "Tgl Bayar", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
-		insertCell(table, "Pelanggan", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
-		insertCell(table, "Penagih", Element.ALIGN_CENTER, 1, fontTableHeader, Rectangle.BOX);
+	protected void createPembayaranTable(Paragraph paragraph, Pelanggan pelanggan, PdfPTable table) {
+		createPembayaranTableHeader(table);
 
 		if (contained) {
 			setContainedTable(table, pelanggan);
@@ -130,10 +105,8 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 				if (pembayaran.getKode().equals("DEFAULT")) {
 					insertEmptyCell(table, month);
 				} else {
-					String tanggalBayar = DateUtil.toUserString(pembayaran.getTanggalBayar(), "-");
-					
 					insertCell(table, month.substring(0, 3), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
-					insertCell(table, tanggalBayar, Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
+					insertCell(table, createTanggalBayar(pembayaran), Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 					insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 					insertCell(table, "OK", Element.ALIGN_CENTER, 1, fontTableContent, Rectangle.BOX);
 				}
@@ -144,20 +117,34 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		
 		insertEmptyCells(table, i);
 	}
+	
+	private String createTanggalMulai(Pelanggan pelanggan) {
+		return createTanggal(pelanggan.getTanggalMulai());
+	}
+	
+	private String createTanggalBayar(Pembayaran pembayaran) {
+		return createTanggal(pembayaran.getTanggalBayar());
+	}
+	
+	private String createTanggal(Date tanggal) {
+		return DateUtil.toUserString(tanggal, "-");
+	}
+	
+	private String createKodeDanNomorBuku(Pelanggan pelanggan) {
+		String kodeDanNomor = String.format("%s", pelanggan.getKode());
 
-	@Override
-	protected void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int border) {
-		PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
-		cell.setHorizontalAlignment(align);
-		cell.setColspan(colspan);
-		cell.setBorder(border);
+		if (pelanggan.getNomorBuku() != null && !(pelanggan.getNomorBuku().equals("")))
+			kodeDanNomor = String.format("%s / %s", kodeDanNomor, pelanggan.getNomorBuku());
+		return kodeDanNomor;
+	}
+	
+	private String createKontak(Pelanggan pelanggan) {
+		String kontak = pelanggan.getHp();
 
-		if(text.trim().equalsIgnoreCase("")){
-			cell.setMinimumHeight(22f);
-		}
-
-		table.addCell(cell);
-	};
+		if (pelanggan.getTelepon() != null && !(pelanggan.getTelepon().equals("")))
+			kontak = String.format("%s, %s", kontak, pelanggan.getHp());
+		return kontak;
+	}
 	
 	@Override
 	protected Document newDocument() {
