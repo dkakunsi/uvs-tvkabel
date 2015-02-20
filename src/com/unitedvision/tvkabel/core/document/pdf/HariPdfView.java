@@ -97,28 +97,18 @@ public class HariPdfView extends CustomAbstractPdfView {
 		long total = 0;
 		for (Pelanggan pelanggan : list) {
 			Font customFont = getCustomFont(pelanggan.getTunggakan());
+			final List<Pembayaran> listPembayaran = pelanggan.getListPembayaran();
+			final long sum = countJumlahBayar(listPembayaran);
 			
 			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getNamaKelurahan(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, Integer.toString(pelanggan.getLingkungan()), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, Long.toString(pelanggan.getIuran()), align, 1, customFont, Rectangle.BOX);
-			
-			int count = 0;
-			long sum = 0;
-			for (Pembayaran pembayaran : pelanggan.getListPembayaran()) {
-				count++;
-				sum += pembayaran.getJumlahBayar();
-			}
-			insertCell(table, String.format("%d bulan", count), align, 1, customFont, Rectangle.BOX);
+			insertCell(table, String.format("%d bulan", listPembayaran.size()), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, String.format("Rp %d", sum), align, 1, customFont, Rectangle.BOX);
-			
-			Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
-			if (terakhir != null) {
-				insertCell(table, terakhir.getTagihanStr(), align, 1, customFont, Rectangle.BOX);
-			} else {
-				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
-			}
+			insertCell(table, createPembayaranTerakhir(pelanggan), align, 1, customFont, Rectangle.BOX);
+
 			total += sum;
 		}
 
@@ -128,6 +118,21 @@ public class HariPdfView extends CustomAbstractPdfView {
 		insertCell(table, Long.toString(total), align, 1, fontContent, Rectangle.BOX);
 		
 		paragraph.add(table);
+	}
+	
+	private long countJumlahBayar(List<Pembayaran> list) {
+		long sum = 0;
+		for (Pembayaran pembayaran : list)
+			sum += pembayaran.getJumlahBayar();
+
+		return sum;
+	}
+	
+	private String createPembayaranTerakhir(Pelanggan pelanggan) {
+		Pembayaran terakhir = pelanggan.getPembayaranTerakhir();
+		if (terakhir != null)
+			return terakhir.getTagihanStr();
+		return "";
 	}
 
 	@Override

@@ -81,23 +81,28 @@ public class TahunPdfView extends CustomAbstractPdfView {
 			
 			insertCell(table, pelanggan.getKode(), align, 1, customFont, Rectangle.BOX);
 			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
-
-			int counter = 0;
-			for (Pembayaran pembayaran : pelanggan.getListPembayaran()) {
-				if (pembayaran.getJumlahBayar() == 0) {
-					insertCell(table, "", align, 1, customFont, Rectangle.BOX);
-				} else {
-					insertCell(table, "lunas", align, 1, customFont, Rectangle.BOX);
-				}
-				counter++;
-			}
-			
-			for (int i = 1; i <= (12 - counter); i++) {
-				insertCell(table, "", align, 1, customFont, Rectangle.BOX);
-			}
+			insertListPembayaran(pelanggan, table, customFont);
 		}
 
 		paragraph.add(table);
+	}
+	
+	private void insertListPembayaran(Pelanggan pelanggan, PdfPTable table, Font customFont) {
+		int counter = 0;
+		for (Pembayaran pembayaran : pelanggan.getListPembayaran()) {
+			insertCell(table, getKeteranganPembayaran(pembayaran), align, 1, customFont, Rectangle.BOX);
+			counter++;
+		}
+		
+		for (int i = 1; i <= (12 - counter); i++) {
+			insertCell(table, "", align, 1, customFont, Rectangle.BOX);
+		}
+	}
+	
+	private String getKeteranganPembayaran(Pembayaran pembayaran) {
+		if (pembayaran.getJumlahBayar() == 0)
+			return "";
+		return "lunas";
 	}
 
 	@Override

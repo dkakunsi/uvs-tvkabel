@@ -34,6 +34,8 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 
 	protected int align = Element.ALIGN_LEFT;
 	protected float tablePercentage = 98f;
+	
+	protected float minimumCellHeight = 10f;
 
 	protected void decorateDocument(Document doc, String title) {
 		doc.addAuthor("United Vision");
@@ -50,16 +52,20 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 		cell.setBorder(border);
 
 		if(text.trim().equalsIgnoreCase("")){
-			cell.setMinimumHeight(10f);
+			cell.setMinimumHeight(minimumCellHeight);
 		}
 
 		table.addCell(cell);
 	}
 
+	protected void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int border, float minimumCellHeight){
+		this.minimumCellHeight = minimumCellHeight;
+		insertCell(table, text, align, colspan, font, border);
+	}
+
 	protected static void addEmptyLine(Paragraph paragraph, int number) {
-		for (int i = 0; i < number; i++) {
+		for (int i = 0; i < number; i++)
 	      paragraph.add(new Paragraph(" "));
-	    }
 	}
 	
 	protected Font getCustomFont(int tunggakan) {
