@@ -63,7 +63,8 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	}
 	
 	protected Font getCustomFont(int tunggakan) {
-		Font takWajar = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.BLUE);
+		Font wajar = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.BLUE);
+		Font takWajar = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.BLACK);
 		Font lunas = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.GREEN);
 		Font rekomPutus = new Font(fontContentType, fontContentSize, Font.NORMAL, Color.RED);
 		
@@ -73,6 +74,6 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 			return takWajar;
 		if (tunggakan < 1)
 			return lunas;
-		return fontContent;
+		return wajar;
 	}
 }
