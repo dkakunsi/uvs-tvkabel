@@ -353,7 +353,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	
 	@Transient
 	public int getIdPembayaranTerakhir() {
-		if (pembayaranTerakhir == null)
+		if (pembayaranTerakhir != null)
 			return pembayaranTerakhir.getId();
 		return 0;
 	}
