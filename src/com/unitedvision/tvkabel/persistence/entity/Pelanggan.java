@@ -353,15 +353,19 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	
 	@Transient
 	public int getIdPembayaranTerakhir() {
-		return pembayaranTerakhir.getId();
+		if (pembayaranTerakhir == null)
+			return pembayaranTerakhir.getId();
+		return 0;
 	}
 	
 	public void setIdPembayaranTerakhir(int id) {
-		setPembayaranTerakhir();
-		try {
-			pembayaranTerakhir.setId(id);
-		} catch (EmptyIdException e) {
-			e.printStackTrace();
+		if (id != 0) {
+			setPembayaranTerakhir();
+			try {
+				pembayaranTerakhir.setId(id);
+			} catch (EmptyIdException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
