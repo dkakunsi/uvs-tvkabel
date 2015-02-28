@@ -1,6 +1,12 @@
 package com.unitedvision.tvkabel.core.document.pdf;
 
 import java.awt.Color;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
@@ -12,6 +18,9 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.util.DateUtil;
 
 public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	public static final int fontTitleSize = 14;
@@ -37,13 +46,22 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 	
 	protected float minimumCellHeight = 10f;
 
+	@Override
+	protected void buildPdfDocument(Map<String, Object> model, Document doc,
+			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		create(model, doc);
+	}
+	
+	public abstract Document create(Map<String, Object> model, Document doc) throws DocumentException;
+	protected abstract void createTitle(Paragraph paragraph) throws DocumentException;
+	protected abstract void createContent(Paragraph paragraph, List<Pelanggan> list);
+
 	protected void decorateDocument(Document doc, String title) {
 		doc.addAuthor("United Vision");
 		doc.addCreationDate();
 		doc.addTitle(title);
 	}
-
-	protected abstract void createTitle(Paragraph paragraph) throws DocumentException;
 
 	protected void insertCell(PdfPTable table, String text, int align, int colspan, Font font, int border){
 		PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
@@ -82,4 +100,8 @@ public abstract class CustomAbstractPdfView extends AbstractPdfView {
 			return lunas;
 		return wajar;
 	}
+	
+	protected String createTanggal(Date tanggal) {
+		return DateUtil.toUserString(tanggal, "-");
+	}	
 }

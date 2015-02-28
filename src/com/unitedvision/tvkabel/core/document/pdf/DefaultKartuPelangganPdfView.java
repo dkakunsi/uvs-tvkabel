@@ -2,10 +2,8 @@ package com.unitedvision.tvkabel.core.document.pdf;
 
 import java.awt.Color;
 import java.time.Month;
+import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -14,7 +12,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.CustomAbstractPdfView;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
@@ -25,23 +22,12 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 	protected Font fontTableHeader = new Font(Font.TIMES_ROMAN, 11);
 	public static Font fontTableContent = new Font(Font.TIMES_ROMAN, 11);
 	
-	@Override
-	protected void buildPdfDocument(Map<String, Object> model, Document doc,
-			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		create(model, doc);
-	}
-	
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		perusahaan = (Perusahaan)model.get("perusahaan");
-		createCard(doc, null);
+		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
+		createPage(doc, null);
 		
 		return doc;
-	}
-	
-	protected void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
-		decorateDocument(doc, String.format("Kartu Pelanggan %s", perusahaan.getNama()));
-		createPage(doc, pelanggan);
 	}
 	
 	protected void createPage(Document doc, Pelanggan pelanggan) throws DocumentException {
@@ -62,11 +48,10 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 		if (namaPT != null && !namaPT.equals("")) {
 			paragraph.add(new Paragraph(namaPT, new Font(Font.TIMES_ROMAN, 8)));
 		}
-		//paragraph.add(new Paragraph("Kartu Pembayaran Pelanggan", new Font(Font.TIMES_ROMAN, 14)));
 	}
 
 	//Pelanggan is not used
-	protected void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
+	protected void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) {
 		final Font tmpFont = new Font(Font.TIMES_ROMAN, 11, Font.NORMAL, Color.WHITE);
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
@@ -138,5 +123,10 @@ public class DefaultKartuPelangganPdfView extends CustomAbstractPdfView {
 	@Override
 	protected Document newDocument() {
 		return new Document(new Rectangle(297, 466), 0.1f, 0.1f, 0.1f, 0.1f);
+	}
+
+	@Override
+	protected void createContent(Paragraph paragraph, List<Pelanggan> list) {
+		//not used
 	}
 }

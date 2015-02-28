@@ -3,9 +3,6 @@ package com.unitedvision.tvkabel.core.document.pdf;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -14,21 +11,14 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.CustomAbstractPdfView;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
 
 public class TahunPdfView extends CustomAbstractPdfView {
 	private int tahun;
-
-	@Override
-	protected void buildPdfDocument(Map<String, Object> model, Document doc,
-			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		create(model, doc);
-	}
 	
+	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		setTahun((int)model.get("tahun"));
 
@@ -36,7 +26,7 @@ public class TahunPdfView extends CustomAbstractPdfView {
 
 		Paragraph paragraph = new Paragraph();
 		createTitle(paragraph);
-		createTable(model, paragraph);
+		createContent(paragraph, (List<Pelanggan>)model.get("rekap"));
 		doc.add(paragraph);
 		
 		return doc;
@@ -53,7 +43,7 @@ public class TahunPdfView extends CustomAbstractPdfView {
 		addEmptyLine(paragraph, 1);
 	}
 	
-	private void createTable(Map<String, Object> model, Paragraph paragraph) throws DocumentException {
+	protected void createContent(Paragraph paragraph, List<Pelanggan> list) {
 		float[] columnWidths = {2f, 9f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f, 2f};
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
@@ -74,8 +64,6 @@ public class TahunPdfView extends CustomAbstractPdfView {
 		insertCell(table, "DES", align, 1, fontHeader, Rectangle.BOX);
 		table.setHeaderRows(1);
 
-		@SuppressWarnings("unchecked")
-		final List<Pelanggan> list = (List<Pelanggan>)model.get("rekap");
 		for (Pelanggan pelanggan : list) {
 			Font customFont = getCustomFont(pelanggan.getTunggakan());
 			
@@ -83,6 +71,9 @@ public class TahunPdfView extends CustomAbstractPdfView {
 			insertCell(table, pelanggan.getNama(), align, 1, customFont, Rectangle.BOX);
 			insertListPembayaran(pelanggan, table, customFont);
 		}
+
+		insertCell(table, "Jumlah Pelanggan", Element.ALIGN_RIGHT, 13, fontContent, Rectangle.BOX);
+		insertCell(table, Integer.toString(list.size()), align, 1, fontContent, Rectangle.BOX);
 
 		paragraph.add(table);
 	}

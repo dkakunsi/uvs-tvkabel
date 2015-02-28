@@ -1,7 +1,6 @@
 package com.unitedvision.tvkabel.core.document.pdf;
 
 import java.time.Month;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	private boolean contained;
@@ -33,19 +31,21 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 		
 		return doc;
 	}
-	
-	private void createCard(Document doc, List<Pelanggan> listPelanggan) throws DocumentException {
+
+	//Multiple card
+	protected void createCard(Document doc, List<Pelanggan> listPelanggan) throws DocumentException {
 		for (Pelanggan pelanggan : listPelanggan)
 			createCard(doc, pelanggan);
 	}
 	
+	//Single card
 	protected void createCard(Document doc, Pelanggan pelanggan) throws DocumentException {
 		if (perusahaan == null)
 			perusahaan = pelanggan.getPerusahaan();
-		super.createCard(doc, pelanggan);
+		super.createPage(doc, pelanggan);
 	}
 	
-	protected void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) throws DocumentException {
+	protected void createHeadTable(Paragraph paragraph, Pelanggan pelanggan) {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
@@ -124,10 +124,6 @@ public class KartuPelangganPdfView extends DefaultKartuPelangganPdfView {
 	
 	private String createTanggalBayar(Pembayaran pembayaran) {
 		return createTanggal(pembayaran.getTanggalBayar());
-	}
-	
-	private String createTanggal(Date tanggal) {
-		return DateUtil.toUserString(tanggal, "-");
 	}
 	
 	private String createKodeDanNomorBuku(Pelanggan pelanggan) {

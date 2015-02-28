@@ -2,6 +2,7 @@ package com.unitedvision.tvkabel.core.document.pdf;
 
 import java.time.Month;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.lowagie.text.Document;
@@ -9,6 +10,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class BulanPdfView extends HariPdfView {
@@ -41,6 +43,7 @@ public class BulanPdfView extends HariPdfView {
 		setPeriode(String.format("%s %s", bulan, tahun));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		setPeriode(model);
 		
@@ -48,7 +51,7 @@ public class BulanPdfView extends HariPdfView {
 		
 		Paragraph paragraph = new Paragraph();
 		createTitle(paragraph);
-		createTable(model, paragraph);
+		createContent(paragraph, (List<Pelanggan>)model.get("rekap"));
 		doc.add(paragraph);
 		
 		return doc;

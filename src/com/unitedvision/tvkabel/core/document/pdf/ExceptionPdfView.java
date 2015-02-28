@@ -1,30 +1,16 @@
 package com.unitedvision.tvkabel.core.document.pdf;
 
+import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.pdf.PdfWriter;
+import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 
 public class ExceptionPdfView extends CustomAbstractPdfView {
 	private String message;
-
-	@Override
-	protected void buildPdfDocument(Map<String, Object> model, Document doc,
-			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		decorateDocument(doc, "Laporan Kesalahan");
-		setMessage((String)model.get("message"));
-		
-		Paragraph paragraph = new Paragraph();
-		createTitle(paragraph);
-		doc.add(paragraph);
-	}
 
 	public void setMessage(String message) {
 		this.message = message;
@@ -36,5 +22,22 @@ public class ExceptionPdfView extends CustomAbstractPdfView {
 		paragraph.add(new Paragraph(message, fontContent));
 		paragraph.setAlignment(Element.ALIGN_CENTER);
 		addEmptyLine(paragraph, 1);
+	}
+
+	@Override
+	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
+		decorateDocument(doc, "Laporan Kesalahan");
+		setMessage((String)model.get("message"));
+		
+		Paragraph paragraph = new Paragraph();
+		createTitle(paragraph);
+		doc.add(paragraph);
+		
+		return doc;
+	}
+
+	@Override
+	protected void createContent(Paragraph paragraph, List<Pelanggan> list) {
+		// not used
 	}
 }

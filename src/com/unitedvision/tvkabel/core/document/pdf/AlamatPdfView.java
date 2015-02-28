@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -14,7 +11,6 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 import com.unitedvision.tvkabel.core.document.pdf.CustomAbstractPdfView;
 import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
 import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
@@ -23,20 +19,13 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	/**
 	 * Nama Kelurahan.
 	 */
-	private String kelurahan = "";
-	private int lingkungan = 0;
+	protected String kelurahan = "";
+	protected int lingkungan = 0;
 	private float[] columnWidths = {1f, 3f, 6f, 3f, 3f, 4f};
 	/**
 	 * Untuk menentukan apakah pelanggan merupakan yang pertama untuk alamat tertentu.
 	 */
 	private boolean first;
-
-	@Override
-	protected void buildPdfDocument(Map<String, Object> model, Document doc,
-			PdfWriter writer, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		create(model, doc);
-	}
 	
 	public void setKelurahan(String kelurahan) {
 		this.kelurahan = kelurahan;
@@ -86,7 +75,7 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 	}
 
 	/**
-	 * Buat dokumenn untuk masing-masing {@link Alamat} dan {@code lingkungan}.
+	 * Buat dokumen untuk masing-masing {@link Alamat} dan {@code lingkungan}.
 	 * @param list
 	 * @param doc
 	 * @throws DocumentException
@@ -119,11 +108,11 @@ public class AlamatPdfView extends CustomAbstractPdfView {
 		addEmptyLine(paragraph, 1);
 	}
 	
-	private void createContent(Paragraph paragraph, List<Pelanggan> list) {
+	protected void createContent(Paragraph paragraph, List<Pelanggan> list) {
 		PdfPTable table = new PdfPTable(columnWidths);
 		table.setWidthPercentage(tablePercentage);
 		
-		insertCell(table, "Nomor", align, 1, fontHeader, Rectangle.BOX);
+		insertCell(table, "No", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kode", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Pelanggan", align, 1, fontHeader, Rectangle.BOX);
 		insertCell(table, "Kontak", align, 1, fontHeader, Rectangle.BOX);
