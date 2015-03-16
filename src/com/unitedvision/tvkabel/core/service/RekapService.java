@@ -18,6 +18,7 @@ public interface RekapService {
 	List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws EntityNotExistException, EmptyIdException;
 
 	List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) throws EntityNotExistException;
+	List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakanAwal, Integer tunggakanAkhir) throws EntityNotExistException;
 	
 	List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) throws EntityNotExistException;
 	List<Pelanggan> rekapAlamat(Perusahaan perusahaan);

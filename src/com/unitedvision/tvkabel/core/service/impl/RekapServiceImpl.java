@@ -85,6 +85,11 @@ public class RekapServiceImpl implements RekapService {
 	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakan) throws EntityNotExistException {
 		return pelangganService.getByTunggakan(perusahaan, status, tunggakan);
 	}
+	
+	@Override
+	public List<Pelanggan> rekapTunggakan(Perusahaan perusahaan, Status status, Integer tunggakanAwal, Integer tunggakanAkhir) throws EntityNotExistException {
+		return pelangganService.getByTunggakan(perusahaan, status, tunggakanAwal, tunggakanAkhir);
+	}
 
 	@Override
 	public List<Pelanggan> rekapAlamat(Perusahaan perusahaan, Status status, Kelurahan kelurahan, Integer lingkungan) throws EntityNotExistException {

@@ -241,6 +241,11 @@ public class PelangganServiceImpl implements PelangganService {
 	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakan) throws EntityNotExistException {
 		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(perusahaan, status, tunggakan);
 	}
+	
+	@Override
+	public List<Pelanggan> getByTunggakan(Perusahaan perusahaan, Status status, int tunggakanAwal, int tunggakanAkhir) throws EntityNotExistException {
+		return pelangganRepository.findByPerusahaanAndStatusAndDetail_TunggakanBetweenOrderByKodeAsc(perusahaan, status, tunggakanAwal, tunggakanAkhir);
+	}
 
 	@Override
 	public List<Pelanggan> getByNama(Perusahaan perusahaan, Status status, String nama, int pageNumber) throws EntityNotExistException {

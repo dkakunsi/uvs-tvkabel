@@ -38,6 +38,7 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	List<Pelanggan> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan);
 
 	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakan);
+	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanBetweenOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakanAwal, int tunggakanAkhir);
 
 	long countByPerusahaanAndStatus(Perusahaan perusahaan, Status status);
 

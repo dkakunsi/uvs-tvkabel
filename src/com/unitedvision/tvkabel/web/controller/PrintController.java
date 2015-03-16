@@ -95,16 +95,16 @@ public class PrintController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/rekap/tunggakan", method = RequestMethod.POST)
-	public ModelAndView printTunggakan(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakan,
+	public ModelAndView printTunggakan(@RequestParam Integer idPerusahaan, @RequestParam("status") String s, @RequestParam Integer tunggakanAwal, @RequestParam Integer tunggakanAkhir,
 			Map<String, Object> model) {
 		try {
 			final Perusahaan perusahaan = getPerusahaan(idPerusahaan);
 			Status status = createStatus(s);
 			
-			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapTunggakan(perusahaan, status, tunggakan);
+			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapTunggakan(perusahaan, status, tunggakanAwal, tunggakanAkhir);
 			
 			model.put("listPelanggan", list);
-			model.put("tunggakan", tunggakan);
+			model.put("tunggakan", tunggakanAwal);
 
 			return new ModelAndView("pdfTunggakan", model);
 		} catch (ApplicationException e) {
