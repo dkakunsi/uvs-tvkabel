@@ -16,20 +16,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
+import com.unitedvision.tvkabel.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PembayaranRepositoryTest {

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class ConstraintViolationInterceptor {
 
 	@AfterThrowing(
-		pointcut = "execution(public * com.unitedvision.tvkabel.persistence.repository.*.save(..))",
+		pointcut = "execution(public * com.unitedvision.tvkabel.repository.*.save(..))",
 		throwing = "ex")
 	public void errorThrown(PersistenceException ex) throws PersistenceException {
 		final Throwable throwable = ex.getCause();
@@ -26,7 +26,7 @@ public class ConstraintViolationInterceptor {
 	
 
 	@AfterThrowing(
-		pointcut = "execution(public * com.unitedvision.tvkabel.persistence.repository.*.save(..))",
+		pointcut = "execution(public * com.unitedvision.tvkabel.repository.*.save(..))",
 		throwing = "ex")
 	public void errorThrown(DataIntegrityViolationException ex) throws PersistenceException {
 		final Throwable throwable = ex.getCause();

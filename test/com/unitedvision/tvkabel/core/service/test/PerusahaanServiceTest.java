@@ -10,18 +10,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.service.KelurahanService;
-import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.service.KelurahanService;
+import com.unitedvision.tvkabel.service.PerusahaanService;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PerusahaanServiceTest {
@@ -37,7 +38,10 @@ public class PerusahaanServiceTest {
 
 		Perusahaan perusahaan = new Perusahaan();
 		perusahaan.setNama("Test");
-		perusahaan.setEmail("jondiru2003@yahoo.com");
+
+		Kontak kontak = new Kontak();
+		kontak.setEmail("jondiru2003@yahoo.com");
+		perusahaan.setKontak(kontak);
 		perusahaan.setKelurahan(kelurahan);
 		perusahaan.setStatus(Perusahaan.Status.AKTIF);
 		

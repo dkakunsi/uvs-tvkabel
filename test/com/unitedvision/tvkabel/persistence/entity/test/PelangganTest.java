@@ -6,19 +6,19 @@ import java.time.Month;
 
 import org.junit.Test;
 
+import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.Kecamatan;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Kota;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.persistence.entity.Alamat;
-import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Kontak;
-import com.unitedvision.tvkabel.persistence.entity.Kota;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class PelangganTest {

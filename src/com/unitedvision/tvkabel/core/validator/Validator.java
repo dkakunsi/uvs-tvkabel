@@ -6,24 +6,24 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.unitedvision.tvkabel.entity.Kecamatan;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kota;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Kota;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.persistence.repository.KecamatanRepository;
-import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
-import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PembayaranRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.repository.KotaRepository;
+import com.unitedvision.tvkabel.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
+import com.unitedvision.tvkabel.repository.PembayaranRepository;
+import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 
 @Component
 public class Validator {

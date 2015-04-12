@@ -12,20 +12,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pegawai.Kredensi;
+import com.unitedvision.tvkabel.entity.Pegawai.Role;
+import com.unitedvision.tvkabel.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai.Kredensi;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai.Role;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai.Status;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PegawaiRepositoryTest {

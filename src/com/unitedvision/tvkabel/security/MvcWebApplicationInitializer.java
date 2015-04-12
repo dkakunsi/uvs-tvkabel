@@ -2,6 +2,8 @@ package com.unitedvision.tvkabel.security;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.unitedvision.tvkabel.configuration.SecurityConfig;
+
 public class MvcWebApplicationInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer {
 

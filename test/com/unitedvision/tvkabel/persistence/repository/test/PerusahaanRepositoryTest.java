@@ -12,14 +12,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.EmptyCodeException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PerusahaanRepositoryTest {
@@ -40,8 +42,14 @@ public class PerusahaanRepositoryTest {
 		perusahaan.setKode("TEST");
 		perusahaan.setNama("Test");
 		perusahaan.setStatus(Perusahaan.Status.AKTIF);
-		perusahaan.setEmail("jondiru2003@yahoo.com");
-		perusahaan.setIdKelurahan(21);
+		
+		Kontak kontak = new Kontak();
+		kontak.setEmail("jondiru2003@yahoo.com");
+		perusahaan.setKontak(kontak);
+
+		Kelurahan kelurahan = new Kelurahan();
+		kelurahan.setId(21);
+		perusahaan.setKelurahan(kelurahan);
 		
 		try {
 			perusahaanRepository.save(perusahaan);

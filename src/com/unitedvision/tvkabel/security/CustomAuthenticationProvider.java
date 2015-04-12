@@ -6,7 +6,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
@@ -17,17 +20,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 	    String username = authentication.getName();
         String password = (String) authentication.getCredentials();
+        
+        CustomUser user;
+        try {
+        	user = userDetailService.loadUserByToken(password);
+        } catch (UsernameNotFoundException e) {
+        	user = userDetailService.loadUserByUsername(username);
+        } catch (UnauthenticatedAccessException e) {
+            throw new BadCredentialsException(e.getMessage());
+		}
  
-        CustomUser user = userDetailService.loadUserByUsername(username);
- 
-        if (user == null) {
+        if (!(password.equals(user.getPassword())) || !(username.equals(user.getUsername())))
             throw new BadCredentialsException("Kombinasi Username dan Password Salah!");
-        }
- 
-        if (!password.equals(user.getPassword())) {
-            throw new BadCredentialsException("Kombinasi Username dan Password Salah!");
-        }
- 
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
 	}
 

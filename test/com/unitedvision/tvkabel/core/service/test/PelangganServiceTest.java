@@ -15,35 +15,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.service.KelurahanService;
-import com.unitedvision.tvkabel.core.service.PegawaiService;
-import com.unitedvision.tvkabel.core.service.PelangganService;
-import com.unitedvision.tvkabel.core.service.PembayaranService;
-import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
 import com.unitedvision.tvkabel.core.validator.Validator;
+import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.exception.DataDuplicationException;
-import com.unitedvision.tvkabel.exception.EmptyCodeException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Alamat;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Kontak;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
+import com.unitedvision.tvkabel.service.KelurahanService;
+import com.unitedvision.tvkabel.service.PegawaiService;
+import com.unitedvision.tvkabel.service.PelangganService;
+import com.unitedvision.tvkabel.service.PembayaranService;
+import com.unitedvision.tvkabel.service.PerusahaanService;
 import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PelangganServiceTest {
@@ -89,7 +86,7 @@ public class PelangganServiceTest {
 	}
 
 	@Test
-	public void insertPelanggan_KodeException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void insertPelanggan_KodeException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(1, "Detail", 0, 0);
@@ -108,7 +105,7 @@ public class PelangganServiceTest {
 	}
 
 	@Test
-	public void insertPelanggan_NomorBukuException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void insertPelanggan_NomorBukuException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(1, "Detail", 0, 0);
@@ -127,7 +124,7 @@ public class PelangganServiceTest {
 	}
 
 	@Test
-	public void insertPelanggan_NamaException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void insertPelanggan_NamaException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		Alamat alamat = new Alamat(1, "Detail", 0, 0);
@@ -150,42 +147,24 @@ public class PelangganServiceTest {
 	public void updatePelanggan_Success() throws ApplicationException { }
 
 	@Test
-	public void updatePelanggan_KodeException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void updatePelanggan_KodeException() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		pelanggan.setKode("WS02018");
-		
-		try {
-			pelangganService.save(pelanggan);
-		} catch (ApplicationException e) {
-			String message = e.getMessage();
-			assertEquals("Kode yang anda masukkan sudah digunakan.", message);
-		}
+		pelangganService.save(pelanggan);
 	}
 
 	@Test
-	public void updatePelanggan_NomorBukuException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void updatePelanggan_NomorBukuException() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		pelanggan.setNomorBuku("17");
-		
-		try {
-			pelangganService.save(pelanggan);
-		} catch (ApplicationException e) {
-			String message = e.getMessage();
-			assertEquals("Nomor Buku yang anda masukkan sudah digunakan.", message);
-		}
+		pelangganService.save(pelanggan);
 	}
 
 	@Test
-	public void updatePelanggan_NamaException() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+	public void updatePelanggan_NamaException() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		pelanggan.setNama("Engelbert Koagow");
-		
-		try {
-			pelangganService.save(pelanggan);
-		} catch (ApplicationException e) {
-			String message = e.getMessage();
-			assertEquals("Nama yang anda masukkan sudah digunakan.", message);
-		}
+		pelangganService.save(pelanggan);
 	}
 
 	@Test
@@ -384,7 +363,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testRecountTunggakan() throws EntityNotExistException, DataDuplicationException {
+	public void testRecountTunggakan() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		
 		pelangganService.recountTunggakan(pelanggan);
@@ -395,19 +374,19 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testGetByPerusahaanAndKodeAndStatus() throws EntityNotExistException {
+	public void testGetByPerusahaanAndKodeAndStatus() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		String kode = "WS01";
 		Status status = Status.AKTIF;
 
-		List<? extends Pelanggan> list = pelangganService.getByKode(perusahaan, status, kode, 0);
+		List<? extends Pelanggan> list = pelangganService.getByKode(perusahaan, kode, status);
 		
 		assertNotEquals(0, list.size());
 	}
 	
 	@Test
 	@Ignore
-	public void testResetKode() throws EntityNotExistException {
+	public void testResetKode() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		Kelurahan kelurahan = kelurahanService.getOne(22);
 		
@@ -433,7 +412,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testResetKode_Pelanggan() throws EntityNotExistException, EmptyCodeException {
+	public void testResetKode_Pelanggan() throws ApplicationException {
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 
 		Pelanggan pelanggan = pelangganService.getOne(37);
@@ -453,7 +432,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test (expected = EntityNotExistException.class)
-	public void testGet() throws EntityNotExistException {
+	public void testGet() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.REMOVED);
 		
@@ -462,7 +441,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testGetByTanggal_Like() throws EntityNotExistException {
+	public void testGetByTanggal_Like() throws ApplicationException {
 		String tanggal = "22";
 		tanggal = DateUtil.getDayString(tanggal);
 		
@@ -481,7 +460,7 @@ public class PelangganServiceTest {
 
 		Pegawai pegawai = pegawaiService.getOne(14);
 		Date now = DateUtil.getNow();
-		List<Pembayaran> listPembayaran = pembayaranService.get(pegawai, now, now, 1);
+		List<Pembayaran> listPembayaran = pembayaranService.get(pegawai, now, now);
 		
 		assertNotNull(listPembayaran);
 		assertEquals(0, listPembayaran.size());

@@ -6,26 +6,27 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.unitedvision.tvkabel.core.service.PelangganService;
-import com.unitedvision.tvkabel.core.service.PembayaranService;
-import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pelanggan.Status;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
+import com.unitedvision.tvkabel.service.PelangganService;
+import com.unitedvision.tvkabel.service.PembayaranService;
+import com.unitedvision.tvkabel.service.PerusahaanService;
 
 public class ResetPembayaranTerakhirPelanggan {
-	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
+	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	private static PelangganService pelangganService = appContext.getBean(PelangganService.class);
 	private static PembayaranService pembayaranService = appContext.getBean(PembayaranService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
 
 	private static PelangganRepository pelangganRepository = appContext.getBean(PelangganRepository.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ApplicationException {
 		try {
 			Perusahaan perusahaan = perusahaanService.getOne(17);
 		
@@ -38,7 +39,7 @@ public class ResetPembayaranTerakhirPelanggan {
 		}
 	}
 
-	public static void resetPembayaranTerakhir(Perusahaan perusahaan, Status status) throws EntityNotExistException {
+	public static void resetPembayaranTerakhir(Perusahaan perusahaan, Status status) throws ApplicationException {
 		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, status);
 		List<Pelanggan> toSave = new ArrayList<>();
 		

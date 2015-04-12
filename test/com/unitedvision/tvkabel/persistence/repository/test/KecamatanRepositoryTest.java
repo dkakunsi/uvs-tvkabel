@@ -12,15 +12,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Kecamatan;
+import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Kecamatan;
-import com.unitedvision.tvkabel.persistence.entity.Kota;
-import com.unitedvision.tvkabel.persistence.repository.KecamatanRepository;
-import com.unitedvision.tvkabel.persistence.repository.KotaRepository;
+import com.unitedvision.tvkabel.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.repository.KotaRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class KecamatanRepositoryTest {

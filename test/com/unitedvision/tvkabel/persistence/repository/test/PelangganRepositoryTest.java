@@ -9,26 +9,25 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Status;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
-import com.unitedvision.tvkabel.persistence.repository.KelurahanRepository;
-import com.unitedvision.tvkabel.persistence.repository.PegawaiRepository;
-import com.unitedvision.tvkabel.persistence.repository.PelangganRepository;
-import com.unitedvision.tvkabel.persistence.repository.PerusahaanRepository;
+import com.unitedvision.tvkabel.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.repository.PegawaiRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
+import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PelangganRepositoryTest {
@@ -131,7 +130,7 @@ public class PelangganRepositoryTest {
 	}
 
 	@Test
-	public void testFindByPerusahaanAndStatusAndDetail_Tunggakan() {
+	public void testFindByPerusahaanAndStatusAndDetail_Tunggakan() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanRepository.findOne(17); //17 is Global Vision
 		Status status = Status.AKTIF;
 		int tunggakan = 3;
@@ -175,13 +174,12 @@ public class PelangganRepositoryTest {
 	}
 	
 	@Test
-	public void testFindByPerusahaanAndStatusAndKodeContaining() {
+	public void testFindByPerusahaanAndStatusAndKodeContaining() throws EntityNotExistException {
 		Perusahaan perusahaan = perusahaanRepository.findOne(17); //17 is Global Vision
 		Status status = Status.AKTIF;
 		String kode = "WS01";
-		PageRequest page = new PageRequest(0, 12);
 		
-		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan, status, kode, page);
+		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(perusahaan, status, kode);
 		
 		assertNotEquals(0, list.size());
 	}

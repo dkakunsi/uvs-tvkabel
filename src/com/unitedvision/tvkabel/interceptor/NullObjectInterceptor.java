@@ -13,7 +13,7 @@ import com.unitedvision.tvkabel.exception.EntityNotExistException;
 public class NullObjectInterceptor {
 
 	@AfterReturning(
-		pointcut = "execution(public * com.unitedvision.tvkabel.persistence.repository.*.find*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
+		pointcut = "execution(public * com.unitedvision.tvkabel.repository.*.find*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
 		returning = "returnValue")
 	public void nullObjectReturned(Object returnValue) throws EntityNotExistException {
 		if (returnValue == null)
@@ -21,7 +21,7 @@ public class NullObjectInterceptor {
 	}
 
 	@AfterReturning(
-		pointcut = "execution(public * com.unitedvision.tvkabel.core.service.impl.*.get*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
+		pointcut = "execution(public * com.unitedvision.tvkabel.service.impl.*.get*(..) throws com.unitedvision.tvkabel.exception.EntityNotExistException)",
 		returning = "returnValue")
 	public void nullObjectReturned2(Object returnValue) throws EntityNotExistException {
 		if (returnValue == null)

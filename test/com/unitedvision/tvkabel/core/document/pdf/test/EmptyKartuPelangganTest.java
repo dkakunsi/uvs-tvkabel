@@ -8,18 +8,17 @@ import java.util.Map;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.core.document.pdf.DefaultKartuPelangganPdfView;
-import com.unitedvision.tvkabel.exception.EmptyCodeException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.persistence.entity.Alamat;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Kontak;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.document.pdf.DefaultKartuPelangganPdfView;
+import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 
 public class EmptyKartuPelangganTest extends DefaultKartuPelangganPdfView {
 	private static EmptyKartuPelangganTest kartu = new EmptyKartuPelangganTest();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
@@ -41,10 +40,6 @@ public class EmptyKartuPelangganTest extends DefaultKartuPelangganPdfView {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (EmptyIdException e) {
-			e.printStackTrace();
-		} catch (EmptyCodeException e) {
-			e.printStackTrace();
 		}
         
         System.out.println("DONE...");

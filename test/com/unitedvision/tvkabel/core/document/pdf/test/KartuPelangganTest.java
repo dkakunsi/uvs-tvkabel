@@ -15,21 +15,19 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.core.document.pdf.KartuPelangganPdfView;
-import com.unitedvision.tvkabel.core.service.PelangganService;
-import com.unitedvision.tvkabel.exception.EmptyCodeException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Alamat;
-import com.unitedvision.tvkabel.persistence.entity.Kelurahan;
-import com.unitedvision.tvkabel.persistence.entity.Kontak;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan.Detail;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.document.pdf.KartuPelangganPdfView;
+import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.Pelanggan.Detail;
+import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.service.PelangganService;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class KartuPelangganTest extends KartuPelangganPdfView {
@@ -40,14 +38,14 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
         //create(document);
         try {
 			createWithDb(document);
-		} catch (EntityNotExistException e) {
+		} catch (ApplicationException e) {
 			e.printStackTrace();
 		}
         System.out.println("DONE...");
 	}
 	
 	@SuppressWarnings("unused")
-	private static void create(Document document) {
+	private static void create(Document document) throws ApplicationException {
         try {
             PdfWriter.getInstance(document,
                 new FileOutputStream("E:\\test.pdf"));
@@ -80,16 +78,12 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (EmptyIdException e) {
-			e.printStackTrace();
-		} catch (EmptyCodeException e) {
-			e.printStackTrace();
 		}
 	}
 
-	private static void createWithDb(Document document) throws EntityNotExistException {
+	private static void createWithDb(Document document) throws ApplicationException {
 		@SuppressWarnings("resource")
-		ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
+		ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 		PelangganService pelangganService = appContext.getBean(PelangganService.class);
 
         try {

@@ -505,4 +505,16 @@ public class DateUtil {
 			return true;
 		return false;
 	}
+	
+	public static String codedDate(Date date) {
+		return String.format("%d%d%d", getYear(date), getMonthInt(date), getDay(date));
+	}
+	
+	public static String codedTime(Date date) {
+		return String.format("%d%d%d", getYear(date), getMonthInt(date), getDay(date));
+	}
+	
+	public static String codedString(Date date) {
+		return String.format("%s%s", codedDate(date), codedTime(date));
+	}
 }

@@ -13,24 +13,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.service.PegawaiService;
-import com.unitedvision.tvkabel.core.service.PelangganService;
-import com.unitedvision.tvkabel.core.service.PembayaranService;
-import com.unitedvision.tvkabel.core.service.PerusahaanService;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Pembayaran;
+import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.exception.DataDuplicationException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
-import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran;
-import com.unitedvision.tvkabel.persistence.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.service.PegawaiService;
+import com.unitedvision.tvkabel.service.PelangganService;
+import com.unitedvision.tvkabel.service.PembayaranService;
+import com.unitedvision.tvkabel.service.PerusahaanService;
 
 @RunWith (SpringJUnit4ClassRunner.class)
-@ContextConfiguration (classes = {SpringDataJpaConfig.class})
+@ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
 public class PembayaranServiceTest {
@@ -62,7 +57,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testGetPayableTagihan() throws EntityNotExistException {
+	public void testGetPayableTagihan() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
 		
@@ -71,7 +66,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testGetLast() throws EntityNotExistException {
+	public void testGetLast() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 
 		Pembayaran pembayaran = pembayaranService.getLast(pelanggan);
@@ -80,7 +75,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testSinglePay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+	public void testSinglePay() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
 		long jumlahPembayaran = pelanggan.getIuran();
@@ -95,7 +90,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testMultiplePay() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, DataDuplicationException, EmptyIdException {
+	public void testMultiplePay() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
 		long jumlahPembayaran = pelanggan.getIuran();
@@ -110,7 +105,7 @@ public class PembayaranServiceTest {
 	}
 	
 	@Test
-	public void testCreateListPembayaran() throws EntityNotExistException, NotPayableCustomerException, UnpaidBillException, EmptyIdException, DataDuplicationException {
+	public void testCreateListPembayaran() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		Pegawai pegawai = pegawaiService.getOne(15);
 		long jumlahPembayaran = pelanggan.getIuran();

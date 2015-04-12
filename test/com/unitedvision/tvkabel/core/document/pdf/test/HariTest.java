@@ -13,23 +13,22 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.core.document.pdf.HariPdfView;
-import com.unitedvision.tvkabel.core.service.PegawaiService;
-import com.unitedvision.tvkabel.core.service.RekapService;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.document.pdf.HariPdfView;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.service.PegawaiService;
+import com.unitedvision.tvkabel.service.RekapService;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class HariTest extends HariPdfView {
 	private static HariTest kartu = new HariTest();
-	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
+	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	private static RekapService rekapService = appContext.getBean(RekapService.class);
 	private static PegawaiService pegawaiService = appContext.getBean(PegawaiService.class);
 
-	public static void main(String[] args) throws EmptyIdException {
+	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
@@ -56,8 +55,6 @@ public class HariTest extends HariPdfView {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
 			e.printStackTrace(); 
-		} catch (EntityNotExistException e) {
-			e.printStackTrace();
 		}
         
         System.out.println("DONE...");

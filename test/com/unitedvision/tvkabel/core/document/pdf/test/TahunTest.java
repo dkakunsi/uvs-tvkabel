@@ -12,22 +12,21 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfWriter;
-import com.unitedvision.tvkabel.core.document.pdf.TahunPdfView;
-import com.unitedvision.tvkabel.core.service.PerusahaanService;
-import com.unitedvision.tvkabel.core.service.RekapService;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
-import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.SpringDataJpaConfig;
-import com.unitedvision.tvkabel.persistence.entity.Pelanggan;
-import com.unitedvision.tvkabel.persistence.entity.Perusahaan;
+import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.document.pdf.TahunPdfView;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.service.PerusahaanService;
+import com.unitedvision.tvkabel.service.RekapService;
 
 public class TahunTest extends TahunPdfView {
 	private static TahunTest kartu = new TahunTest();
-	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(SpringDataJpaConfig.class);
+	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	private static RekapService rekapService = appContext.getBean(RekapService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
 
-	public static void main(String[] args) throws EmptyIdException {
+	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
@@ -48,8 +47,6 @@ public class TahunTest extends TahunPdfView {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
 			e.printStackTrace(); 
-		} catch (EntityNotExistException e) {
-			e.printStackTrace();
 		}
         
         System.out.println("DONE...");

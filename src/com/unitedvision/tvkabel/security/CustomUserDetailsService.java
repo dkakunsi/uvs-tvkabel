@@ -10,10 +10,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.unitedvision.tvkabel.core.service.PegawaiService;
+import com.unitedvision.tvkabel.entity.Pegawai;
+import com.unitedvision.tvkabel.entity.Token;
+import com.unitedvision.tvkabel.entity.Pegawai.Role;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai;
-import com.unitedvision.tvkabel.persistence.entity.Pegawai.Role;
+import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
+import com.unitedvision.tvkabel.service.PegawaiService;
+import com.unitedvision.tvkabel.service.TokenService;
 import com.unitedvision.tvkabel.util.CodeUtil;
 
 /**
@@ -26,23 +30,27 @@ import com.unitedvision.tvkabel.util.CodeUtil;
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private PegawaiService pegawaiService;
+	@Autowired
+	private TokenService tokenService;
 
 	@Override
 	public CustomUser loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (username.toLowerCase().equals("admin"))
-			return generateAdmin(username);
-		return generateOperator(username);
+		try {
+			Pegawai pegawai = pegawaiService.getOneByUsername(username);
+			return new CustomUser(username, pegawai.getPassword(), pegawai.toOperator(), getAuthorities(pegawai.getRole()));
+		} catch (ApplicationException e) {
+			throw new UsernameNotFoundException(e.getMessage());
+		}
 	}
 	
-	private CustomUser generateAdmin(String username) {
+	public CustomUser loadAdmin(String username) {
 		return new CustomUser(username, CodeUtil.getKode(), null, getAuthorities(Role.ADMIN));
 	}
 	
-	private CustomUser generateOperator(String username) throws UsernameNotFoundException {
+	public CustomUser loadUserByToken(String tokenString) throws UsernameNotFoundException, UnauthenticatedAccessException {
 		try {
-			final Pegawai pegawai = pegawaiService.getOneByUsername(username);
-
-			return new CustomUser(username, pegawai.getPassword(), pegawai.toOperator(), getAuthorities(pegawai.getRole()));
+			Token token = tokenService.get(tokenString);
+			return new CustomUser(token.getPegawai().getUsername(), token.getToken(), token.getPegawai(), getAuthorities(token.getPegawai().getRole()));
 		} catch (EntityNotExistException e) {
 			throw new UsernameNotFoundException(e.getMessage());
 		}
