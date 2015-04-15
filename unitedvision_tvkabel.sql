@@ -125,6 +125,17 @@ PRIMARY KEY(`id`),
 KEY (`id_pelanggan`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
+DROP TABLE IF EXISTS `token`;
+CREATE TABLE IF NOT EXISTS `token` (
+`token` VARCHAR(255) NOT NULL,
+`id_pegawai` INT(11) NOT NULL,
+`tanggal` DATE NOT NULL,
+`expire` DATE NOT NULL,
+`status` INT(1) NOT NULL,
+PRIMARY KEY(`token`),
+KEY (`id_pegawai`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
 --
 -- Constraints for table `kecamatan`
 --
@@ -169,3 +180,9 @@ ALTER TABLE `perusahaan`
 --
 ALTER TABLE `history`
   ADD CONSTRAINT `pelanggan_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `history`
+--
+ALTER TABLE `token`
+  ADD CONSTRAINT `pegawai_ibfk_1` FOREIGN KEY (`id_pegawai`) REFERENCES `pegawai` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
