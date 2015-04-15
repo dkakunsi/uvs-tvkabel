@@ -32,7 +32,12 @@
     <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
     <init-param>
       <param-name>cors.allowed.origins</param-name>
-      <param-value>https://uvs.web.id, https://app.uvs.web.id, https://uvs-t001.whelastic.net, http://localhost:8081</param-value>
+      <param-value>
+      	https://uvs.web.id,
+      	https://app.uvs.web.id,
+      	https://uvs-t001.whelastic.net,
+      	http://localhost:8081
+      </param-value>
     </init-param>
     <init-param>
       <param-name>cors.allowed.methods</param-name>
