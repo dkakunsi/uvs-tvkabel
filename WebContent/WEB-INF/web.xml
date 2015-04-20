@@ -34,7 +34,7 @@
       <param-name>cors.allowed.origins</param-name>
       <param-value>
       	https://uvs.web.id,
-      	https://app.uvs.web.id,
+      	https://tvk-unitedvision.whelastic.net,
       	https://uvs-t001.whelastic.net,
       	http://localhost:8081
       </param-value>
