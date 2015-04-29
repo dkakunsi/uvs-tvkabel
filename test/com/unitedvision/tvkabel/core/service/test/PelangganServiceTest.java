@@ -185,7 +185,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.banned(pelanggan);
+		pelangganService.banned(pelanggan, "BANNED");
 
 		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
 
@@ -212,7 +212,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.banned(pelanggan);
+		pelangganService.banned(pelanggan, "BANNED");
 
 		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
 
@@ -222,7 +222,7 @@ public class PelangganServiceTest {
 		//REBEND PROCESS
 		pelanggan.setStatus(Status.PUTUS);
 		
-		pelangganService.banned(pelanggan);
+		pelangganService.banned(pelanggan, "BANNED");
 	}
 	
 	@Test
@@ -244,7 +244,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.passivate(pelanggan);
+		pelangganService.passivate(pelanggan, "BANNED");
 
 		Pelanggan pelangganPassive = pelangganService.getOne(pelanggan.getId());
 
@@ -271,7 +271,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.passivate(pelanggan);
+		pelangganService.passivate(pelanggan, "BANNED");
 
 		Pelanggan pelangganPassive = pelangganService.getOne(pelanggan.getId());
 
@@ -282,7 +282,7 @@ public class PelangganServiceTest {
 		Pelanggan repassivatePelanggan = pelangganService.getOne(pelangganPassive.getId());
 		repassivatePelanggan.setStatus(Status.BERHENTI);
 		
-		pelangganService.passivate(repassivatePelanggan);
+		pelangganService.passivate(repassivatePelanggan, "BANNED");
 	}
 
 	@Test
@@ -304,7 +304,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.BERHENTI);
 		
-		pelangganService.activate(pelanggan);
+		pelangganService.activate(pelanggan, "ACTIVE");
 
 		Pelanggan pelangganActive = pelangganService.getOne(pelanggan.getId());
 
@@ -332,7 +332,7 @@ public class PelangganServiceTest {
 		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.BERHENTI);
 		
-		pelangganService.activate(pelanggan);
+		pelangganService.activate(pelanggan, "BANNED");
 
 		Pelanggan pelangganActive = pelangganService.getOne(pelanggan.getId());
 
@@ -344,7 +344,7 @@ public class PelangganServiceTest {
 		Pelanggan reactivatePelanggan = pelangganService.getOne(pelangganActive.getId());
 		reactivatePelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.activate(reactivatePelanggan);
+		pelangganService.activate(reactivatePelanggan, "BANNED");
 	}
 
 	@Test

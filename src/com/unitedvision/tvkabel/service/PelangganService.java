@@ -13,11 +13,13 @@ import com.unitedvision.tvkabel.exception.DataDuplicationException;
 
 public interface PelangganService extends Service<Pelanggan> {
 	void remove(Pelanggan pelanggan) throws ApplicationException;
-	void activate(Pelanggan pelanggan) throws ApplicationException;
-	void passivate(Pelanggan pelanggan) throws ApplicationException;
-	void banned(Pelanggan pelanggan) throws ApplicationException;
-	void free(Pelanggan pelanggan) throws ApplicationException;
+	void activate(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	void passivate(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	void banned(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	void free(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	
 	void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
+
 	void recountTunggakan() throws ApplicationException;
 	void recountTunggakan(String tanggal) throws ApplicationException;
 	void recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException;

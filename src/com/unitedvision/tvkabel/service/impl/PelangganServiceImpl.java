@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
@@ -20,6 +21,7 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.repository.HistoryRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 import com.unitedvision.tvkabel.service.PelangganService;
@@ -37,6 +39,8 @@ public class PelangganServiceImpl implements PelangganService {
 	private PembayaranService pembayaranService;
 	@Autowired
 	private PerusahaanRepository perusahaanRepository;
+	@Autowired
+	private HistoryRepository historyRepository;
 	@Autowired
 	private Validator validator;
 
@@ -62,58 +66,88 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void remove(Pelanggan pelanggan) throws StatusChangeException {
 		pelanggan.remove();
 		pelangganRepository.save(pelanggan);
 	}
 
 	@Override
-	public void activate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
+	@Transactional(readOnly = false)
+	public void activate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
 		if (pelanggan.getStatus().equals(Status.AKTIF))
 			throw new StatusChangeException("Tidak mengaktivasi pelanggan. Karena pelanggan merupakan pelanggan aktif");
 		
 		pelanggan.setStatus(Status.AKTIF);
 		pelanggan.getDetail().setTanggalMulai(DateUtil.getNow());
 		pelanggan.getDetail().setTunggakan(0);
-		save(pelanggan);
+		
+		pelangganRepository.save(pelanggan);
+		createHistory(pelanggan, Status.AKTIF, keterangan);
 	}
 	
 	@Override
-	public void passivate(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
+	@Transactional(readOnly = false)
+	public void passivate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
 		if (pelanggan.getStatus().equals(Status.BERHENTI))
 			throw new StatusChangeException("Tidak memutuskan pelanggan. Karena pelanggan merupakan pelanggan berhenti");
 
 		pelanggan.setStatus(Status.BERHENTI);
-		save(pelanggan);
+		
+		pelangganRepository.save(pelanggan);
+		createHistory(pelanggan, Status.BERHENTI, keterangan);
 	}
 	
 	@Override
-	public void banned(Pelanggan pelanggan) throws StatusChangeException, DataDuplicationException {
+	@Transactional(readOnly = false)
+	public void banned(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
 		if (pelanggan.getStatus().equals(Status.PUTUS))
 			throw new StatusChangeException("Tidak mem-banned pelanggan. Karena pelanggan merupakan pelanggan putus");
 
 		updateLastPayment(pelanggan);
 		pelanggan.setStatus(Status.PUTUS);
 		pelanggan.countTunggakan();
-		save(pelanggan);
+
+		pelangganRepository.save(pelanggan);
+		createHistory(pelanggan, Status.PUTUS, keterangan);
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void updateLastPayment(Pelanggan pelanggan) {
 		Pembayaran last = pembayaranService.getLast(pelanggan);
 		pelanggan.setPembayaranTerakhir(last);
 	}
 	
 	@Override
-	public void free(Pelanggan pelanggan) throws ApplicationException {
+	@Transactional(readOnly = false)
+	public void free(Pelanggan pelanggan, String keterangan) throws ApplicationException {
 		if (pelanggan.getStatus().equals(Status.GRATIS))
 			throw new StatusChangeException("Tidak menggratiskan pelanggan. Karena pelanggan merupakan pelanggan gratis");
 
 		pelanggan.setStatus(Status.GRATIS);
-		save(pelanggan);
+
+		pelangganRepository.save(pelanggan);
+		createHistory(pelanggan, Status.GRATIS, keterangan);
+	}
+	
+	public void createHistory(Pelanggan pelanggan, Status status, String keterangan) throws EntityNotExistException {
+		History history = new History();
+		history.setPelanggan(pelanggan);
+		history.setStatus(status);
+		history.setTanggal(DateUtil.getNow());
+		history.setKeterangan(keterangan);
+		
+		history.setJumlahAktif(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.AKTIF));
+		history.setJumlahPutus(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.PUTUS));
+		history.setJumlahBerhenti(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.BERHENTI));
+		history.setJumlahGratis(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.GRATIS));
+
+		historyRepository.save(history);
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = pelanggan.getAlamat();
 		alamat.setLatitude(latitude);;
@@ -131,18 +165,21 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void recountTunggakan(String tanggal) throws ApplicationException {
 		tanggal = DateUtil.getDayString(tanggal);
 		recountTunggakanStatusAktif(tanggal);
 		recountTunggakanStatusGratis(tanggal);
 	}
 	
+	@Transactional(readOnly = false)
 	private void recountTunggakanStatusAktif(String tanggal) throws EntityNotExistException, DataDuplicationException {
 		List<Pelanggan> listPelanggan = get(Status.AKTIF, tanggal);
 		for (Pelanggan pelanggan : listPelanggan)
 			recountTunggakan(pelanggan);
 	}
 	
+	@Transactional(readOnly = false)
 	private void recountTunggakanStatusGratis(String tanggal) throws ApplicationException {
 		List<Pelanggan> listPelanggan = get(Status.GRATIS, tanggal);
 		for (Pelanggan pelanggan : listPelanggan) {

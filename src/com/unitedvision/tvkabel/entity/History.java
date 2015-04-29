@@ -18,6 +18,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.util.DateUtil;
 
+/**
+ * Sejarah pelanggan dan perubahan jumlah pelanggan.
+ * 
+ * @author Deddy Christoper Kakunsi
+ *
+ */
+
 @Entity
 @Table(name = "history")
 public class History {
@@ -26,6 +33,7 @@ public class History {
 	private Date tanggal;
 	private Status status;
 	private String keterangan;
+	
 	private long jumlahAktif;
 	private long jumlahPutus;
 	private long jumlahBerhenti;

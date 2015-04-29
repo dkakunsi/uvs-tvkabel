@@ -91,31 +91,31 @@ public class PelangganController extends AbstractController {
 		return RestMessage.success();
 	}
 
-	@RequestMapping(value = "/activation/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage activate(@PathVariable Integer id) throws ApplicationException {
+	@RequestMapping(value = "/activation/{id}/pesan/{pesan}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage activate(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.activate(pelanggan);
+		pelangganService.activate(pelanggan, pesan);
 		return RestMessage.success();
 	}
 
-	@RequestMapping(value = "/passivation/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage passivate(@PathVariable Integer id) throws ApplicationException {
+	@RequestMapping(value = "/passivation/{id}/pesan/{pesan}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage passivate(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.passivate(pelanggan);
+		pelangganService.passivate(pelanggan, pesan);
 		return RestMessage.success();
 	}
 
-	@RequestMapping(value = "/ban/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage ban(@PathVariable Integer id) throws ApplicationException {
+	@RequestMapping(value = "/ban/{id}/pesan/{pesan}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage ban(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.banned(pelanggan);
+		pelangganService.banned(pelanggan, pesan);
 		return RestMessage.success();
 	}
 
-	@RequestMapping(value = "/free/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage free(@PathVariable Integer id) throws ApplicationException {
+	@RequestMapping(value = "/free/{id}/pesan/{pesan}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage free(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.free(pelanggan);
+		pelangganService.free(pelanggan, pesan);
 		return RestMessage.success();
 	}
 	
