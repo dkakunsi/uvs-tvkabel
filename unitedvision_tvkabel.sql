@@ -121,6 +121,10 @@ CREATE TABLE IF NOT EXISTS `history` (
 `tanggal` DATE NOT NULL,
 `status` int(1) NOT NULL,
 `keterangan` varchar(255),
+`jumlah_aktif` int(11) NOT NULL,
+`jumlah_putus` int(11) NOT NULL,
+`jumlah_berhenti` int(11) NOT NULL,
+`jumlah_gratis` int(11) NOT NULL,
 PRIMARY KEY(`id`),
 KEY (`id_pelanggan`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
