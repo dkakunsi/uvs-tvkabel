@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 
 /**
  * Kelas untuk mengakses database sejarah.
@@ -17,7 +18,7 @@ import com.unitedvision.tvkabel.entity.Pelanggan;
 
 public interface HistoryRepository extends JpaRepository<History, Integer> {
 
-	List<History> findByTanggalBetweenOrderByTanggalAsc(Date awal, Date akhir);
+	List<History> findByPelanggan_PerusahaanAndTanggalBetweenOrderByTanggalAsc(Perusahaan perusahaan, Date awal, Date akhir);
 
 	List<History> findByPelangganOrderByTTanggalAsc(Pelanggan pelanggan);
 

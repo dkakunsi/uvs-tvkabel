@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Pelanggan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.repository.HistoryRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
@@ -24,8 +25,8 @@ public class HistoryServiceImpl implements HistoryService {
 	private PelangganRepository pelangganRepository;
 
 	@Override
-	public List<History> get(Date awal, Date akhir) throws ApplicationException {
-		return historyRepository.findByTanggalBetweenOrderByTanggalAsc(awal, akhir);
+	public List<History> get(Perusahaan perusahaan, Date awal, Date akhir) throws ApplicationException {
+		return historyRepository.findByPelanggan_PerusahaanAndTanggalBetweenOrderByTanggalAsc(perusahaan, awal, akhir);
 	}
 
 	@Override
@@ -33,6 +34,13 @@ public class HistoryServiceImpl implements HistoryService {
 		return historyRepository.findByPelangganOrderByTTanggalAsc(pelanggan);
 	}
 
+	@Override
+	public List<History> get(int idPelanggan) throws ApplicationException {
+		final Pelanggan pelanggan = pelangganRepository.findOne(idPelanggan);
+
+		return get(pelanggan);
+	}
+	
 	@Override
 	public List<History> get(Pelanggan pelanggan, Date awal, Date akhir) throws ApplicationException {
 		return historyRepository.findByPelangganAndTanggalBetweenOrderByTanggalAsc(pelanggan, awal, akhir);

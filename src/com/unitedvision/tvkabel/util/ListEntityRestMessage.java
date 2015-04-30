@@ -3,6 +3,7 @@ package com.unitedvision.tvkabel.util;
 import java.util.List;
 
 import com.unitedvision.tvkabel.entity.Domain;
+import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kota;
@@ -57,5 +58,9 @@ public class ListEntityRestMessage<T extends Domain> extends RestMessage {
 	
 	public static ListEntityRestMessage<Pembayaran> createListPembayaran(List<Pembayaran> pembayaran) {
 		return new ListEntityRestMessage<Pembayaran>(pembayaran);
+	}
+
+	public static ListEntityRestMessage<History> createListHistory(List<History> history) {
+		return new ListEntityRestMessage<History>(history);
 	}
 }

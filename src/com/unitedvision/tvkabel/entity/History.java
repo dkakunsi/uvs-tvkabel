@@ -27,7 +27,7 @@ import com.unitedvision.tvkabel.util.DateUtil;
 
 @Entity
 @Table(name = "history")
-public class History {
+public class History extends Domain {
 	private int id;
 	private Pelanggan pelanggan;
 	private Date tanggal;
