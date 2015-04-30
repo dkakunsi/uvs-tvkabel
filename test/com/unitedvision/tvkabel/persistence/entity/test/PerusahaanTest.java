@@ -26,7 +26,8 @@ public class PerusahaanTest {
 	@Test
 	public void setAlamatWorks() {
 		Perusahaan perusahaan = new Perusahaan();
-		Alamat alamat = new Alamat(1, "", 0, 0);
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
 		perusahaan.setAlamat(alamat);
 		
 		assertEquals(alamat, perusahaan.getAlamat());
@@ -37,8 +38,9 @@ public class PerusahaanTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(1, "", 0, 0);
-		Kontak kontak = new Kontak("1", "2", "3");
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("1", "2", "3");
 		Perusahaan perusahaan = new Perusahaan(1, "1", "1", "PT. 1", kelurahan, alamat, kontak, 1000L, Status.AKTIF);
 		
 		assertEquals(1, perusahaan.getId());

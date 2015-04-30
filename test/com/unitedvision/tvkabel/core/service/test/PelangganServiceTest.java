@@ -65,8 +65,9 @@ public class PelangganServiceTest {
 	public void insertPelanggan_Success() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
@@ -89,8 +90,9 @@ public class PelangganServiceTest {
 	public void insertPelanggan_KodeException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(0, "XXX", perusahaan, "WS05001", "Belum Ada", "Pengamen",
@@ -108,8 +110,9 @@ public class PelangganServiceTest {
 	public void insertPelanggan_NomorBukuException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(0, "---", perusahaan, "XXX", "Belum Ada", "Pengamen",
@@ -127,7 +130,8 @@ public class PelangganServiceTest {
 	public void insertPelanggan_NamaException() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
@@ -171,7 +175,8 @@ public class PelangganServiceTest {
 	public void bannedWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(17);
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
@@ -197,7 +202,8 @@ public class PelangganServiceTest {
 	public void banBannedPelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
 
@@ -229,8 +235,9 @@ public class PelangganServiceTest {
 	public void passivateWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
@@ -256,8 +263,9 @@ public class PelangganServiceTest {
 	public void passivatePassivePelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
 		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
@@ -289,7 +297,8 @@ public class PelangganServiceTest {
 	public void activateWorks() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 
@@ -317,7 +326,8 @@ public class PelangganServiceTest {
 	public void activateActivePelanggan() throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
 		Kelurahan kelurahan = kelurahanService.getOne(22);
-		Alamat alamat = new Alamat(1, "Detail", 0, 0);
+		//Alamat alamat = new Alamat(1, "Detail", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
 		Detail detail = new Detail(new Date(), 1, 50000, 0);
 

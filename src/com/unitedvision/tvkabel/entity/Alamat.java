@@ -2,6 +2,7 @@ package com.unitedvision.tvkabel.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 /**
  * Address value object.
@@ -21,6 +22,8 @@ public final class Alamat {
 	 */
 	private String detailAlamat;
 	
+	private Location lokasi;
+	
 	/**
 	 * Latitude position on map
 	 */
@@ -36,21 +39,6 @@ public final class Alamat {
 	 */
 	public Alamat() {
 		super();
-	}
-
-	/**
-	 * Create instance.
-	 * @param lingkungan
-	 * @param detailAlamat
-	 * @param latitude
-	 * @param longitude
-	 */
-	public Alamat(int lingkungan, String detailAlamat, float latitude, float longitude) {
-		super();
-		setLingkungan(lingkungan);
-		setDetailAlamat(detailAlamat);
-		setLatitude(latitude);
-		setLongitude(longitude);
 	}
 
 	/**
@@ -87,75 +75,13 @@ public final class Alamat {
 		this.detailAlamat = detailAlamat;
 	}
 
-	/**
-	 * Return latitude position.
-	 * @return latitude
-	 */
-	@Column(name = "latitude")
-	public float getLatitude() {
-		return latitude;
-	}
-	
-	/**
-	 * Set latitude value
-	 * @param latitude
-	 */
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
+	@Embedded
+	public Location getLokasi() {
+		return lokasi;
 	}
 
-	/**
-	 * Return longitude position.
-	 * @return longitude
-	 */
-	@Column(name = "longitude")
-	public float getLongitude() {
-		return longitude;
-	}
-
-	/**
-	 * Set longitude value.
-	 * @param longitude
-	 */
-	public void setLongitude(float longitude) {
-		this.longitude = longitude;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((detailAlamat == null) ? 0 : detailAlamat.hashCode());
-		result = prime * result + Float.floatToIntBits(latitude);
-		result = prime * result + lingkungan;
-		result = prime * result + Float.floatToIntBits(longitude);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Alamat other = (Alamat) obj;
-		if (detailAlamat == null) {
-			if (other.detailAlamat != null)
-				return false;
-		} else if (!detailAlamat.equals(other.detailAlamat))
-			return false;
-		if (Float.floatToIntBits(latitude) != Float
-				.floatToIntBits(other.latitude))
-			return false;
-		if (lingkungan != other.lingkungan)
-			return false;
-		if (Float.floatToIntBits(longitude) != Float
-				.floatToIntBits(other.longitude))
-			return false;
-		return true;
+	public void setLokasi(Location lokasi) {
+		this.lokasi = lokasi;
 	}
 
 	@Override

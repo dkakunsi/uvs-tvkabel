@@ -27,7 +27,8 @@ public class EmptyKartuPelangganTest extends DefaultKartuPelangganPdfView {
 
             document.open();
             Kelurahan kelurahan = new Kelurahan(0, null, "Paniki Bawah");
-            Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
+            //Alamat alamat = new Alamat(1, "Rumah Saya", 0, 0);
+            Alamat alamat = new Alamat();
             Kontak kontak = new Kontak("", "082347643198", "dkakunsi@gmail.com");
             Perusahaan perusahaan = new Perusahaan(1, "COM1", "TVK. GALAU", "PT. MOVE ON", kelurahan, alamat, kontak, 1000, Perusahaan.Status.AKTIF);
 

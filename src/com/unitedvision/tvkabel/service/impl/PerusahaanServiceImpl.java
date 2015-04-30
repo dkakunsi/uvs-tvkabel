@@ -79,8 +79,8 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	@Override
 	public void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = perusahaan.getAlamat();
-		alamat.setLatitude(latitude);
-		alamat.setLongitude(longitude);
+		alamat.getLokasi().setLatitude(latitude);
+		alamat.getLokasi().setLongitude(longitude);
 		
 		perusahaan.setAlamat(alamat);
 		save(perusahaan);

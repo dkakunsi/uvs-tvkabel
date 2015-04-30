@@ -150,8 +150,8 @@ public class PelangganServiceImpl implements PelangganService {
 	@Transactional(readOnly = false)
 	public void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = pelanggan.getAlamat();
-		alamat.setLatitude(latitude);;
-		alamat.setLongitude(longitude);
+		alamat.getLokasi().setLatitude(latitude);;
+		alamat.getLokasi().setLongitude(longitude);
 		
 		pelanggan.setAlamat(alamat);
 		save(pelanggan);

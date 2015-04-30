@@ -369,13 +369,13 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	@JsonIgnore
 	@Transient
 	public float getLatitude() {
-		return alamat.getLatitude();
+		return alamat.getLokasi().getLatitude();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public float getLongitude() {
-		return alamat.getLongitude();
+		return alamat.getLokasi().getLongitude();
 	}
 	
 	@JsonIgnore

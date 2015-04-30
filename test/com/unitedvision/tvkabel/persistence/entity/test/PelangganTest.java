@@ -37,8 +37,9 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(1, "", 0, 0);
-		Kontak kontak = new Kontak("1", "2", "3");
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("08/20/2012"), 1, 40000L, 0);
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
 		
@@ -65,8 +66,9 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(1, "", 0, 0);
-		Kontak kontak = new Kontak("1", "2", "3");
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
+        Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
 
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
@@ -80,7 +82,8 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(1, "", 0, 0);
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
 
@@ -100,7 +103,8 @@ public class PelangganTest {
 		Kota kota = new Kota(1, "Kota");
 		Kecamatan kecamatan = new Kecamatan(1, kota, "Kecamatan");
 		Kelurahan kelurahan = new Kelurahan(1, kecamatan, "Kelurahan");
-		Alamat alamat = new Alamat(1, "", 0, 0);
+		//Alamat alamat = new Alamat(1, "", 0, 0);
+        Alamat alamat = new Alamat();
 		Kontak kontak = new Kontak("1", "2", "3");
 		Detail detail = new Detail(DateUtil.getDate("01/01/2014"), 1, 40000L, 0);
 		Pelanggan pelanggan = new Pelanggan(1, "1", null, "1", "Pelanggan", "Drummer", kelurahan, alamat, kontak, detail, Status.AKTIF);
