@@ -1,0 +1,26 @@
+package com.unitedvision.tvkabel.repository;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.unitedvision.tvkabel.entity.History;
+import com.unitedvision.tvkabel.entity.Pelanggan;
+
+/**
+ * Kelas untuk mengakses database sejarah.
+ * 
+ * @author Deddy Christoper Kakunsi
+ *
+ */
+
+public interface HistoryRepository extends JpaRepository<History, Integer> {
+
+	List<History> findByTanggalBetweenOrderByTanggalAsc(Date awal, Date akhir);
+
+	List<History> findByPelangganOrderByTTanggalAsc(Pelanggan pelanggan);
+
+	List<History> findByPelangganAndTanggalBetweenOrderByTanggalAsc(Pelanggan pelanggan, Date awal, Date akhir);
+
+}
