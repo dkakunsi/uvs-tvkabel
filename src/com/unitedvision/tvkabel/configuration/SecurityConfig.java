@@ -10,12 +10,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import com.unitedvision.tvkabel.configuration.security.CustomAuthenticationProvider;
 import com.unitedvision.tvkabel.entity.Pegawai.Role;
+import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.unitedvision.tvkabel.configuration.security")
+@ComponentScan("com.unitedvision.tvkabel.security")
 @Import(ApplicationConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired

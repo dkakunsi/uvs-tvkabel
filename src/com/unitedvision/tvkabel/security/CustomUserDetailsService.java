@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.configuration.security;
+package com.unitedvision.tvkabel.security;
 
 import java.util.ArrayList;
 import java.util.List;

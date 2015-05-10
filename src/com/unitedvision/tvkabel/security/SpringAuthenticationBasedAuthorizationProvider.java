@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.configuration.security;
+package com.unitedvision.tvkabel.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

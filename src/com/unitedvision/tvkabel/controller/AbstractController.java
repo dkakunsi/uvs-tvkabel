@@ -2,13 +2,13 @@ package com.unitedvision.tvkabel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.unitedvision.tvkabel.configuration.security.SpringAuthenticationBasedAuthorizationProvider;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
+import com.unitedvision.tvkabel.security.SpringAuthenticationBasedAuthorizationProvider;
 import com.unitedvision.tvkabel.service.PegawaiService;
 import com.unitedvision.tvkabel.service.PelangganService;
 
