@@ -6,9 +6,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.UnauthenticatedAccessException;
 
 @Service
@@ -24,7 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         CustomUser user;
         try {
         	user = userDetailService.loadUserByToken(password);
-        } catch (UsernameNotFoundException e) {
+        } catch (EntityNotExistException e) {
         	user = userDetailService.loadUserByUsername(username);
         } catch (UnauthenticatedAccessException e) {
             throw new BadCredentialsException(e.getMessage());

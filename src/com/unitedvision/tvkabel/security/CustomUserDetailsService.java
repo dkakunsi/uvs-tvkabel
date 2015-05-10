@@ -47,13 +47,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return new CustomUser(username, CodeUtil.getKode(), null, getAuthorities(Role.ADMIN));
 	}
 	
-	public CustomUser loadUserByToken(String tokenString) throws UsernameNotFoundException, UnauthenticatedAccessException {
-		try {
-			Token token = tokenService.get(tokenString);
-			return new CustomUser(token.getPegawai().getUsername(), token.getToken(), token.getPegawai(), getAuthorities(token.getPegawai().getRole()));
-		} catch (EntityNotExistException e) {
-			throw new UsernameNotFoundException(e.getMessage());
-		}
+	public CustomUser loadUserByToken(String tokenString) throws UnauthenticatedAccessException, EntityNotExistException {
+		Token token = tokenService.get(tokenString);
+		
+		return new CustomUser(token.getPegawai().getUsername(), token.getToken(), token.getPegawai(), getAuthorities(token.getPegawai().getRole()));
 	}
 
 	public static List<GrantedAuthority> getAuthorities(Role role) {

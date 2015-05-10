@@ -49,10 +49,12 @@ public class TokenServiceImpl implements TokenService {
 	@Override
 	public Token get(String tokenString) throws EntityNotExistException, UnauthenticatedAccessException {
 		Token token = tokenRepository.findByToken(tokenString);
+		
 		if (token.getExpire().before(DateUtil.getNow()))
 			throw new UnauthenticatedAccessException("Session sudah expire");
 		if (token.getStatus().equals(Status.NON_AKTIF))
 			throw new UnauthenticatedAccessException("Session sudah di lock");
+		
 		return token;
 	}
 }
