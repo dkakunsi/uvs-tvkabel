@@ -16,7 +16,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.configuration.ApplicationConfig;
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kontak;
@@ -29,6 +28,7 @@ import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.service.KelurahanService;
 import com.unitedvision.tvkabel.service.PegawaiService;

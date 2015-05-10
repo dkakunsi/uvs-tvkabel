@@ -29,14 +29,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 @Configuration
+@EnableJpaRepositories("com.unitedvision.tvkabel.repository")
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
 @ComponentScan({
 	"com.unitedvision.tvkabel.service",
 	"com.unitedvision.tvkabel.entity",
 	"com.unitedvision.tvkabel.interceptor"
 })
-@EnableAspectJAutoProxy
-@EnableJpaRepositories("com.unitedvision.tvkabel.repository")
-@EnableTransactionManagement
 public class ApplicationConfig {
     
     @Bean

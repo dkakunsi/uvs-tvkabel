@@ -111,7 +111,7 @@ public class PelangganRepositoryTest {
 		Kelurahan kelurahan = kelurahanRepository.findByNama("Winangun 1");
 		int lingkungan = 1;
 		
-		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
+		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndAlamat_KelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
 		
 		assertNotEquals(0, list.size());
 	}
@@ -123,7 +123,7 @@ public class PelangganRepositoryTest {
 		Kelurahan kelurahan = kelurahanRepository.findByNama("Winangun 1");
 		int lingkungan = 1;
 		
-		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
+		List<Pelanggan> list = pelangganRepository.findByPerusahaanAndStatusAndAlamat_KelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
 
 		assertNotNull(list);
 		assertEquals(0, list.size());

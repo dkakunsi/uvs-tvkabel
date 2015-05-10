@@ -3,18 +3,20 @@ package com.unitedvision.tvkabel.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import com.unitedvision.tvkabel.configuration.security.CustomAuthenticationProvider;
 import com.unitedvision.tvkabel.entity.Pegawai.Role;
-import com.unitedvision.tvkabel.security.CustomAuthenticationProvider;
 
 @Configuration
-@ComponentScan("com.unitedvision.tvkabel.security")
 @EnableWebSecurity
+@ComponentScan("com.unitedvision.tvkabel.configuration.security")
+@Import(ApplicationConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomAuthenticationProvider authenticationProvider;
@@ -35,9 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 		.csrf().disable()
         .authorizeRequests()
-        	.antMatchers("/**/admin").hasRole(Role.ADMIN.name())
-        	.antMatchers("/alamat/**").permitAll()
         	.antMatchers("/perusahaan/daftar").permitAll()
+        	.antMatchers("/alamat/**").permitAll()
+        	.antMatchers("/**/admin").hasRole(Role.ADMIN.name())
         	.anyRequest().authenticated()
             .and()
         .httpBasic();

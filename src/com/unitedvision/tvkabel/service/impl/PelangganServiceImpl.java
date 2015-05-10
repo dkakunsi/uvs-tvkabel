@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Kelurahan;
@@ -21,6 +20,7 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.HistoryRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.repository.PerusahaanRepository;
@@ -261,7 +261,7 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public List<Pelanggan> get(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException {
-		return pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
+		return pelangganRepository.findByPerusahaanAndStatusAndAlamat_KelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, status, kelurahan, lingkungan);
 	}
 
 	@Override
@@ -362,7 +362,7 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	public String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, Integer lingkungan) throws EntityNotExistException {
-		List<Pelanggan> listPelanggan = pelangganRepository.findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, Pelanggan.Status.AKTIF, kelurahan, lingkungan);
+		List<Pelanggan> listPelanggan = pelangganRepository.findByPerusahaanAndStatusAndAlamat_KelurahanAndAlamat_LingkunganOrderByKodeAsc(perusahaan, Pelanggan.Status.AKTIF, kelurahan, lingkungan);
 
 		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
 		String message = "";

@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -40,20 +38,16 @@ public final class Perusahaan extends CodableDomain {
 	/** Contact */
 	private Kontak kontak;
 	
-	/** Iuran */
-	private long iuran;
-	
 	/** Status */
 	private Status status;
-
-	/** {@link Kelurahan} instance */
-	private Kelurahan kelurahan;
 
 	/** List {@link Pelanggan} instances */
 	private List<Pelanggan> listPelanggan;
 	
 	/** List of {@link Pegawai} instances */
 	private List<Pegawai> listPegawai;
+	
+	private List<Alat> listAlat;
 
 	/** DEFAULT KODE FORMAT */
 	public static final String DEFAULT_KODE_FORMAT = "COM%d";
@@ -78,16 +72,14 @@ public final class Perusahaan extends CodableDomain {
 	 * @throws EmptyIdException {@code id} is negative.
 	 * @throws EmptyCodeException {@code kode} is null or an empty string
 	 */
-	public Perusahaan(int id, String kode, String nama, String namaPT, Kelurahan kelurahan, Alamat alamat, Kontak kontak, long iuran, Status status) throws EmptyIdException, EmptyCodeException {
+	public Perusahaan(int id, String kode, String nama, String namaPT, Kelurahan kelurahan, Alamat alamat, Kontak kontak, Status status) throws EmptyIdException, EmptyCodeException {
 		super();
 		setId(id);
 		setKode(kode);
 		setNama(nama);
 		setNamaPT(namaPT);
-		setKelurahan(kelurahan);
 		setAlamat(alamat);
 		setKontak(kontak);
-		setIuran(iuran);
 		setStatus(status);
 	}
 
@@ -172,23 +164,6 @@ public final class Perusahaan extends CodableDomain {
 	}
 
 	/**
-	 * Return iuran.
-	 * @return iuran
-	 */
-	@Column(name = "iuran")
-	public long getIuran() {
-		return iuran;
-	}
-
-	/**
-	 * Set iuran
-	 * @param iuran
-	 */
-	public void setIuran(long iuran) {
-		this.iuran = iuran;
-	}
-
-	/**
 	 * Return {@link Status} instance.
 	 * @return status
 	 */
@@ -203,24 +178,6 @@ public final class Perusahaan extends CodableDomain {
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-	
-	/**
-	 * Return {@link Kelurahan} instance.
-	 * @return kelurahan
-	 */
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_kelurahan", referencedColumnName = "id")
-	public Kelurahan getKelurahan() {
-		return kelurahan;
-	}
-
-	/**
-	 * Set {@link Kelurahan} instance.
-	 * @param kelurahan
-	 */
-	public void setKelurahan(Kelurahan kelurahan) {
-		this.kelurahan = kelurahan;
 	}
 	
 	/**
@@ -262,39 +219,60 @@ public final class Perusahaan extends CodableDomain {
 	}
 
 	@JsonIgnore
+	@OneToMany(targetEntity = Alat.class, mappedBy = "perusahaan", fetch = FetchType.LAZY,
+			cascade = CascadeType.REFRESH)
+	public List<Alat> getListAlat() {
+		return listAlat;
+	}
+
+	public void setListAlat(List<Alat> listAlat) {
+		this.listAlat = listAlat;
+	}
+	
+	/**
+	 * Return {@link Kelurahan} instance.
+	 * @return kelurahan
+	 */
+	@JsonIgnore
+	@Transient
+	public Kelurahan getKelurahan() {
+		return alamat.getKelurahan();
+	}
+
+	@JsonIgnore
 	@Transient
 	public String getNamaKelurahan() {
-		return kelurahan.getNama();
+		return getKelurahan().getNama();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public int getIdKelurahan() {
-		return kelurahan.getId();
+		return getKelurahan().getId();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public String getNamaKecamatan() {
-		return kelurahan.getNamaKecamatan();
+		return getKelurahan().getNamaKecamatan();
 	}
 
 	@JsonIgnore
 	@Transient
 	public int getIdKecamatan() {
-		return kelurahan.getIdKecamatan();
+		return getKelurahan().getIdKecamatan();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public String getNamaKota() {
-		return kelurahan.getNamaKota();
+		return getKelurahan().getNamaKota();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public int getIdKota() {
-		return kelurahan.getIdKota();
+		return getKelurahan().getIdKota();
 	}
 	
 	@JsonIgnore
@@ -340,8 +318,8 @@ public final class Perusahaan extends CodableDomain {
 	}
 	
 	@Transient
-	public String generateKode(long jumlahMaksimum) {
-		kode = String.format(DEFAULT_KODE_FORMAT, (jumlahMaksimum + 1 ));
+	public String generateKode(long number) {
+		kode = String.format(DEFAULT_KODE_FORMAT, (number + 1 ));
 		
 		return kode;
 	}
@@ -349,20 +327,6 @@ public final class Perusahaan extends CodableDomain {
 	public static Rekap createRekap(long estimasiPemasukanBulanan, long estimasiTagihanBulanan, long pemasukanBulanBerjalan, long tagihanBulanBerjalan, long totalAkumulasiTunggakan, long jumlahPelangganAktif, long jumlahPelangganBerhenti, long jumlahPelangganPutus, long jumlahPelangganLunas, long jumlahPelangganMenunggakWajar, long jumlahPelangganMenunggakTakWajar) {
 		return new Rekap(estimasiPemasukanBulanan, pemasukanBulanBerjalan, estimasiTagihanBulanan, tagihanBulanBerjalan, totalAkumulasiTunggakan, jumlahPelangganAktif, jumlahPelangganBerhenti, jumlahPelangganPutus, jumlahPelangganLunas, jumlahPelangganMenunggakWajar, jumlahPelangganMenunggakTakWajar);
 	}
-	
-	@Override
-	@JsonIgnore
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((alamat == null) ? 0 : alamat.hashCode());
-		result = prime * result
-				+ ((kelurahan == null) ? 0 : kelurahan.hashCode());
-		result = prime * result + ((kontak == null) ? 0 : kontak.hashCode());
-		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
-		return result;
-	}
-
 	@Override
 	@JsonIgnore
 	public boolean equals(Object obj) {
@@ -377,11 +341,6 @@ public final class Perusahaan extends CodableDomain {
 			if (other.alamat != null)
 				return false;
 		} else if (!alamat.equals(other.alamat))
-			return false;
-		if (kelurahan == null) {
-			if (other.kelurahan != null)
-				return false;
-		} else if (!kelurahan.equals(other.kelurahan))
 			return false;
 		if (kontak == null) {
 			if (other.kontak != null)
@@ -400,7 +359,7 @@ public final class Perusahaan extends CodableDomain {
 	@JsonIgnore
 	public String toString() {
 		return "Perusahaan [nama=" + nama + ", alamat=" + alamat + ", kontak="
-				+ kontak + ", kelurahan=" + kelurahan + "]";
+				+ kontak + "]";
 	}
 	
 	/**

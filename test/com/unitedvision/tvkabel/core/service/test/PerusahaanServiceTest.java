@@ -11,6 +11,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kontak;
 import com.unitedvision.tvkabel.entity.Perusahaan;
@@ -42,7 +43,12 @@ public class PerusahaanServiceTest {
 		Kontak kontak = new Kontak();
 		kontak.setEmail("jondiru2003@yahoo.com");
 		perusahaan.setKontak(kontak);
-		perusahaan.setKelurahan(kelurahan);
+		
+		Alamat alamat = new Alamat();
+		alamat.setKelurahan(kelurahan);
+		alamat.setLingkungan(1);
+		perusahaan.setAlamat(alamat);
+		
 		perusahaan.setStatus(Perusahaan.Status.AKTIF);
 		
 		try {

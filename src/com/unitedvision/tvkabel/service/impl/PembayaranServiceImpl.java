@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Pembayaran;
@@ -22,6 +21,7 @@ import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PembayaranRepository;
 import com.unitedvision.tvkabel.service.PegawaiService;
 import com.unitedvision.tvkabel.service.PelangganService;

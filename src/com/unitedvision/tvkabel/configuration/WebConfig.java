@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.XmlViewResolver;
 
 @Configuration
-@ComponentScan("com.unitedvision.tvkabel.web")
 @EnableWebMvc
+@ComponentScan("com.unitedvision.tvkabel.controller")
 @Import(ApplicationConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
 

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.Operator;
 import com.unitedvision.tvkabel.entity.Pegawai;
@@ -19,6 +18,7 @@ import com.unitedvision.tvkabel.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.repository.PembayaranRepository;
@@ -120,7 +120,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 		long totalPelangganBerhenti = pelangganRepository.countByPerusahaanAndStatus(perusahaan, Pelanggan.Status.BERHENTI);
 		long totalPelangganPutus = pelangganRepository.countByPerusahaanAndStatus(perusahaan, Pelanggan.Status.PUTUS);
 
-		return (totalPembayaran * perusahaan.getIuran()) + ((totalPelangganPutus + totalPelangganBerhenti) * (perusahaan.getIuran() / 2));
+		return (totalPembayaran * 1000L) + ((totalPelangganPutus + totalPelangganBerhenti) * (1000L / 2));
 	}
 
 	@Override
@@ -134,8 +134,8 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 		long jumlahPelangganBerhenti = pelangganService.count(perusahaan, Pelanggan.Status.BERHENTI);
 		long jumlahPelangganPutus = pelangganService.count(perusahaan, Pelanggan.Status.PUTUS);
 
-		long estimasiTagihanBulanan = (jumlahPelangganAktif * perusahaan.getIuran()) +
-				((jumlahPelangganBerhenti + jumlahPelangganPutus) * (perusahaan.getIuran() / 2));
+		long estimasiTagihanBulanan = (jumlahPelangganAktif * 1000L) +
+				((jumlahPelangganBerhenti + jumlahPelangganPutus) * (1000L / 2));
 
 		return estimasiTagihanBulanan;
 	}

@@ -95,7 +95,7 @@ public final class Kelurahan extends Region {
 	 * @return listPerusahaan
 	 */
 	@JsonIgnore
-	@OneToMany(targetEntity = Perusahaan.class, mappedBy = "kelurahan", fetch = FetchType.LAZY,
+	@OneToMany(targetEntity = Perusahaan.class, mappedBy = "alamat.kelurahan", fetch = FetchType.LAZY,
 			cascade = CascadeType.REFRESH)
 	public List<Perusahaan> getListPerusahaan() {
 		return listPerusahaan;
@@ -116,7 +116,7 @@ public final class Kelurahan extends Region {
 	 * @return listPelanggan 
 	 */
 	@JsonIgnore
-	@OneToMany(targetEntity = Pelanggan.class, mappedBy = "kelurahan", fetch = FetchType.LAZY,
+	@OneToMany(targetEntity = Pelanggan.class, mappedBy = "alamat.kelurahan", fetch = FetchType.LAZY,
 			cascade = CascadeType.REFRESH)
 	public List<Pelanggan> getListPelanggan() {
 		return listPelanggan;

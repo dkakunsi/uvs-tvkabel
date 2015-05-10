@@ -79,7 +79,7 @@ public class PegawaiTest {
 	@Test
 	public void generateKodeWorks() throws EmptyCodeException, EmptyIdException {
         Alamat alamat = new Alamat();
-		Perusahaan perusahaanDomain = new Perusahaan(1, "COM1", "Perusahaan", "PT. Perusahaan", new Kelurahan(), alamat, null, 1000L, Perusahaan.Status.AKTIF);
+		Perusahaan perusahaanDomain = new Perusahaan(1, "COM1", "Perusahaan", "PT. Perusahaan", new Kelurahan(), alamat, null, Perusahaan.Status.AKTIF);
 		Pegawai pegawaiDomain = new Pegawai(0, "-", perusahaanDomain, "Pegawai", null, Status.AKTIF);
 		pegawaiDomain.generateKode(1L);
 		

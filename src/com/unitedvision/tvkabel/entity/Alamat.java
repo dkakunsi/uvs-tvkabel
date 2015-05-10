@@ -3,6 +3,9 @@ package com.unitedvision.tvkabel.entity;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * Address value object.
@@ -12,6 +15,9 @@ import javax.persistence.Embedded;
  */
 @Embeddable
 public final class Alamat {
+	
+	private Kelurahan kelurahan;
+	
 	/**
 	 * lingkungan.
 	 */
@@ -39,6 +45,16 @@ public final class Alamat {
 	 */
 	public Alamat() {
 		super();
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_kelurahan", referencedColumnName = "id")
+	public Kelurahan getKelurahan() {
+		return kelurahan;
+	}
+
+	public void setKelurahan(Kelurahan kelurahan) {
+		this.kelurahan = kelurahan;
 	}
 
 	/**

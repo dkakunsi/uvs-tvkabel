@@ -31,7 +31,7 @@ public class HistoryServiceImpl implements HistoryService {
 
 	@Override
 	public List<History> get(Pelanggan pelanggan) throws ApplicationException {
-		return historyRepository.findByPelangganOrderByTTanggalAsc(pelanggan);
+		return historyRepository.findByPelangganOrderByTanggalAsc(pelanggan);
 	}
 
 	@Override

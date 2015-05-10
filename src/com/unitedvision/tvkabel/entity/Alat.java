@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,9 +25,10 @@ public class Alat extends CodableDomain {
 	private Tipe tipe;
 	private String deskripsi;
 	private Alat source;
-	private Location lokasi;
+	private Alamat alamat;
 
 	private List<Alat> listAlat;
+	private List<Pelanggan> listPelanggan;
 	
 	public enum Tipe {
 		BOSTER
@@ -82,7 +84,6 @@ public class Alat extends CodableDomain {
 		this.deskripsi = deskripsi;
 	}
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_source", referencedColumnName = "id")
 	public Alat getSource() {
@@ -94,12 +95,12 @@ public class Alat extends CodableDomain {
 	}
 
 	@Embedded
-	public Location getLokasi() {
-		return lokasi;
+	public Alamat getAlamat() {
+		return alamat;
 	}
 
-	public void setLokasi(Location lokasi) {
-		this.lokasi = lokasi;
+	public void setAlamat(Alamat alamat) {
+		this.alamat = alamat;
 	}
 
 	@JsonIgnore
@@ -113,6 +114,38 @@ public class Alat extends CodableDomain {
 		this.listAlat = listAlat;
 	}
 
+	@JsonIgnore
+	@OneToMany(targetEntity = Pelanggan.class, mappedBy = "source", fetch = FetchType.LAZY,
+		cascade = CascadeType.REFRESH)
+	public List<Pelanggan> getListPelanggan() {
+		return listPelanggan;
+	}
+
+	public void setListPelanggan(List<Pelanggan> listPelanggan) {
+		this.listPelanggan = listPelanggan;
+	}
+	
+	@Transient
+	public int getLingkungan() {
+		return alamat.getLingkungan();
+	}
+
+	@JsonIgnore
+	@Transient
+	public Location getLokasi() {
+		return alamat.getLokasi();
+	}
+
+	@Transient
+	public float getLatitude() {
+		return getLokasi().getLatitude();
+	}
+	
+	@Transient
+	public float getLongitude() {
+		return getLokasi().getLongitude();
+	}
+	
 	@Override
 	public String toString() {
 		return "Alat [perusahaan=" + perusahaan + ", nama=" + nama + ", tipe="

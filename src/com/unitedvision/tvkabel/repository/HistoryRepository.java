@@ -20,7 +20,7 @@ public interface HistoryRepository extends JpaRepository<History, Integer> {
 
 	List<History> findByPelanggan_PerusahaanAndTanggalBetweenOrderByTanggalAsc(Perusahaan perusahaan, Date awal, Date akhir);
 
-	List<History> findByPelangganOrderByTTanggalAsc(Pelanggan pelanggan);
+	List<History> findByPelangganOrderByTanggalAsc(Pelanggan pelanggan);
 
 	List<History> findByPelangganAndTanggalBetweenOrderByTanggalAsc(Pelanggan pelanggan, Date awal, Date akhir);
 

@@ -44,12 +44,12 @@ public class ConstraintViolationInterceptor {
 			return "Email yang anda masukkan sudah digunakan.";
 		} else if (key.contains("kode")) {
 			return "Kode yang anda masukkan sudah digunakan.";
-		} else if (key.contains("nomor_buku")) {
+		} else if (key.contains("nomor")) {
 			return "Nomor Buku yang anda masukkan sudah digunakan.";
 		} else if (key.contains("nama")) {
 			return "Nama yang anda masukkan sudah digunakan.";
 		}
 		
-		return "";
+		return key;
 	}
 }

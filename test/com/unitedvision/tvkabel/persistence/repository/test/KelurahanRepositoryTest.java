@@ -1,6 +1,6 @@
 package com.unitedvision.tvkabel.persistence.repository.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.persistence.PersistenceException;
 
@@ -15,20 +15,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.configuration.ApplicationConfig;
 import com.unitedvision.tvkabel.entity.Kecamatan;
+import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.repository.KelurahanRepository;
 import com.unitedvision.tvkabel.repository.KotaRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (classes = {ApplicationConfig.class})
 @Transactional
 @TransactionConfiguration (defaultRollback = true)
-public class KecamatanRepositoryTest {
+public class KelurahanRepositoryTest {
+	
+	@Autowired
+	private KelurahanRepository kelurahanRepository;
 	@Autowired
 	private KecamatanRepository kecamatanRepository;
 	@Autowired
 	private KotaRepository kotaRepository;
 	
+	private Kecamatan kecamatan;
 	private Kota kota;
 	
 	@Before
@@ -37,70 +43,60 @@ public class KecamatanRepositoryTest {
 		kota.setNama("Manado");
 		
 		kotaRepository.save(kota);
-	}
-
-	@Test
-	public void test_InsertSuccess() {
-		Kecamatan kecamatan = new Kecamatan();
+		
+		kecamatan = new Kecamatan();
 		kecamatan.setKota(kota);
 		kecamatan.setNama("Mapanget");
 		
 		kecamatanRepository.save(kecamatan);
-		
-		assertTrue(kecamatanRepository.count() != 0);
 	}
 	
 	@Test
-	public void test_InsertWithSameKotaAndNama() {
-		Kecamatan kecamatan = new Kecamatan();
-		kecamatan.setKota(kota);
-		kecamatan.setNama("Mapanget");
+	public void test_InsertSuccess() {
+		Kelurahan kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
 		
-		kecamatanRepository.save(kecamatan);
+		kelurahanRepository.save(kelurahan);
+	}
+
+	@Test
+	public void test_InsertWithSameKecamatanAndNama() {
+		Kelurahan kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
 		
-		Kecamatan kecamatan2 = new Kecamatan();
-		kecamatan2.setKota(kota);
-		kecamatan2.setNama("Mapanget");
+		kelurahanRepository.save(kelurahan);
+		
+		Kelurahan kelurahan2 = new Kelurahan();
+		kelurahan2.setKecamatan(kecamatan);
+		kelurahan2.setNama("Paniki Bawah");
 		
 		try {
-			kecamatanRepository.save(kecamatan2);
+			kelurahanRepository.save(kelurahan2);
 		} catch(PersistenceException e) {
 			assertEquals("Nama yang anda masukkan sudah digunakan.", e.getMessage());
 		}
 	}
-	
+
 	@Test
-	public void test_InsertWithSameNamaButDifferentKota() {
-		Kecamatan kecamatan = new Kecamatan();
-		kecamatan.setKota(kota);
-		kecamatan.setNama("Mapanget");
+	public void test_InsertWithSameNamaButDifferentKecamatan() {
+		Kelurahan kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
 		
-		kecamatanRepository.save(kecamatan);
-		
-		Kota kota2 = new Kota();
-		kota2.setNama("Bitung");
-		
-		kotaRepository.save(kota2);
-		
+		kelurahanRepository.save(kelurahan);
+
 		Kecamatan kecamatan2 = new Kecamatan();
-		kecamatan2.setKota(kota2);
-		kecamatan2.setNama("Mapanget");
+		kecamatan2.setKota(kota);
+		kecamatan2.setNama("Wanea");
 		
 		kecamatanRepository.save(kecamatan2);
-	}
-	
-	@Test // TODO Error jika tidak di-komen
-	public void test_InsertWithTransientKota() {
-		Kota kota2 = new Kota();
-		kota2.setNama("Bitung");
+
+		Kelurahan kelurahan2 = new Kelurahan();
+		kelurahan2.setKecamatan(kecamatan2);
+		kelurahan2.setNama("Paniki Bawah");
 		
-		Kecamatan kecamatan2 = new Kecamatan();
-		kecamatan2.setKota(kota2);
-		kecamatan2.setNama("Mapanget");
-		
-		kecamatanRepository.save(kecamatan2);
-		
-		//assertTrue(kecamatanRepository.count() != 0);
-		//assertTrue(kotaRepository.count() == 2);
+		kelurahanRepository.save(kelurahan2);
 	}
 }

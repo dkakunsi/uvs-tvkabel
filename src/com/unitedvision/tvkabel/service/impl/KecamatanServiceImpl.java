@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.service.KecamatanService;
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.unitedvision.tvkabel.entity.Alat;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
@@ -13,10 +14,14 @@ import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 
 public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
+	
+	// JPAQL
 	String findByPembayaran = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE (tanggal_bayar BETWEEN :tanggalBayarAwal AND :tanggalBayarAkhir) AND id_pegawai = :idPegawai) ORDER BY kode";
 	String findByPembayaranWithoutPegawai = "SELECT * FROM pelanggan WHERE id in (SELECT DISTINCT id_pelanggan FROM pembayaran WHERE tanggal_bayar BETWEEN :tanggalBayarAwal AND :tanggalBayarAkhir) AND id_perusahaan = :idPerusahaan ORDER BY kode";
 	String findByTanggalMulai = "SELECT * FROM pelanggan p WHERE p.status = :status AND p.tanggal_mulai like %:tanggal";
-	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.kelurahan, p.alamat.lingkungan";
+	String findByAlamatOrdered = "SELECT p FROM PelangganEntity p WHERE p.perusahaan = ?1 AND p.status = ?2 ORDER BY p.alamat.kelurahan, p.alamat.lingkungan";
+	
+	// Native Query
 	String findByAlamatOrderedNative = "SELECT * FROM pelanggan p WHERE p.id_perusahaan = :idPerusahaan AND p.status = :status ORDER BY p.id_kelurahan, p.lingkungan, p.kode";
 	String summerizeEstimasiPemasukanBulanan = "SELECT COALESCE(SUM(p.detail.iuran), 0) FROM Pelanggan p WHERE p.perusahaan = ?1 AND p.status = ?2";
 	String summerizeTotalEstimasiTunggakan = "SELECT COALESCE(SUM(p.detail.tunggakan * p.detail.iuran), 0) FROM Pelanggan p WHERE p.perusahaan = ?1 AND p.status = ?2";
@@ -33,10 +38,12 @@ public interface PelangganRepository extends JpaRepository<Pelanggan, Integer> {
 	List<Pelanggan> findByPerusahaanAndStatusAndNamaContainingOrderByKodeAsc(Perusahaan perusahaan, Status status, String nama) throws EntityNotExistException;
 	List<Pelanggan> findByPerusahaanAndStatusAndKodeContainingOrderByKodeAsc(Perusahaan perusahaan, Status status, String kode) throws EntityNotExistException;
 
-	List<Pelanggan> findByPerusahaanAndStatusAndKelurahanAndAlamat_LingkunganOrderByKodeAsc(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
+	List<Pelanggan> findByPerusahaanAndStatusAndAlamat_KelurahanAndAlamat_LingkunganOrderByKodeAsc(Perusahaan perusahaan, Status status, Kelurahan kelurahan, int lingkungan) throws EntityNotExistException;
 
 	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakan) throws EntityNotExistException;
 	List<Pelanggan> findByPerusahaanAndStatusAndDetail_TunggakanBetweenOrderByKodeAsc(Perusahaan perusahaan, Status status, int tunggakanAwal, int tunggakanAkhir) throws EntityNotExistException;
+	
+	List<Pelanggan> findBySource(Alat alat) throws EntityNotExistException;
 
 	long countByPerusahaanAndStatus(Perusahaan perusahaan, Status status) throws EntityNotExistException;
 

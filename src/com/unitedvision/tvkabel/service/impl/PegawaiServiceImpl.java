@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.tvkabel.core.validator.Validator;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.service.PegawaiService;
 

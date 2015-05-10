@@ -36,6 +36,7 @@ import com.unitedvision.tvkabel.util.DateUtil;
 @Entity
 @Table(name = "pelanggan")
 public final class Pelanggan extends CodableDomain implements Removable {
+	
 	/** Registration number */
 	private String nomorBuku;
 	
@@ -59,12 +60,13 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	
 	/** Status */
 	private Status status;
-
-	/** {@link Kelurahan} where customer lives. */
-	private Kelurahan kelurahan;
+	
+	private Alat source;
 
 	/** List of {@link Pembayaran} made by customer. */
 	private List<Pembayaran> listPembayaran;
+	
+	private List<History> listHistory;
 
 	/**
 	 * Pembayaran terakhir, set object ini setelah melakukan proses pembayaran.
@@ -101,7 +103,6 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		setKode(kode);
 		setNama(nama);
 		setProfesi(profesi);
-		setKelurahan(kelurahan);
 		setAlamat(alamat);
 		setKontak(kontak);
 		setDetail(detail);
@@ -257,25 +258,17 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-
-	/**
-	 * Return {@link Kelurahan} where customer lives.
-	 * @return
-	 */
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_kelurahan", referencedColumnName = "id")
-	public Kelurahan getKelurahan() {
-		return kelurahan;
-	}
-
-	/**
-	 * Set {@link Kelurahan} where customer lives.
-	 * @param kelurahan
-	 */
-	public void setKelurahan(Kelurahan kelurahan) {
-		this.kelurahan = kelurahan;
-	}
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_source", referencedColumnName = "id")
+	public Alat getSource() {
+		return source;
+	}
+
+	public void setSource(Alat source) {
+		this.source = source;
+	}
+
 	/**
 	 * Return list of {@link Pembayaran} made by customer.
 	 * @return listPembayaran
@@ -293,6 +286,22 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	 */
 	public void setListPembayaran(List<Pembayaran> listPembayaran) {
 		this.listPembayaran = listPembayaran;
+	}
+
+	/**
+	 * Return daftar history pelanggan.
+	 * History seputar perubahan status.
+	 * @return
+	 */
+	@JsonIgnore
+	@OneToMany(targetEntity = History.class, mappedBy = "pelanggan", fetch = FetchType.LAZY,
+			cascade = CascadeType.REFRESH)
+	public List<History> getListHistory() {
+		return listHistory;
+	}
+
+	public void setListHistory(List<History> listHistory) {
+		this.listHistory = listHistory;
 	}
 
 	/**
@@ -318,40 +327,50 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		return 0;
 	}
 
+	/**
+	 * Return {@link Kelurahan} where customer lives.
+	 * @return
+	 */
+	@JsonIgnore
+	@Transient
+	public Kelurahan getKelurahan() {
+		return alamat.getKelurahan();
+	}
+
 	@JsonIgnore
 	@Transient
 	public String getNamaKelurahan() {
-		return kelurahan.getNama();
+		return getKelurahan().getNama();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public int getIdKelurahan() {
-		return kelurahan.getId();
+		return getKelurahan().getId();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public String getNamaKecamatan() {
-		return kelurahan.getNamaKecamatan();
+		return getKelurahan().getNamaKecamatan();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public int getIdKecamatan() {
-		return kelurahan.getIdKecamatan();
+		return getKelurahan().getIdKecamatan();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public String getNamaKota() {
-		return kelurahan.getNamaKota();
+		return getKelurahan().getNamaKota();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public int getIdKota() {
-		return kelurahan.getIdKota();
+		return getKelurahan().getIdKota();
 	}
 	
 	@JsonIgnore
@@ -368,14 +387,20 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	
 	@JsonIgnore
 	@Transient
+	public Location getLokasi() {
+		return alamat.getLokasi();
+	}
+	
+	@JsonIgnore
+	@Transient
 	public float getLatitude() {
-		return alamat.getLokasi().getLatitude();
+		return getLokasi().getLatitude();
 	}
 	
 	@JsonIgnore
 	@Transient
 	public float getLongitude() {
-		return alamat.getLokasi().getLongitude();
+		return getLokasi().getLongitude();
 	}
 	
 	@JsonIgnore
@@ -400,6 +425,11 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	@Transient
 	public Date getTanggalMulai() {
 		return detail.getTanggalMulai();
+	}
+	
+	@Transient
+	public String getTanggalMulaiStr() {
+		return detail.getTanggalMulaiStr();
 	}
 
 	@JsonIgnore
@@ -458,23 +488,6 @@ public final class Pelanggan extends CodableDomain implements Removable {
 			e.printStackTrace();
 		}
 	}
-	
-	@Override
-	@JsonIgnore
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((alamat == null) ? 0 : alamat.hashCode());
-		result = prime * result + ((detail == null) ? 0 : detail.hashCode());
-		result = prime * result
-				+ ((kelurahan == null) ? 0 : kelurahan.hashCode());
-		result = prime * result + ((kontak == null) ? 0 : kontak.hashCode());
-		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
-		result = prime * result
-				+ ((perusahaan == null) ? 0 : perusahaan.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
-		return result;
-	}
 
 	@Override
 	@JsonIgnore
@@ -495,11 +508,6 @@ public final class Pelanggan extends CodableDomain implements Removable {
 			if (other.detail != null)
 				return false;
 		} else if (!detail.equals(other.detail))
-			return false;
-		if (kelurahan == null) {
-			if (other.kelurahan != null)
-				return false;
-		} else if (!kelurahan.equals(other.kelurahan))
 			return false;
 		if (kontak == null) {
 			if (other.kontak != null)
@@ -526,8 +534,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	public String toString() {
 		return "Pelanggan [perusahaan=" + perusahaan + ", nama=" + nama
 				+ ", alamat=" + alamat + ", kontak=" + kontak + ", detail="
-				+ detail + ", status=" + status + ", kelurahan=" + kelurahan
-				+ "]";
+				+ detail + ", status=" + status + "]";
 	}
 
 	/**
@@ -595,6 +602,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		 * Return start date in string format.
 		 * @return
 		 */
+		@Transient
 		public String getTanggalMulaiStr() {
 			return DateUtil.toUserString(tanggalMulai, "/");
 		}

@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.core.validator;
+package com.unitedvision.tvkabel.interceptor;
 
 import java.time.Month;
 import java.util.Date;
@@ -75,14 +75,14 @@ public class Validator {
 
 	public Perusahaan validate(Perusahaan perusahaan) {
 		Kelurahan kelurahan = validate(perusahaan.getKelurahan());
-		perusahaan.setKelurahan(kelurahan);
+		perusahaan.getAlamat().setKelurahan(kelurahan);
 		
 		return perusahaan;
 	}
 	
 	public Pelanggan validate(Pelanggan pelanggan) {
 		Kelurahan kelurahan = validate(pelanggan.getKelurahan());
-		pelanggan.setKelurahan(kelurahan);
+		pelanggan.getAlamat().setKelurahan(kelurahan);
 		
 		return pelanggan;
 	}

@@ -1,4 +1,4 @@
-package com.unitedvision.tvkabel.security;
+package com.unitedvision.tvkabel.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,13 +22,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
         
         CustomUser user;
-        try {
-        	user = userDetailService.loadUserByToken(password);
-        } catch (EntityNotExistException e) {
-        	user = userDetailService.loadUserByUsername(username);
-        } catch (UnauthenticatedAccessException e) {
-            throw new BadCredentialsException(e.getMessage());
-		}
+
+        if (username.equals("admin")) {
+        	user = userDetailService.loadAdmin(username);
+        } else {
+            try {
+            	user = userDetailService.loadUserByToken(password);
+            } catch (EntityNotExistException e) {
+            	user = userDetailService.loadUserByUsername(username);
+            } catch (UnauthenticatedAccessException e) {
+                throw new BadCredentialsException(e.getMessage());
+    		}
+        }
  
         if (!(password.equals(user.getPassword())) || !(username.equals(user.getUsername())))
             throw new BadCredentialsException("Kombinasi Username dan Password Salah!");
