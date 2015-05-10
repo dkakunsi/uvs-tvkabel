@@ -34,13 +34,13 @@ public class PerusahaanController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage setMapLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
+	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
 		perusahaanService.setMapLocation(getPerusahaan(), latitude, longitude);
 		return RestMessage.success();
 	}
 
 	@RequestMapping (method = RequestMethod.POST)
-	public @ResponseBody RestMessage simpanPerusahaan(@RequestBody Perusahaan perusahaan) throws ApplicationException {
+	public @ResponseBody RestMessage save(@RequestBody Perusahaan perusahaan) throws ApplicationException {
 		perusahaanService.save(perusahaan);
 		return RestMessage.success();
 	}

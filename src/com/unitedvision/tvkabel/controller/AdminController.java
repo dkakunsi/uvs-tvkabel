@@ -17,7 +17,7 @@ import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.RestMessage;
 
 @Controller
-public class PageController extends AbstractController {
+public class AdminController extends AbstractController {
 	@Autowired
 	private KelurahanService kelurahanService;
 	@Autowired

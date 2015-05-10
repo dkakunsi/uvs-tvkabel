@@ -85,7 +85,7 @@ public class PelangganController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage setMapLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
+	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
 		pelangganService.setMapLocation(pelanggan, latitude, longitude);
 		return RestMessage.success();
@@ -127,7 +127,7 @@ public class PelangganController extends AbstractController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody RestMessage simpanPelanggan(@RequestBody Pelanggan pelanggan) throws ApplicationException {
+	public @ResponseBody RestMessage save(@RequestBody Pelanggan pelanggan) throws ApplicationException {
 		pelanggan.setPerusahaan(getPerusahaan());
 		pelangganService.save(pelanggan);
 		return RestMessage.success();

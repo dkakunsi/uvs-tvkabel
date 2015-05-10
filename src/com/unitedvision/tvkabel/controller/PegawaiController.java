@@ -57,7 +57,7 @@ public class PegawaiController extends AbstractController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody RestMessage simpanPegawai(@RequestBody Pegawai pegawai) throws ApplicationException {
+	public @ResponseBody RestMessage save(@RequestBody Pegawai pegawai) throws ApplicationException {
 		pegawai.setPerusahaan(getPerusahaan());
 		pegawai.setStatus(Status.AKTIF);
 		

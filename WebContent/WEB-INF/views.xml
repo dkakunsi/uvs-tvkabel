@@ -3,14 +3,14 @@
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
-	<bean id="pdfException" class="com.unitedvision.tvkabel.core.document.pdf.ExceptionPdfView" />
+	<bean id="pdfException" class="com.unitedvision.tvkabel.document.pdf.ExceptionPdfView" />
 
-	<bean id="pdfKartu" class="com.unitedvision.tvkabel.core.document.pdf.KartuPelangganPdfView" />
-	<bean id="pdfKartuDefault" class="com.unitedvision.tvkabel.core.document.pdf.DefaultKartuPelangganPdfView" />
+	<bean id="pdfKartu" class="com.unitedvision.tvkabel.document.pdf.KartuPelangganPdfView" />
+	<bean id="pdfKartuDefault" class="com.unitedvision.tvkabel.document.pdf.DefaultKartuPelangganPdfView" />
 
-	<bean id="pdfHari" class="com.unitedvision.tvkabel.core.document.pdf.HariPdfView" />
-	<bean id="pdfBulan" class="com.unitedvision.tvkabel.core.document.pdf.BulanPdfView" />
-	<bean id="pdfTahun" class="com.unitedvision.tvkabel.core.document.pdf.TahunPdfView" />
-	<bean id="pdfTunggakan" class="com.unitedvision.tvkabel.core.document.pdf.TunggakanPdfView" />
-	<bean id="pdfAlamat" class="com.unitedvision.tvkabel.core.document.pdf.AlamatPdfView" />
+	<bean id="pdfHari" class="com.unitedvision.tvkabel.document.pdf.HariPdfView" />
+	<bean id="pdfBulan" class="com.unitedvision.tvkabel.document.pdf.BulanPdfView" />
+	<bean id="pdfTahun" class="com.unitedvision.tvkabel.document.pdf.TahunPdfView" />
+	<bean id="pdfTunggakan" class="com.unitedvision.tvkabel.document.pdf.TunggakanPdfView" />
+	<bean id="pdfAlamat" class="com.unitedvision.tvkabel.document.pdf.AlamatPdfView" />
 </beans>
