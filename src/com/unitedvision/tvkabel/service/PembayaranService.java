@@ -1,5 +1,6 @@
 package com.unitedvision.tvkabel.service;
 
+import java.time.Month;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Pembayaran;
 import com.unitedvision.tvkabel.entity.Pembayaran.Tagihan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EmptyIdException;
@@ -113,4 +115,11 @@ public interface PembayaranService extends Service<Pembayaran> {
 
 	long count(Pegawai pegawai, Date tanggalMulai, Date tanggalAkhir);
 	long count(Pelanggan pelanggan, Date tanggalMulai, Date tanggalAkhir);
+
+	// Rekap
+	List<Pelanggan> rekapHarian(Pegawai pegawai, Date hariAwal, Date hariAkhir) throws ApplicationException;
+
+	List<Pelanggan> rekapBulanan(Perusahaan perusahaan, Month bulan, int tahun) throws ApplicationException;
+
+	List<Pelanggan> rekapTahunan(Perusahaan perusahaan, int tahun) throws ApplicationException;
 }

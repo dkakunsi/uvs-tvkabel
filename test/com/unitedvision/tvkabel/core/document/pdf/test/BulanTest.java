@@ -18,20 +18,20 @@ import com.unitedvision.tvkabel.document.pdf.BulanPdfView;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.service.PembayaranService;
 import com.unitedvision.tvkabel.service.PerusahaanService;
-import com.unitedvision.tvkabel.service.RekapService;
 
 public class BulanTest extends BulanPdfView {
 	private static BulanTest kartu = new BulanTest();
 	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-	private static RekapService rekapService = appContext.getBean(RekapService.class);
+	private static PembayaranService pembayaranService = appContext.getBean(PembayaranService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
 
 	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("E:\\test.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("E:\\bulan-test.pdf"));
 
             document.open();
             String bulan = "JANUARY";
@@ -39,7 +39,7 @@ public class BulanTest extends BulanPdfView {
             Month month = Month.valueOf(bulan);
             int tahun = 2015;
             
-			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapBulanan(perusahaan, month, tahun);
+			List<Pelanggan> list = pembayaranService.rekapBulanan(perusahaan, month, tahun);
             
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);

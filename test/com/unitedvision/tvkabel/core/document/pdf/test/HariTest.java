@@ -19,20 +19,20 @@ import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.service.PegawaiService;
-import com.unitedvision.tvkabel.service.RekapService;
+import com.unitedvision.tvkabel.service.PembayaranService;
 import com.unitedvision.tvkabel.util.DateUtil;
 
 public class HariTest extends HariPdfView {
 	private static HariTest kartu = new HariTest();
 	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-	private static RekapService rekapService = appContext.getBean(RekapService.class);
+	private static PembayaranService pembayaranService = appContext.getBean(PembayaranService.class);
 	private static PegawaiService pegawaiService = appContext.getBean(PegawaiService.class);
 
 	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("E:\\test.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("E:\\hari-test.pdf"));
 
             document.open();
             Pegawai pegawai = pegawaiService.getOne(14);
@@ -40,7 +40,7 @@ public class HariTest extends HariPdfView {
             String tanggalAkhir = "1-31-2015";
             Date hariAwal = DateUtil.getDate(tanggalAwal);
             Date hariAkhir = DateUtil.getDate(tanggalAkhir);
-			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapHarian(pegawai, hariAwal, hariAkhir);
+			List<Pelanggan> list = pembayaranService.rekapHarian(pegawai, hariAwal, hariAkhir);
 
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);

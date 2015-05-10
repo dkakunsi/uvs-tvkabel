@@ -18,23 +18,23 @@ import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.service.PerusahaanService;
-import com.unitedvision.tvkabel.service.RekapService;
+import com.unitedvision.tvkabel.service.PembayaranService;
 
 public class TahunTest extends TahunPdfView {
 	private static TahunTest kartu = new TahunTest();
 	private static ApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-	private static RekapService rekapService = appContext.getBean(RekapService.class);
+	private static PembayaranService pembayaranService = appContext.getBean(PembayaranService.class);
 	private static PerusahaanService perusahaanService = appContext.getBean(PerusahaanService.class);
 
 	public static void main(String[] args) throws ApplicationException {
         Document document = kartu.newDocument();
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("E:\\test.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream("E:\\tahun-test.pdf"));
 
             document.open();
             Perusahaan perusahaan = perusahaanService.getOne(17);
-			List<Pelanggan> list = (List<Pelanggan>)rekapService.rekapTahunan(perusahaan, 2014);
+			List<Pelanggan> list = pembayaranService.rekapTahunan(perusahaan, 2014);
             
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);

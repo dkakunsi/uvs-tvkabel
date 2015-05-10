@@ -48,7 +48,7 @@ public class KartuPelangganTest extends KartuPelangganPdfView {
 	private static void create(Document document) throws ApplicationException {
         try {
             PdfWriter.getInstance(document,
-                new FileOutputStream("E:\\test.pdf"));
+                new FileOutputStream("E:\\kartu-test.pdf"));
 
             document.open();
             Kelurahan kelurahan = new Kelurahan(0, null, "Paniki Bawah");

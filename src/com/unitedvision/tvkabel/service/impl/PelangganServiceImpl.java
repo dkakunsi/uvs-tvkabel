@@ -415,4 +415,5 @@ public class PelangganServiceImpl implements PelangganService {
 	public List<Pelanggan> getOrdered(Perusahaan perusahaan, Status status) {
 		return pelangganRepository.findByPerusahaanAndStatusOrderByAlamat(perusahaan.getId(), Status.AKTIF);
 	}
+
 }

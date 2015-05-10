@@ -1,14 +1,18 @@
 package com.unitedvision.tvkabel.controller;
 
+import java.time.Month;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
@@ -135,4 +139,65 @@ public class PembayaranController extends AbstractController {
 			return DateUtil.getLastDate();
 		return DateUtil.getDate(str);
 	}
+	
+	// Rekap
+	@RequestMapping(value = "/rekap/hari/{tanggalAwal}/{tanggalAkhir}", method = RequestMethod.POST)
+	public ModelAndView printHari(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, 
+			@RequestParam String searchBy, @RequestParam String query, 
+			Map<String, Object> model) throws ApplicationException {
+		
+		Date hariAwal = DateUtil.getDate(tanggalAwal);
+		Date hariAkhir = DateUtil.getDate(tanggalAkhir);
+		Pegawai pegawai = createPegawai(searchBy, query);
+
+		return printHari(hariAwal, hariAkhir, pegawai, model);
+	}
+	
+	@RequestMapping(value = "/rekap/hari/{tanggalAwal}/{tanggalAkhir}/{idPegawai}", method = RequestMethod.POST)
+	public ModelAndView printHari(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir,  @PathVariable Integer idPegawai, 
+			Map<String, Object> model) throws ApplicationException {
+		
+		Date hariAwal = DateUtil.getDate(tanggalAwal);
+		Date hariAkhir = DateUtil.getDate(tanggalAkhir);
+		Pegawai pegawai = pegawaiService.getOne(idPegawai);
+
+		return printHari(hariAwal, hariAkhir, pegawai, model);
+	}
+	
+	private ModelAndView printHari(Date tanggalAwal, Date tanggalAkhir, Pegawai pegawai, Map<String, Object> model) throws ApplicationException {
+		
+		List<Pelanggan> list = pembayaranService.rekapHarian(pegawai, tanggalAwal, tanggalAkhir);
+
+		model.put("rekap", list);
+		model.put("pegawai", pegawai.getNama());
+		model.put("tanggalAwal", tanggalAwal);
+		model.put("tanggalAkhir", tanggalAkhir);
+		
+		return new ModelAndView("pdfHari", model);
+	}
+	
+	@RequestMapping(value = "/rekap/tahun/{tahun}/bulan/{bulan}", method = RequestMethod.POST)
+	public ModelAndView printBulan(@PathVariable String bulan, @PathVariable Integer tahun,
+			Map<String, Object> model) throws ApplicationException {
+		
+		Month month = Month.valueOf(bulan.toUpperCase());
+		List<Pelanggan> list = pembayaranService.rekapBulanan(getPerusahaan(), month, tahun);
+
+		model.put("rekap", list);
+		model.put("bulan", bulan);
+		model.put("tahun", tahun);
+		
+		return new ModelAndView("pdfBulan", model);
+	}
+	
+	@RequestMapping(value = "/rekap/tahun/{tahun}", method = RequestMethod.POST)
+	public ModelAndView printTahun(@PathVariable Integer tahun, Map<String, Object> model) throws ApplicationException {
+		List<Pelanggan> list = pembayaranService.rekapTahunan(getPerusahaan(), tahun);
+
+		model.put("rekap", list);
+		model.put("tahun", tahun);
+		
+		return new ModelAndView("pdfTahun", model);
+	}
+
 }

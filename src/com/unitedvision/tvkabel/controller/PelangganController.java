@@ -1,17 +1,25 @@
 package com.unitedvision.tvkabel.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.service.KelurahanService;
+import com.unitedvision.tvkabel.service.PerusahaanService;
+import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.EntityRestMessage;
 import com.unitedvision.tvkabel.util.ListEntityRestMessage;
 import com.unitedvision.tvkabel.util.RestMessage;
@@ -19,6 +27,11 @@ import com.unitedvision.tvkabel.util.RestMessage;
 @Controller
 @RequestMapping("/pelanggan")
 public class PelangganController extends AbstractController {
+	
+	@Autowired
+	private KelurahanService kelurahanService;
+	@Autowired
+	private PerusahaanService perusahaanService;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pelanggan> get(@PathVariable Integer id) throws ApplicationException {
@@ -140,4 +153,97 @@ public class PelangganController extends AbstractController {
 		pelangganService.save(pelanggan);
 		return RestMessage.success();
 	}
+	
+	// Rekap
+	@RequestMapping(value = "/rekap/tunggakan/{tunggakanAwal}/{tunggakanAkhir}/{status}", method = RequestMethod.POST)
+	public ModelAndView printTunggakan(@PathVariable("status") String s, @PathVariable Integer tunggakanAwal, @PathVariable Integer tunggakanAkhir,
+			Map<String, Object> model) throws ApplicationException {
+		
+		Status status = createStatus(s);
+		List<Pelanggan> list = pelangganService.getByTunggakan(getPerusahaan(), status, tunggakanAwal, tunggakanAkhir);
+		
+		model.put("listPelanggan", list);
+		model.put("tunggakan", tunggakanAwal);
+		
+		return new ModelAndView("pdfTunggakan", model);
+	}
+
+	@RequestMapping(value = "/rekap/alamat/{idKelurahan}/{lingkungan}/{status}", method = RequestMethod.POST)
+	public ModelAndView printAlamat(@PathVariable("status") String s, @PathVariable Integer idKelurahan, @PathVariable Integer lingkungan,
+			Map<String, Object> model) throws ApplicationException {
+		
+		Status status = createStatus(s);
+		Kelurahan kelurahan = kelurahanService.getOne(idKelurahan);
+		
+		List<Pelanggan> list = pelangganService.get(getPerusahaan(), status, kelurahan, lingkungan);
+		
+		model.put("listPelanggan", list);
+		model.put("kelurahan", kelurahan.getNama());
+		model.put("lingkungan", lingkungan);
+		
+		return new ModelAndView("pdfAlamat", model);
+	}
+
+	@RequestMapping(value = "/rekap/alamat/batch", method = RequestMethod.POST)
+	public ModelAndView printAlamat(Map<String, Object> model) throws ApplicationException {
+		List<Pelanggan> list = pelangganService.getOrdered(getPerusahaan(), Pelanggan.Status.AKTIF);
+	
+		model.put("listPelanggan", list);
+		
+		return new ModelAndView("pdfAlamat", model);
+	}
+
+	@RequestMapping(value = "/pelanggan/kartu/{tahun}", method = RequestMethod.POST)
+	public ModelAndView printKartuPelanggan(@PathVariable Integer tahun,
+			@RequestParam boolean pembayaran, @RequestParam String searchBy, @RequestParam String query, 
+			Map<String, Object> model) throws ApplicationException {
+		
+		Pelanggan pelanggan = createPelanggan(searchBy, query);
+
+		return printKartuPelanggan(pembayaran, pelanggan, tahun, model);
+	}
+
+	@RequestMapping(value = "/pelanggan/kartu/{idPelanggan}/{tahun}/{pembayaran}", method = RequestMethod.POST)
+	public ModelAndView printKartuPelanggan(
+			@PathVariable boolean pembayaran, @PathVariable Integer idPelanggan, @PathVariable Integer tahun,
+			Map<String, Object> model) throws ApplicationException {
+		
+		Pelanggan pelanggan = pelangganService.getOne(idPelanggan);
+
+		return printKartuPelanggan(pembayaran, pelanggan, tahun, model);
+	}
+
+	private ModelAndView printKartuPelanggan(boolean pembayaran, Pelanggan pelanggan, Integer tahun,
+			Map<String, Object> model) throws ApplicationException {
+		
+		Pelanggan cetakKartu = pelangganService.cetakKartu(pelanggan, tahun);
+		
+		model.put("pembayaran", pembayaran);
+		model.put("pelanggan", cetakKartu);
+		model.put("tahun", tahun);
+		
+		return new ModelAndView("pdfKartu", model);
+	}
+
+	@RequestMapping(value = "/pelanggan/kartu/empty", method = RequestMethod.POST)
+	public ModelAndView printKartuPelangganKosong(Map<String, Object> model) throws ApplicationException {
+		
+		model.put("perusahaan", getPerusahaan());
+		
+		return new ModelAndView("pdfKartuDefault", model);
+	}
+
+	@RequestMapping(value = "/pelanggan/kartu/aktif/{pembayaran}", method = RequestMethod.POST)
+	public ModelAndView printKartuPelangganAktif(@PathVariable boolean pembayaran, Map<String, Object> model) throws ApplicationException {
+		
+		List<Pelanggan> listPelanggan = pelangganService.get(getPerusahaan(), Status.AKTIF);
+		List<Pelanggan> cetakKartu = pelangganService.cetakKartu(listPelanggan);
+		
+		model.put("pembayaran", pembayaran);
+		model.put("pelanggan", cetakKartu);
+		model.put("tahun", DateUtil.getYearNow());
+		
+		return new ModelAndView("pdfKartu", model);
+	}
+
 }
