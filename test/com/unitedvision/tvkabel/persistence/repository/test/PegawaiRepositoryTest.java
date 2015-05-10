@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.persistence.PersistenceException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,21 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.configuration.ApplicationConfig;
+import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.Kecamatan;
+import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.entity.Pegawai.Kredensi;
 import com.unitedvision.tvkabel.entity.Pegawai.Role;
 import com.unitedvision.tvkabel.entity.Pegawai.Status;
-import com.unitedvision.tvkabel.exception.EmptyCodeException;
-import com.unitedvision.tvkabel.exception.EmptyIdException;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
+import com.unitedvision.tvkabel.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.repository.KotaRepository;
 import com.unitedvision.tvkabel.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 
@@ -30,26 +38,156 @@ import com.unitedvision.tvkabel.repository.PerusahaanRepository;
 @TransactionConfiguration (defaultRollback = true)
 public class PegawaiRepositoryTest {
 	@Autowired
-	private PegawaiRepository pegawaiRepository;
-	@Autowired
 	private PerusahaanRepository perusahaanRepository;
+	@Autowired
+	private KotaRepository kotaRepository;
+	@Autowired
+	private KecamatanRepository kecamatanRepository;
+	@Autowired
+	private KelurahanRepository kelurahanRepository;
+	@Autowired
+	private PegawaiRepository pegawaiRepository;
+
+	private Perusahaan perusahaan;
+	
+	@Before
+	public void setup() {
+		Kota kota = new Kota();
+		kota.setNama("Manado");
+		
+		kotaRepository.save(kota);
+		
+		Kecamatan kecamatan = new Kecamatan();
+		kecamatan.setKota(kota);
+		kecamatan.setNama("Mapanget");
+		
+		kecamatanRepository.save(kecamatan);
+		
+		Kelurahan kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
+		
+		kelurahanRepository.save(kelurahan);
+		
+		perusahaan = new Perusahaan();
+		perusahaan.setNama("TVK. Global Vision");
+		perusahaan.setNamaPT("PT. Aspetika Manasa SULUT");
+		perusahaan.setStatus(Perusahaan.Status.AKTIF);
+		
+		Alamat alamat = new Alamat();
+		alamat.setKelurahan(kelurahan);
+		alamat.setLingkungan(1);
+		perusahaan.setAlamat(alamat);
+		
+		Kontak kontak = new Kontak();
+		kontak.setEmail("admin@globalvision.com");
+		kontak.setHp("082323787878");
+		perusahaan.setKontak(kontak);
+		
+		perusahaan.generateKode(0);
+		
+		perusahaanRepository.save(perusahaan);
+	}
 	
 	@Test
-	public void testSaveWithUsernameException() throws EmptyIdException, EmptyCodeException {
-		Perusahaan perusahaan = perusahaanRepository.findOne(17);
-		
+	public void test_InsertSuccess() throws ApplicationException {
 		Pegawai pegawai = new Pegawai();
 		pegawai.setId(0);
-		pegawai.setKode("TEST");
-		pegawai.setKredensi(new Kredensi("jefry", "test", Role.OPERATOR));
-		pegawai.setNama("Test");
+		pegawai.setKode("01001");
+		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai.setNama("ADMIN");
 		pegawai.setPerusahaan(perusahaan);
 		pegawai.setStatus(Pegawai.Status.AKTIF);
 
+		pegawaiRepository.save(pegawai);
+		
+		assertTrue(pegawaiRepository.count() != 0);
+	}
+	
+	@Test
+	public void test_InsertWithSameUsername() throws ApplicationException {
+		Pegawai pegawai = new Pegawai();
+		pegawai.setId(0);
+		pegawai.setKode("01001");
+		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai.setNama("ADMIN");
+		pegawai.setPerusahaan(perusahaan);
+		pegawai.setStatus(Pegawai.Status.AKTIF);
+
+		pegawaiRepository.save(pegawai);
+
+		Pegawai pegawai2 = new Pegawai();
+		pegawai2.setId(0);
+		pegawai2.setKode("01002");
+		pegawai2.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai2.setNama("Jefry Wakkary");
+		pegawai2.setPerusahaan(perusahaan);
+		pegawai2.setStatus(Pegawai.Status.AKTIF);
+
 		try {
-			pegawaiRepository.save(pegawai);
+			pegawaiRepository.save(pegawai2);
+			
+			throw new ApplicationException();
 		} catch (PersistenceException ex) {
 			assertEquals("Username yang anda masukkan sudah digunakan.", ex.getMessage());
+		}
+	}
+	
+	@Test
+	public void test_InsertWithSameKode() throws ApplicationException {
+		Pegawai pegawai = new Pegawai();
+		pegawai.setId(0);
+		pegawai.setKode("01001");
+		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai.setNama("ADMIN");
+		pegawai.setPerusahaan(perusahaan);
+		pegawai.setStatus(Pegawai.Status.AKTIF);
+
+		pegawaiRepository.save(pegawai);
+		
+		Pegawai pegawai2 = new Pegawai();
+		pegawai2.setId(0);
+		pegawai2.setKode("01001");
+		pegawai2.setKredensi(new Kredensi("jefry", "jefry", Role.OPERATOR));
+		pegawai2.setNama("Jefry Wakkary");
+		pegawai2.setPerusahaan(perusahaan);
+		pegawai2.setStatus(Pegawai.Status.AKTIF);
+
+		try {
+			pegawaiRepository.save(pegawai2);
+			
+			throw new ApplicationException();
+		} catch (PersistenceException ex) {
+			assertEquals("Kode yang anda masukkan sudah digunakan.", ex.getMessage());
+		}
+	}
+	
+	@Test
+	public void test_InsertWithSameNama() throws ApplicationException {
+		Pegawai pegawai = new Pegawai();
+		pegawai.setId(0);
+		pegawai.setKode("01001");
+		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai.setNama("ADMIN");
+		pegawai.setPerusahaan(perusahaan);
+		pegawai.setStatus(Pegawai.Status.AKTIF);
+
+		pegawaiRepository.save(pegawai);
+		
+		Pegawai pegawai2 = new Pegawai();
+		pegawai2.setId(0);
+		pegawai2.setKode("01001");
+		pegawai2.setKredensi(new Kredensi("jefry", "jefry", Role.OPERATOR));
+		pegawai2.setNama("ADMIN");
+		pegawai2.setPerusahaan(perusahaan);
+		pegawai2.setStatus(Pegawai.Status.AKTIF);
+
+		try {
+			pegawaiRepository.save(pegawai2);
+			
+			throw new ApplicationException();
+		} catch (PersistenceException ex) {
+			assertEquals("Kode yang anda masukkan sudah digunakan.", ex.getMessage());
 		}
 	}
 
