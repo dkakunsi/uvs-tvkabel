@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.KelurahanRepository;
 import com.unitedvision.tvkabel.service.KelurahanService;
 
@@ -18,13 +17,10 @@ import com.unitedvision.tvkabel.service.KelurahanService;
 public class KelurahanServiceImpl implements KelurahanService {
 	@Autowired
 	private KelurahanRepository kelurahanRepository;
-	@Autowired
-	private Validator validator;
 
 	@Override
 	@Transactional(readOnly = false)
 	public Kelurahan save(Kelurahan kelurahan) {
-		kelurahan = validator.validate(kelurahan);
 		return kelurahanRepository.save(kelurahan);
 	}
 

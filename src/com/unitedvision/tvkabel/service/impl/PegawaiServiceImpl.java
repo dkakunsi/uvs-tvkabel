@@ -12,7 +12,6 @@ import com.unitedvision.tvkabel.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.service.PegawaiService;
 
@@ -21,8 +20,6 @@ import com.unitedvision.tvkabel.service.PegawaiService;
 public class PegawaiServiceImpl implements PegawaiService {
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
-	@Autowired
-	private Validator validator;
 
 	@Transactional(readOnly = false)
 	public Pegawai save(Pegawai pegawai) throws DataDuplicationException {

@@ -21,7 +21,6 @@ import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.NotPayableCustomerException;
 import com.unitedvision.tvkabel.exception.UnpaidBillException;
-import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.PembayaranRepository;
 import com.unitedvision.tvkabel.service.PegawaiService;
 import com.unitedvision.tvkabel.service.PelangganService;
@@ -37,8 +36,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 	private PegawaiService pegawaiService;
 	@Autowired
 	private PembayaranRepository pembayaranRepository;
-	@Autowired
-	private Validator validator;
 	
 	@Override
 	public void pay(Pelanggan pelanggan) throws ApplicationException {

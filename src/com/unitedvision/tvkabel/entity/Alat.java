@@ -94,6 +94,7 @@ public class Alat extends CodableDomain {
 		this.source = source;
 	}
 
+	@JsonIgnore
 	@Embedded
 	public Alamat getAlamat() {
 		return alamat;
@@ -126,6 +127,11 @@ public class Alat extends CodableDomain {
 	}
 	
 	@Transient
+	public Kelurahan getKelurahan() {
+		return alamat.getKelurahan();
+	}
+
+	@Transient
 	public int getLingkungan() {
 		return alamat.getLingkungan();
 	}
@@ -149,8 +155,7 @@ public class Alat extends CodableDomain {
 	@Override
 	public String toString() {
 		return "Alat [perusahaan=" + perusahaan + ", nama=" + nama + ", tipe="
-				+ tipe + ", deskripsi=" + deskripsi + ", source=" + source
-				+ ", listAlat=" + listAlat + "]";
+				+ tipe + ", deskripsi=" + deskripsi + ", source=" + source + "]";
 	}
 
 	@Override

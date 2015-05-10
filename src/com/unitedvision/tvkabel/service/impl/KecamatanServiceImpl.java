@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
-import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.service.KecamatanService;
 
@@ -18,13 +17,10 @@ import com.unitedvision.tvkabel.service.KecamatanService;
 public class KecamatanServiceImpl implements KecamatanService {
 	@Autowired
 	private KecamatanRepository kecamatanRepository;
-	@Autowired
-	private Validator validator;
 
 	@Override
 	@Transactional(readOnly = false)
 	public Kecamatan save(Kecamatan kecamatan) {
-		kecamatan = validator.validate(kecamatan);
 		return kecamatanRepository.save(kecamatan);
 	}
 

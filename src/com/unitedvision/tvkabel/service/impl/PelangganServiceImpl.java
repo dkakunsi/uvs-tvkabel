@@ -20,7 +20,6 @@ import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
-import com.unitedvision.tvkabel.interceptor.Validator;
 import com.unitedvision.tvkabel.repository.HistoryRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.repository.PerusahaanRepository;
@@ -41,8 +40,6 @@ public class PelangganServiceImpl implements PelangganService {
 	private PerusahaanRepository perusahaanRepository;
 	@Autowired
 	private HistoryRepository historyRepository;
-	@Autowired
-	private Validator validator;
 
 	@Override
 	@Transactional(readOnly = false)
