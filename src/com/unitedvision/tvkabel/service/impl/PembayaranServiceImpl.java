@@ -73,6 +73,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	public Pembayaran payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException ,UnpaidBillException ,EntityNotExistException ,DataDuplicationException, EmptyIdException {
 		List<Pembayaran> listPembayaran = createListPembayaran(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
+		
 		pembayaranRepository.save(listPembayaran);
 
 		Pembayaran last = listPembayaran.get(jumlahBulan - 1);
@@ -123,8 +124,6 @@ public class PembayaranServiceImpl implements PembayaranService {
 		if (!(status.equals(Pelanggan.Status.AKTIF)) && !(status.equals(Pelanggan.Status.GRATIS)))
 			throw new NotPayableCustomerException(String.format("Gagal! Status Pelanggan adalah %s", status.toString()));
 
-		//validator.validate(pembayaran);
-
 		pembayaran.generateKode();
 		
 		return pembayaran;
@@ -132,6 +131,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	
 	private void validateAfterPay(Pembayaran pembayaran) throws ApplicationException {
 		Pelanggan pelanggan = pembayaran.getPelanggan();
+
 		pelangganService.updateLastPayment(pelanggan);
 		pelangganService.recountTunggakan(pelanggan);
 	}
@@ -139,6 +139,14 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Override
 	public Pembayaran updatePayment(Pembayaran pembayaran) {
 		return pembayaranRepository.save(pembayaran);
+	}
+
+	@Override
+	public Pembayaran updatePayment(Integer id, Long total) throws EntityNotExistException {
+		Pembayaran pembayaran = getOne(id);
+		pembayaran.setJumlahBayar(total);
+
+		return updatePayment(pembayaran);
 	}
 	
 	@Override

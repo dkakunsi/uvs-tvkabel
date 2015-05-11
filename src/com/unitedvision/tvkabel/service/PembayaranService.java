@@ -78,6 +78,8 @@ public interface PembayaranService extends Service<Pembayaran> {
 	 * @return
 	 */
 	Pembayaran updatePayment(Pembayaran pembayaran);
+
+	Pembayaran updatePayment(Integer id, Long total) throws EntityNotExistException;
 	
 	/**
 	 * Return the last payment of a customer.

@@ -28,12 +28,14 @@ import com.unitedvision.tvkabel.util.RestMessage;
 @Controller
 @RequestMapping("/pembayaran")
 public class PembayaranController extends AbstractController {
+	
 	@Autowired
 	private PembayaranService pembayaranService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pembayaran> getById(@PathVariable Integer id) throws ApplicationException {
 		Pembayaran pembayaran = pembayaranService.getOne(id);
+
 		return EntityRestMessage.create(pembayaran);
 	}
 	
@@ -115,9 +117,7 @@ public class PembayaranController extends AbstractController {
 	
 	@RequestMapping(value = "/{id}/{total}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage update(@PathVariable Integer id, @PathVariable Long total) throws ApplicationException {
-		Pembayaran pembayaran = pembayaranService.getOne(id);
-		pembayaran.setJumlahBayar(total);
-		pembayaranService.updatePayment(pembayaran);
+		pembayaranService.updatePayment(id, total);
 		
 		return RestMessage.success();
 	}
