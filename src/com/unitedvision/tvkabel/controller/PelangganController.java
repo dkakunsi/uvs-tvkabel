@@ -53,115 +53,128 @@ public class PelangganController extends AbstractController {
 	
 	@RequestMapping(value = "/tunggakan/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage updateTunggakan(@PathVariable Integer id, @RequestBody Integer tunggakan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelanggan.setTunggakan(tunggakan);
-		pelangganService.save(pelanggan);
+		pelangganService.updateTunggakan(id, tunggakan);
+
 		return RestMessage.success();
 	}
 	
 	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.setMapLocation(pelanggan, latitude, longitude);
+		pelangganService.setMapLocation(id, latitude, longitude);
+		
 		return RestMessage.success();
 	}
 
 	@RequestMapping(value = "/activation/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage activate(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.activate(pelanggan, pesan);
+		pelangganService.activate(id, pesan);
+		
 		return RestMessage.success();
 	}
 
 	@RequestMapping(value = "/passivation/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage passivate(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.passivate(pelanggan, pesan);
+		pelangganService.passivate(id, pesan);
+		
 		return RestMessage.success();
 	}
 
 	@RequestMapping(value = "/ban/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage ban(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.banned(pelanggan, pesan);
+		pelangganService.banned(id, pesan);
+
 		return RestMessage.success();
 	}
 
 	@RequestMapping(value = "/free/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage free(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.free(pelanggan, pesan);
+		pelangganService.free(id, pesan);
+		
 		return RestMessage.success();
 	}
 	
 	@RequestMapping(value = "/removed/{id}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage remove(@PathVariable Integer id) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.remove(pelanggan);
+		pelangganService.remove(id);
+		
 		return RestMessage.success();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pelanggan> get(@PathVariable Integer id) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
+
 		return EntityRestMessage.create(pelanggan);
 	}
 	
 	@RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getByPerusahaanAndStatus(@PathVariable String status) throws ApplicationException {
 		final Status _status = Status.get(status);
+		
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(), _status);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 
 	@RequestMapping(value = "/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pelanggan> getByKode(@PathVariable String kode) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(), kode);
+		
 		return EntityRestMessage.create(pelanggan);
 	}
 	
 	@RequestMapping(value = "/list/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getListByKode(@PathVariable String kode) throws ApplicationException {
 		List<Pelanggan> list = pelangganService.getByKode(getPerusahaan(), kode);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 
 	@RequestMapping(value = "/list/kode/{kode}/status/{status}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getByKode(@PathVariable String kode, @PathVariable String status) throws ApplicationException {
 		final Status _status = Status.get(status);
+		
 		List<Pelanggan> list = pelangganService.getByKode(getPerusahaan(), kode, _status);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 	
 	@RequestMapping(value = "/nama/{nama:.+}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pelanggan> getByNama(@PathVariable String nama) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(), nama);
+		
 		return EntityRestMessage.create(pelanggan);
 	}
 
 	@RequestMapping(value = "/list/nama/{nama:.+}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getListByNama(@PathVariable String nama) throws ApplicationException {
 		List<Pelanggan> list = pelangganService.getByNama(getPerusahaan(), nama);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 
 	@RequestMapping(value = "/list/nama/{nama:.+}/status/{status}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getByNama(@PathVariable String nama, @PathVariable String status) throws ApplicationException {
 		final Status _status = Status.get(status);
+		
 		List<Pelanggan> list = pelangganService.getByNama(getPerusahaan(), nama, _status);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 
 	@RequestMapping(value = "/list/nomor/{nomor}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getByNomor(@PathVariable Integer nomor) throws ApplicationException {
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(), nomor);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 
 	@RequestMapping(value = "/list/nomor/{nomor}/status/{status}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pelanggan> getByNomor(@PathVariable String status, @PathVariable Integer nomor) throws ApplicationException {
 		final Status _status = Status.get(status);
+		
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(), nomor, _status);
+		
 		return ListEntityRestMessage.createListPelanggan(list);
 	}
 	

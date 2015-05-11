@@ -9,22 +9,31 @@ import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
-import com.unitedvision.tvkabel.exception.DataDuplicationException;
 
 public interface PelangganService extends Service<Pelanggan> {
 	Pelanggan add(Pelanggan pelanggan) throws ApplicationException;
 
 	Pelanggan remove(Pelanggan pelanggan) throws ApplicationException;
+	Pelanggan remove(Integer id) throws ApplicationException;
+
 	Pelanggan activate(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	Pelanggan activate(Integer id, String keterangan) throws ApplicationException;
+	
 	Pelanggan passivate(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	Pelanggan passivate(Integer id, String keterangan) throws ApplicationException;
+	
 	Pelanggan banned(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	Pelanggan banned(Integer id, String keterangan) throws ApplicationException;
+	
 	Pelanggan free(Pelanggan pelanggan, String keterangan) throws ApplicationException;
+	Pelanggan free(Integer id, String keterangan) throws ApplicationException;
 	
 	Pelanggan setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException;
+	Pelanggan setMapLocation(Integer id, float latitude, float longitude) throws ApplicationException;
 
 	void recountTunggakan() throws ApplicationException;
 	void recountTunggakan(String tanggal) throws ApplicationException;
-	Pelanggan recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException;
+	Pelanggan recountTunggakan(Pelanggan pelanggan) throws ApplicationException;
 	
 	Pelanggan updateLastPayment(Pelanggan pelanggan) throws ApplicationException;
 	
@@ -74,4 +83,6 @@ public interface PelangganService extends Service<Pelanggan> {
 	
 	String resetKode(Perusahaan perusahaan) throws ApplicationException;
 	String resetKode(Perusahaan perusahaan, Kelurahan kelurahan, Integer lingkungan) throws ApplicationException;
+
+	void updateTunggakan(Integer id, Integer tunggakan) throws ApplicationException;
 }

@@ -80,6 +80,13 @@ public class PelangganServiceImpl implements PelangganService {
 		
 		return pelanggan;
 	}
+
+	@Override
+	public Pelanggan activate(Integer id, String keterangan) throws ApplicationException {
+		Pelanggan pelanggan = getOne(id);
+		
+		return activate(pelanggan, keterangan);
+	}
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -91,6 +98,13 @@ public class PelangganServiceImpl implements PelangganService {
 		createHistory(pelanggan, Status.BERHENTI, keterangan);
 		
 		return pelanggan;
+	}
+
+	@Override
+	public Pelanggan passivate(Integer id, String keterangan) throws ApplicationException {
+		Pelanggan pelanggan = getOne(id);
+		
+		return passivate(pelanggan, keterangan);
 	}
 	
 	@Override
@@ -108,21 +122,10 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public Pelanggan remove(Pelanggan pelanggan) throws StatusChangeException {
-		pelanggan.remove();
-
-		return pelangganRepository.save(pelanggan);
-	}
-	
-	@Override
-	@Transactional(readOnly = false)
-	public Pelanggan updateLastPayment(Pelanggan pelanggan) {
-		Pembayaran last = pembayaranService.getLast(pelanggan);
-
-		pelanggan.setPembayaranTerakhir(last);
+	public Pelanggan banned(Integer id, String keterangan) throws ApplicationException {
+		Pelanggan pelanggan = getOne(id);
 		
-		return pelanggan;
+		return banned(pelanggan, keterangan);
 	}
 	
 	@Override
@@ -138,6 +141,47 @@ public class PelangganServiceImpl implements PelangganService {
 		
 		return pelanggan;
 	}
+
+	@Override
+	public Pelanggan free(Integer id, String keterangan) throws ApplicationException {
+		Pelanggan pelanggan = getOne(id);
+		
+		return free(pelanggan, keterangan);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Pelanggan remove(Pelanggan pelanggan) throws StatusChangeException {
+		pelanggan.remove();
+
+		return pelangganRepository.save(pelanggan);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Pelanggan remove(Integer id) throws StatusChangeException, EntityNotExistException {
+		Pelanggan pelanggan = getOne(id);
+		
+		return remove(pelanggan);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Pelanggan updateLastPayment(Pelanggan pelanggan) {
+		Pembayaran last = pembayaranService.getLast(pelanggan);
+
+		pelanggan.setPembayaranTerakhir(last);
+		
+		return pelanggan;
+	}
+	
+	@Override
+	public void updateTunggakan(Integer id, Integer tunggakan) throws DataDuplicationException, EntityNotExistException {
+		Pelanggan pelanggan = getOne(id);
+		pelanggan.setTunggakan(tunggakan);
+
+		save(pelanggan);
+	}
 	
 	public History createHistory(Pelanggan pelanggan, Status status, String keterangan) throws EntityNotExistException {
 		History history = new History();
@@ -152,6 +196,13 @@ public class PelangganServiceImpl implements PelangganService {
 		history.setJumlahGratis(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.GRATIS));
 
 		return historyRepository.save(history);
+	}
+	
+	@Override
+	public Pelanggan setMapLocation(Integer id, float latitude, float longitude) throws ApplicationException {
+		Pelanggan pelanggan = getOne(id);
+		
+		return setMapLocation(pelanggan, latitude, longitude);
 	}
 	
 	@Override

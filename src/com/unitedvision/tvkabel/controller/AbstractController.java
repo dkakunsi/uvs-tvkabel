@@ -16,6 +16,7 @@ import com.unitedvision.tvkabel.service.PegawaiService;
 import com.unitedvision.tvkabel.service.PelangganService;
 
 public abstract class AbstractController {
+	
 	@Autowired
 	protected SpringAuthenticationBasedAuthorizationProvider authorizationProvider;
 	@Autowired
@@ -39,6 +40,7 @@ public abstract class AbstractController {
 	
 	protected Pelanggan createPelanggan(String searchBy, String query) throws ApplicationException {
 		Perusahaan perusahaan = getPerusahaan();
+		
 		if (searchBy.contains("nama"))
 			return pelangganService.getOneByNama(perusahaan, query);
 		return pelangganService.getOneByKode(perusahaan, query);
@@ -46,6 +48,7 @@ public abstract class AbstractController {
 		
 	protected Pegawai createPegawai(String searchBy, String query) throws ApplicationException {
 		Perusahaan perusahaan = getPerusahaan();
+
 		if (searchBy.toLowerCase().contains("nama"))
 			return pegawaiService.getOneByNama(perusahaan, query);
 		return pegawaiService.getOneByKode(perusahaan, query);

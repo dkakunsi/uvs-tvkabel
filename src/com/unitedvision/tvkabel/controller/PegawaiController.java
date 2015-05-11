@@ -40,42 +40,49 @@ public class PegawaiController extends AbstractController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody RestMessage remove(@PathVariable Integer id) throws ApplicationException {
 		pegawaiService.remove(id);
-		return RestMessage.create("Pegawai BERHASIL dihapus");
-	}
-
-	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody ListEntityRestMessage<Pegawai> getByPerusahaan() throws ApplicationException {
-		List<Pegawai> list = pegawaiService.get(getPerusahaan());
-		return ListEntityRestMessage.createListPegawai(list);
+		
+		return RestMessage.success();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pegawai> getById(@PathVariable final Integer id) throws ApplicationException {
 		Pegawai pegawai = pegawaiService.getOne(id);
+		
 		return EntityRestMessage.create(pegawai);
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public @ResponseBody ListEntityRestMessage<Pegawai> getByPerusahaan() throws ApplicationException {
+		List<Pegawai> list = pegawaiService.get(getPerusahaan());
+
+		return ListEntityRestMessage.createListPegawai(list);
 	}
 	
 	@RequestMapping(value = "/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pegawai> getByKode(@PathVariable final String kode) throws ApplicationException {
 		Pegawai pegawai = pegawaiService.getOneByKode(getPerusahaan(), kode);
+		
 		return EntityRestMessage.create(pegawai);
 	}
 	
 	@RequestMapping(value = "/list/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pegawai> getListByKode(@PathVariable String kode) throws ApplicationException {
 		List<Pegawai> list = pegawaiService.getByKode(getPerusahaan(), kode);
+
 		return ListEntityRestMessage.createListPegawai(list);
 	}
 	
 	@RequestMapping(value = "/nama/{nama}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pegawai> getByNama(@PathVariable final String nama) throws ApplicationException {
 		Pegawai pegawai = pegawaiService.getOneByNama(getPerusahaan(), nama);
+		
 		return EntityRestMessage.create(pegawai);
 	}
 	
 	@RequestMapping(value = "/list/nama/{nama}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Pegawai> getListByNama(@PathVariable String nama) throws ApplicationException {
 		List<Pegawai> list = pegawaiService.getByNama(getPerusahaan(), nama);
+		
 		return ListEntityRestMessage.createListPegawai(list);
 	}
 }

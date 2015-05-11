@@ -21,6 +21,7 @@ import com.unitedvision.tvkabel.util.ListEntityRestMessage;
 @Controller
 @RequestMapping("/alamat")
 public class AlamatController extends AbstractController {
+	
 	@Autowired
 	private KelurahanService kelurahanService;
 	@Autowired
@@ -31,6 +32,7 @@ public class AlamatController extends AbstractController {
 	@RequestMapping(value = "/kelurahan", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Kelurahan> getAllKelurahan() throws ApplicationException {
 		List<Kelurahan> list = kelurahanService.getAll();
+		
 		return ListEntityRestMessage.createListKelurahan(list);
 	}
 
@@ -45,6 +47,7 @@ public class AlamatController extends AbstractController {
 	@RequestMapping(value = "/kecamatan", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Kecamatan> getAllKecamatan() throws ApplicationException {
 		List<Kecamatan> list = kecamatanService.getAll();
+
 		return ListEntityRestMessage.createListKecamatan(list);
 	}
 
@@ -52,12 +55,14 @@ public class AlamatController extends AbstractController {
 	public @ResponseBody ListEntityRestMessage<Kecamatan> getKecamatanByKota(@PathVariable Integer kotaId) throws ApplicationException {
 		Kota kota = kotaService.getOne(kotaId);
 		List<Kecamatan> list = kecamatanService.getByKota(kota);
+		
 		return ListEntityRestMessage.createListKecamatan(list);
 	}
 	
 	@RequestMapping(value = "/kota", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Kota> getAllKota() throws ApplicationException {
 		List<Kota> list = kotaService.getAll();
+		
 		return ListEntityRestMessage.createListKota(list);
 	}
 }
