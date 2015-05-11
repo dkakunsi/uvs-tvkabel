@@ -473,6 +473,40 @@ public final class Pelanggan extends CodableDomain implements Removable {
 		return detail.getTunggakan();
 	}
 
+	public void activate() throws StatusChangeException {
+		if (isNew())
+			throw new StatusChangeException("Pelanggan is new");
+		
+		if (status.equals(Status.AKTIF))
+			throw new StatusChangeException("Tidak mengaktivasi pelanggan. Karena pelanggan merupakan pelanggan aktif");
+
+		setStatus(Status.AKTIF);
+		getDetail().setTanggalMulai(DateUtil.getNow());
+		getDetail().setTunggakan(0);
+	}
+	
+	public void passivate() throws StatusChangeException {
+		if (isNew())
+			throw new StatusChangeException("Pelanggan is new");
+		
+		if (status.equals(Status.BERHENTI))
+			throw new StatusChangeException("Tidak memutuskan pelanggan. Karena pelanggan merupakan pelanggan berhenti");
+
+		setStatus(Status.BERHENTI);
+	}
+
+	public void ban() throws StatusChangeException {
+		if (isNew())
+			throw new StatusChangeException("Pelanggan is new");
+		
+		if (status.equals(Status.PUTUS))
+			throw new StatusChangeException("Tidak mem-banned pelanggan. Karena pelanggan merupakan pelanggan putus");
+
+		setStatus(Status.PUTUS);
+
+		countTunggakan();
+	}
+	
 	@Override
 	public void remove() throws StatusChangeException {
 		if (isNew())
@@ -482,6 +516,7 @@ public final class Pelanggan extends CodableDomain implements Removable {
 			throw new StatusChangeException("Pelanggan was already removed");
 			
 		setStatus(Status.REMOVED);
+
 		try {
 			setKode(String.format("REM%d", getId()));
 		} catch (EmptyCodeException e) {

@@ -7,14 +7,16 @@ import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 
 public interface PegawaiService extends Service<Pegawai> {
-	void remove(Pegawai entity) throws ApplicationException;
-	void remove(Integer id) throws ApplicationException;
+	Pegawai remove(Pegawai entity) throws ApplicationException;
+	Pegawai remove(Integer id) throws ApplicationException;
 	
+	Pegawai add(Pegawai pegawai) throws ApplicationException;
+
+	Pegawai getOne(Perusahaan perusahaan) throws ApplicationException;
+
 	Pegawai getOneByNama(Perusahaan perusahaan, String nama) throws ApplicationException;
 	Pegawai getOneByKode(Perusahaan perusahaan, String kode) throws ApplicationException;
 	Pegawai getOneByUsername(String username) throws ApplicationException;
-
-	Pegawai getOne(Perusahaan perusahaan) throws ApplicationException;
 
 	List<Pegawai> get(Perusahaan perusahaan) throws ApplicationException;
 	

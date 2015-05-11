@@ -32,6 +32,74 @@ public class PelangganController extends AbstractController {
 	private KelurahanService kelurahanService;
 	@Autowired
 	private PerusahaanService perusahaanService;
+
+	@RequestMapping(method = RequestMethod.POST)
+	public @ResponseBody RestMessage add(@RequestBody Pelanggan pelanggan) throws ApplicationException {
+		pelanggan.setPerusahaan(getPerusahaan());
+
+		pelangganService.add(pelanggan);
+		
+		return RestMessage.success();
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	public @ResponseBody RestMessage save(@RequestBody Pelanggan pelanggan) throws ApplicationException {
+		pelanggan.setPerusahaan(getPerusahaan());
+
+		pelangganService.save(pelanggan);
+		
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(value = "/tunggakan/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage updateTunggakan(@PathVariable Integer id, @RequestBody Integer tunggakan) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelanggan.setTunggakan(tunggakan);
+		pelangganService.save(pelanggan);
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.setMapLocation(pelanggan, latitude, longitude);
+		return RestMessage.success();
+	}
+
+	@RequestMapping(value = "/activation/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage activate(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.activate(pelanggan, pesan);
+		return RestMessage.success();
+	}
+
+	@RequestMapping(value = "/passivation/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage passivate(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.passivate(pelanggan, pesan);
+		return RestMessage.success();
+	}
+
+	@RequestMapping(value = "/ban/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage ban(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.banned(pelanggan, pesan);
+		return RestMessage.success();
+	}
+
+	@RequestMapping(value = "/free/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage free(@PathVariable Integer id, @RequestParam String pesan) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.free(pelanggan, pesan);
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(value = "/removed/{id}", method = RequestMethod.PUT)
+	public @ResponseBody RestMessage remove(@PathVariable Integer id) throws ApplicationException {
+		Pelanggan pelanggan = pelangganService.getOne(id);
+		pelangganService.remove(pelanggan);
+		return RestMessage.success();
+	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Pelanggan> get(@PathVariable Integer id) throws ApplicationException {
@@ -95,63 +163,6 @@ public class PelangganController extends AbstractController {
 		final Status _status = Status.get(status);
 		List<Pelanggan> list = pelangganService.get(getPerusahaan(), nomor, _status);
 		return ListEntityRestMessage.createListPelanggan(list);
-	}
-	
-	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.setMapLocation(pelanggan, latitude, longitude);
-		return RestMessage.success();
-	}
-
-	@RequestMapping(value = "/activation/{id}/pesan/{pesan}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage activate(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.activate(pelanggan, pesan);
-		return RestMessage.success();
-	}
-
-	@RequestMapping(value = "/passivation/{id}/pesan/{pesan}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage passivate(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.passivate(pelanggan, pesan);
-		return RestMessage.success();
-	}
-
-	@RequestMapping(value = "/ban/{id}/pesan/{pesan}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage ban(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.banned(pelanggan, pesan);
-		return RestMessage.success();
-	}
-
-	@RequestMapping(value = "/free/{id}/pesan/{pesan}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage free(@PathVariable Integer id, @PathVariable String pesan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.free(pelanggan, pesan);
-		return RestMessage.success();
-	}
-	
-	@RequestMapping(value = "/removed/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage remove(@PathVariable Integer id) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelangganService.remove(pelanggan);
-		return RestMessage.success();
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody RestMessage save(@RequestBody Pelanggan pelanggan) throws ApplicationException {
-		pelanggan.setPerusahaan(getPerusahaan());
-		pelangganService.save(pelanggan);
-		return RestMessage.success();
-	}
-	
-	@RequestMapping(value = "/tunggakan/{id}", method = RequestMethod.PUT)
-	public @ResponseBody RestMessage updateTunggakan(@PathVariable Integer id, @RequestBody Integer tunggakan) throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(id);
-		pelanggan.setTunggakan(tunggakan);
-		pelangganService.save(pelanggan);
-		return RestMessage.success();
 	}
 	
 	// Rekap

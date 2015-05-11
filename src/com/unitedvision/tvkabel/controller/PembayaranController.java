@@ -42,6 +42,7 @@ public class PembayaranController extends AbstractController {
 		final Pegawai pegawai = pegawaiService.getOneByKode(getPerusahaan(), kode);
 		final Date awal = getTanggalAwal(tanggalAwal);
 		final Date akhir = getTanggalAkhir(tanggalAkhir);
+
 		List<Pembayaran> list = getByPegawai(pegawai, awal, akhir);
 		
 		return ListEntityRestMessage.createListPembayaran(list);
@@ -52,6 +53,7 @@ public class PembayaranController extends AbstractController {
 		final Pegawai pegawai = pegawaiService.getOneByNama(getPerusahaan(), nama);
 		final Date awal = getTanggalAwal(tanggalAwal);
 		final Date akhir = getTanggalAkhir(tanggalAkhir);
+
 		List<Pembayaran> list = getByPegawai(pegawai, awal, akhir);
 		
 		return ListEntityRestMessage.createListPembayaran(list);
@@ -62,6 +64,7 @@ public class PembayaranController extends AbstractController {
 		final Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(), kode);
 		final Date awal = getTanggalAwal(tanggalAwal);
 		final Date akhir = getTanggalAkhir(tanggalAkhir);
+		
 		List<Pembayaran> list = getByPelanggan(pelanggan, awal, akhir);
 		
 		return ListEntityRestMessage.createListPembayaran(list);
@@ -72,6 +75,7 @@ public class PembayaranController extends AbstractController {
 		final Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(), nama);
 		final Date awal = getTanggalAwal(tanggalAwal);
 		final Date akhir = getTanggalAkhir(tanggalAkhir);
+		
 		List<Pembayaran> list = getByPelanggan(pelanggan, awal, akhir);
 		
 		return ListEntityRestMessage.createListPembayaran(list);
@@ -81,6 +85,7 @@ public class PembayaranController extends AbstractController {
 	public @ResponseBody RestMessage getPayableTagihanByKode(@PathVariable String kode) throws ApplicationException, ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOneByKode(getPerusahaan(), kode);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
+		
 		return RestMessage.create(tagihan);
 	}
 	
@@ -88,6 +93,7 @@ public class PembayaranController extends AbstractController {
 	public @ResponseBody RestMessage getPayableTagihanByNama(@PathVariable String nama) throws ApplicationException, ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOneByNama(getPerusahaan(), nama);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
+		
 		return RestMessage.create(tagihan);
 	}
 	
@@ -95,6 +101,7 @@ public class PembayaranController extends AbstractController {
 	public @ResponseBody RestMessage getPayableTagihanById(@PathVariable Integer id) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(id);
 		Tagihan tagihan = pembayaranService.getPayableTagihan(pelanggan);
+		
 		return RestMessage.create(tagihan);
 	}
 
@@ -102,6 +109,7 @@ public class PembayaranController extends AbstractController {
 	public @ResponseBody RestMessage pay(@PathVariable Integer idPelanggan, @PathVariable Integer jumlah, @PathVariable Long total) throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(idPelanggan);
 		pembayaranService.pay(pelanggan, getPegawai(), total, jumlah);
+		
 		return RestMessage.success();
 	}
 	
@@ -110,6 +118,7 @@ public class PembayaranController extends AbstractController {
 		Pembayaran pembayaran = pembayaranService.getOne(id);
 		pembayaran.setJumlahBayar(total);
 		pembayaranService.updatePayment(pembayaran);
+		
 		return RestMessage.success();
 	}
 	
@@ -117,6 +126,7 @@ public class PembayaranController extends AbstractController {
 	public @ResponseBody RestMessage delete(@PathVariable Integer id) throws ApplicationException {
 		Pembayaran pembayaran = pembayaranService.getOne(id);
 		pembayaranService.delete(pembayaran);
+		
 		return RestMessage.success();
 	}
 

@@ -16,6 +16,7 @@ import com.unitedvision.tvkabel.util.RestMessage;
 @Controller
 @RequestMapping("/token")
 public class TokenController extends AbstractController {
+	
 	@Autowired
 	private TokenService tokenService;
 	

@@ -1,7 +1,10 @@
 package com.unitedvision.tvkabel.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
@@ -46,5 +49,9 @@ public abstract class AbstractController {
 		if (searchBy.toLowerCase().contains("nama"))
 			return pegawaiService.getOneByNama(perusahaan, query);
 		return pegawaiService.getOneByKode(perusahaan, query);
+	}
+	
+	protected Date toDate(String tanggal) {
+		return DateUtil.getDate(tanggal, "-");
 	}
 }

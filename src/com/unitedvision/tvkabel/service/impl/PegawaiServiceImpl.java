@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.entity.Pegawai.Status;
+import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
@@ -21,6 +22,13 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
 
+	@Override
+	public Pegawai add(Pegawai pegawai) throws ApplicationException {
+		pegawai.setStatus(Status.AKTIF);
+		
+		return save(pegawai);
+	}
+	
 	@Transactional(readOnly = false)
 	public Pegawai save(Pegawai pegawai) throws DataDuplicationException {
 		return pegawaiRepository.save(pegawai);
@@ -38,14 +46,14 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 	
 	@Override
-	public void remove(Integer id) throws EntityNotExistException, StatusChangeException {
-		remove(pegawaiRepository.findOne(id));
+	public Pegawai remove(Integer id) throws EntityNotExistException, StatusChangeException {
+		return remove(pegawaiRepository.findOne(id));
 	}
 
 	@Override
-	public void remove(Pegawai pegawai) throws EntityNotExistException, StatusChangeException {
+	public Pegawai remove(Pegawai pegawai) throws EntityNotExistException, StatusChangeException {
 		pegawai.remove();
-		pegawaiRepository.save(pegawai);
+		return pegawaiRepository.save(pegawai);
 	}
 
 	@Override

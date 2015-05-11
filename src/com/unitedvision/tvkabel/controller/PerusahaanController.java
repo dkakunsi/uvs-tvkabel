@@ -23,6 +23,7 @@ import com.unitedvision.tvkabel.util.RestMessage;
 @Controller
 @RequestMapping ("/perusahaan")
 public class PerusahaanController extends AbstractController {
+	
 	@Autowired
 	private PerusahaanService perusahaanService;
 
@@ -30,42 +31,49 @@ public class PerusahaanController extends AbstractController {
 	public @ResponseBody RestMessage registrasi(@RequestBody Perusahaan perusahaan, Map<String, Object> model) throws ApplicationException {
 		final Operator op = perusahaanService.regist(perusahaan);
 		model.put("operator", op);
+
 		return RestMessage.success();
 	}
 	
 	@RequestMapping(value = "/location/{id}/{latitude:.+}/{longitude:.+}", method = RequestMethod.PUT)
 	public @ResponseBody RestMessage setLocation(@PathVariable Integer id, @PathVariable float latitude, @PathVariable float longitude) throws ApplicationException {
 		perusahaanService.setMapLocation(getPerusahaan(), latitude, longitude);
+	
 		return RestMessage.success();
 	}
 
 	@RequestMapping (method = RequestMethod.POST)
 	public @ResponseBody RestMessage save(@RequestBody Perusahaan perusahaan) throws ApplicationException {
 		perusahaanService.save(perusahaan);
+		
 		return RestMessage.success();
 	}
 	
 	@RequestMapping (method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Perusahaan> getAll() throws ApplicationException {
 		List<Perusahaan> list = perusahaanService.getAll();
+		
 		return ListEntityRestMessage.createListPerusahaan(list);
 	}
 	
 	@RequestMapping (value = "/kode/{kode}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Perusahaan> getByKode(@PathVariable String kode) throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getByKode(kode);
+		
 		return EntityRestMessage.create(perusahaan);
 	}
 
 	@RequestMapping (value = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody EntityRestMessage<Perusahaan> get(@PathVariable Integer id) throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(id);
+		
 		return EntityRestMessage.create(perusahaan);
 	}
 	
 	@RequestMapping(value = "/rekap/{id}", method = RequestMethod.GET)
 	public @ResponseBody RestMessage getRekapPerusahaan(@PathVariable Integer id) throws ApplicationException {
 		Perusahaan perusahaan = perusahaanService.getOne(id);
+		
 		return RestMessage.create(createRekapPerusahaan(perusahaan));
 	}
 

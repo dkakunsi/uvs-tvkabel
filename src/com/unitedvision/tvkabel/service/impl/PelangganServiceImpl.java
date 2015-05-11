@@ -43,9 +43,16 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	@Transactional(readOnly = false)
+	public Pelanggan add(Pelanggan pelanggan) throws DataDuplicationException {
+		return save(pelanggan);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan save(Pelanggan pelanggan) throws DataDuplicationException {
 		if (pelanggan.isNew())
 			pelanggan.countTunggakan(); // Secara otomatis atribut tanggalMulai digunakan sebagai tagihan awal(pertama)
+
 		pelanggan = pelangganRepository.save(pelanggan);
 
 		return pelanggan;
@@ -64,61 +71,63 @@ public class PelangganServiceImpl implements PelangganService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(Pelanggan pelanggan) throws StatusChangeException {
-		pelanggan.remove();
+	public Pelanggan activate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
+		pelanggan.activate();
+		
 		pelangganRepository.save(pelanggan);
-	}
 
-	@Override
-	@Transactional(readOnly = false)
-	public void activate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
-		if (pelanggan.getStatus().equals(Status.AKTIF))
-			throw new StatusChangeException("Tidak mengaktivasi pelanggan. Karena pelanggan merupakan pelanggan aktif");
-		
-		pelanggan.setStatus(Status.AKTIF);
-		pelanggan.getDetail().setTanggalMulai(DateUtil.getNow());
-		pelanggan.getDetail().setTunggakan(0);
-		
-		pelangganRepository.save(pelanggan);
 		createHistory(pelanggan, Status.AKTIF, keterangan);
+		
+		return pelanggan;
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void passivate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
-		if (pelanggan.getStatus().equals(Status.BERHENTI))
-			throw new StatusChangeException("Tidak memutuskan pelanggan. Karena pelanggan merupakan pelanggan berhenti");
-
-		pelanggan.setStatus(Status.BERHENTI);
+	public Pelanggan passivate(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
+		pelanggan.passivate();
 		
 		pelangganRepository.save(pelanggan);
+
 		createHistory(pelanggan, Status.BERHENTI, keterangan);
+		
+		return pelanggan;
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void banned(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
-		if (pelanggan.getStatus().equals(Status.PUTUS))
-			throw new StatusChangeException("Tidak mem-banned pelanggan. Karena pelanggan merupakan pelanggan putus");
-
-		updateLastPayment(pelanggan);
-		pelanggan.setStatus(Status.PUTUS);
-		pelanggan.countTunggakan();
-
-		pelangganRepository.save(pelanggan);
-		createHistory(pelanggan, Status.PUTUS, keterangan);
-	}
-	
-	@Override
-	@Transactional(readOnly = false)
-	public void updateLastPayment(Pelanggan pelanggan) {
+	public Pelanggan banned(Pelanggan pelanggan, String keterangan) throws StatusChangeException, DataDuplicationException, EntityNotExistException {
 		Pembayaran last = pembayaranService.getLast(pelanggan);
 		pelanggan.setPembayaranTerakhir(last);
+		pelanggan.ban();
+
+		pelangganRepository.save(pelanggan);
+
+		createHistory(pelanggan, Status.PUTUS, keterangan);
+		
+		return pelanggan;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Pelanggan remove(Pelanggan pelanggan) throws StatusChangeException {
+		pelanggan.remove();
+
+		return pelangganRepository.save(pelanggan);
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void free(Pelanggan pelanggan, String keterangan) throws ApplicationException {
+	public Pelanggan updateLastPayment(Pelanggan pelanggan) {
+		Pembayaran last = pembayaranService.getLast(pelanggan);
+
+		pelanggan.setPembayaranTerakhir(last);
+		
+		return pelanggan;
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Pelanggan free(Pelanggan pelanggan, String keterangan) throws ApplicationException {
 		if (pelanggan.getStatus().equals(Status.GRATIS))
 			throw new StatusChangeException("Tidak menggratiskan pelanggan. Karena pelanggan merupakan pelanggan gratis");
 
@@ -126,9 +135,11 @@ public class PelangganServiceImpl implements PelangganService {
 
 		pelangganRepository.save(pelanggan);
 		createHistory(pelanggan, Status.GRATIS, keterangan);
+		
+		return pelanggan;
 	}
 	
-	public void createHistory(Pelanggan pelanggan, Status status, String keterangan) throws EntityNotExistException {
+	public History createHistory(Pelanggan pelanggan, Status status, String keterangan) throws EntityNotExistException {
 		History history = new History();
 		history.setPelanggan(pelanggan);
 		history.setStatus(status);
@@ -140,18 +151,19 @@ public class PelangganServiceImpl implements PelangganService {
 		history.setJumlahBerhenti(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.BERHENTI));
 		history.setJumlahGratis(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.GRATIS));
 
-		historyRepository.save(history);
+		return historyRepository.save(history);
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
+	public Pelanggan setMapLocation(Pelanggan pelanggan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = pelanggan.getAlamat();
 		alamat.getLokasi().setLatitude(latitude);;
 		alamat.getLokasi().setLongitude(longitude);
 		
 		pelanggan.setAlamat(alamat);
-		save(pelanggan);
+
+		return save(pelanggan);
 	}
 
 	@Override
@@ -165,6 +177,7 @@ public class PelangganServiceImpl implements PelangganService {
 	@Transactional(readOnly = false)
 	public void recountTunggakan(String tanggal) throws ApplicationException {
 		tanggal = DateUtil.getDayString(tanggal);
+
 		recountTunggakanStatusAktif(tanggal);
 		recountTunggakanStatusGratis(tanggal);
 	}
@@ -186,9 +199,10 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
-	public void recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException {
+	public Pelanggan recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException {
 		pelanggan.countTunggakan();
-		save(pelanggan);
+
+		return save(pelanggan);
 	};
 	
 	@Override

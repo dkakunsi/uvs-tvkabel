@@ -1,6 +1,8 @@
 package com.unitedvision.tvkabel.util;
 
+import com.unitedvision.tvkabel.entity.Alat;
 import com.unitedvision.tvkabel.entity.Domain;
+import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kota;
@@ -55,5 +57,13 @@ public class EntityRestMessage<T extends Domain> extends RestMessage {
 	
 	public static EntityRestMessage<Pembayaran> create(Pembayaran pembayaran) {
 		return new EntityRestMessage<Pembayaran>(pembayaran);
+	}
+	
+	public static EntityRestMessage<Alat> create(Alat alat) {
+		return new EntityRestMessage<Alat>(alat);
+	}
+	
+	public static EntityRestMessage<History> create(History history) {
+		return new EntityRestMessage<History>(history);
 	}
 }

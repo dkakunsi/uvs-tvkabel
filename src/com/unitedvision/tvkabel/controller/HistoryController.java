@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.unitedvision.tvkabel.entity.History;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.service.HistoryService;
-import com.unitedvision.tvkabel.util.DateUtil;
 import com.unitedvision.tvkabel.util.ListEntityRestMessage;
 
 @Controller
@@ -24,21 +23,21 @@ public class HistoryController extends AbstractController {
 	private HistoryService historyService;
 	
 	@RequestMapping(value = "/perusahaan/{tanggalAwal}/{tanggalAkhir}", method = RequestMethod.GET)
-	public @ResponseBody ListEntityRestMessage<History> get(@PathVariable("tanggalAwal") String awal, @PathVariable("tanggalAkhir") String akhir) throws ApplicationException {
-		final Date tanggalAwal = DateUtil.getDate(awal);
-		final Date tanggalAkhir = DateUtil.getDate(akhir);
+	public @ResponseBody ListEntityRestMessage<History> get(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir) throws ApplicationException {
+		final Date awal = toDate(tanggalAwal);
+		final Date akhir = toDate(tanggalAkhir);
 
-		List<History> list = historyService.get(getPerusahaan(), tanggalAwal, tanggalAkhir);
+		List<History> list = historyService.get(getPerusahaan(), awal, akhir);
 		
 		return ListEntityRestMessage.createListHistory(list);
 	}
 	
 	@RequestMapping(value = "/pelanggan/{idPelanggan}/{tanggalAwal}/{tanggalAkhir}", method = RequestMethod.GET)
-	public @ResponseBody ListEntityRestMessage<History> get(@PathVariable Integer idPelanggan, @PathVariable("tanggalAwal") String awal, @PathVariable("tanggalAkhir") String akhir) throws ApplicationException {
-		final Date tanggalAwal = DateUtil.getDate(awal);
-		final Date tanggalAkhir = DateUtil.getDate(akhir);
+	public @ResponseBody ListEntityRestMessage<History> get(@PathVariable Integer idPelanggan, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir) throws ApplicationException {
+		final Date awal = toDate(tanggalAwal);
+		final Date akhir = toDate(tanggalAkhir);
 
-		List<History> list = historyService.get(idPelanggan, tanggalAwal, tanggalAkhir);
+		List<History> list = historyService.get(idPelanggan, awal, akhir);
 		
 		return ListEntityRestMessage.createListHistory(list);
 	}
@@ -49,5 +48,4 @@ public class HistoryController extends AbstractController {
 		
 		return ListEntityRestMessage.createListHistory(list);
 	}
-	
 }
