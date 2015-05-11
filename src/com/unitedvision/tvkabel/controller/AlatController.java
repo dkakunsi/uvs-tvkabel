@@ -68,7 +68,7 @@ public class AlatController extends AbstractController {
 	
 	@RequestMapping(value = "/alamat/{idKelurahan}/{lingkungan}", method = RequestMethod.GET)
 	public @ResponseBody ListEntityRestMessage<Alat> getByAlamat(@PathVariable Integer idKelurahan, @PathVariable Integer lingkungan) throws ApplicationException {
-		List<Alat> list = alatService.getByAlamat(idKelurahan, lingkungan);
+		List<Alat> list = alatService.getByAlamat(getPerusahaan(), idKelurahan, lingkungan);
 		
 		return ListEntityRestMessage.createListAlat(list);
 	}

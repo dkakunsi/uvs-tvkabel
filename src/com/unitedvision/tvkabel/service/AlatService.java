@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unitedvision.tvkabel.entity.Alat;
 import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 
 public interface AlatService {
@@ -24,7 +25,7 @@ public interface AlatService {
 
 	List<Alat> getBySource(Alat alat) throws ApplicationException;
 
-	List<Alat> getByAlamat(Integer idKelurahan, Integer lingkungan) throws ApplicationException;
+	List<Alat> getByAlamat(Perusahaan perusahaan, Integer idKelurahan, Integer lingkungan) throws ApplicationException;
 
-	List<Alat> getByAlamat(Kelurahan kelurahan, Integer lingkungan) throws ApplicationException;
+	List<Alat> getByAlamat(Perusahaan perusahaan, Kelurahan kelurahan, Integer lingkungan) throws ApplicationException;
 }

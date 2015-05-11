@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS alat (
   kode varchar(50) NOT NULL,
   nama varchar(255) NOT NULL,
   tipe int(1) NOT NULL,
+  status int(1) NOT NULL,
   deskripsi varchar(255),
   id_kelurahan int(11) DEFAULT NULL,
   lingkungan int(2) DEFAULT NULL,

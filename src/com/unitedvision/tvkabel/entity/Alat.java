@@ -26,12 +26,18 @@ public class Alat extends CodableDomain {
 	private String deskripsi;
 	private Alat source;
 	private Alamat alamat;
+	private Status status;
 
 	private List<Alat> listAlat;
 	private List<Pelanggan> listPelanggan;
 	
 	public enum Tipe {
 		BOSTER
+	}
+	
+	public enum Status {
+		AKTIF,
+		REMOVE
 	}
 	
 	@Override
@@ -102,6 +108,15 @@ public class Alat extends CodableDomain {
 
 	public void setAlamat(Alamat alamat) {
 		this.alamat = alamat;
+	}
+
+	@Column(name = "status")
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@JsonIgnore
