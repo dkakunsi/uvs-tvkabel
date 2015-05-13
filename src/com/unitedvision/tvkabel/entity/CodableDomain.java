@@ -39,6 +39,8 @@ public abstract class CodableDomain extends Domain {
 	 * @return domain's code
 	 */
 	public String getKode() {
+		if (kode == null)
+			kode = "DEFAULT";
 		return kode.toUpperCase();
 	}
 

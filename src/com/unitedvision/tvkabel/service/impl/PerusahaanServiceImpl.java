@@ -102,6 +102,10 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	
 	private int getAvailableId() {
 		Perusahaan perusahaanEntity = perusahaanRepository.findFirstByOrderByIdDesc();
+		
+		if (perusahaanEntity == null)
+			return 1;
+		
 		return perusahaanEntity.getId() + 1;
 	}
 	

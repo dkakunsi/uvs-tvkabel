@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS unitedvision_tvkabel;
+CREATE DATABASE unitedvision_tvkabel;
 USE unitedvision_tvkabel;
 
 DROP TABLE IF EXISTS kota;
