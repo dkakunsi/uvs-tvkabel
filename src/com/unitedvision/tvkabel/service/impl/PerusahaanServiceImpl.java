@@ -47,6 +47,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 		return perusahaanRepository.save(perusahaan);
 	}
 
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		Perusahaan perusahaan = perusahaanRepository.getOne(id);
 		delete(perusahaan);
@@ -74,6 +75,7 @@ public class PerusahaanServiceImpl implements PerusahaanService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void setMapLocation(Perusahaan perusahaan, float latitude, float longitude) throws ApplicationException {
 		Alamat alamat = perusahaan.getAlamat();
 		alamat.getLokasi().setLatitude(latitude);

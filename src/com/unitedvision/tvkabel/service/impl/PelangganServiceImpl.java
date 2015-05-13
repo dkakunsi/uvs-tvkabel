@@ -60,6 +60,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		pelangganRepository.delete(id);
 	}
@@ -83,6 +84,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan activate(Integer id, String keterangan) throws ApplicationException {
 		Pelanggan pelanggan = getOne(id);
 		
@@ -102,6 +104,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan passivate(Integer id, String keterangan) throws ApplicationException {
 		Pelanggan pelanggan = getOne(id);
 		
@@ -123,6 +126,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan banned(Integer id, String keterangan) throws ApplicationException {
 		Pelanggan pelanggan = getOne(id);
 		
@@ -144,6 +148,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan free(Integer id, String keterangan) throws ApplicationException {
 		Pelanggan pelanggan = getOne(id);
 		
@@ -177,6 +182,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void updateTunggakan(Integer id, Integer tunggakan) throws DataDuplicationException, EntityNotExistException {
 		Pelanggan pelanggan = getOne(id);
 		pelanggan.setTunggakan(tunggakan);
@@ -184,6 +190,7 @@ public class PelangganServiceImpl implements PelangganService {
 		save(pelanggan);
 	}
 	
+	@Transactional(readOnly = false)
 	public History createHistory(Pelanggan pelanggan, Status status, String keterangan) throws EntityNotExistException {
 		History history = new History();
 		history.setPelanggan(pelanggan);
@@ -203,6 +210,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan setMapLocation(Integer id, float latitude, float longitude) throws ApplicationException {
 		Pelanggan pelanggan = getOne(id);
 		
@@ -222,6 +230,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void recountTunggakan() throws ApplicationException {
 		for (int i = 1; i <= 31; i++) {
 			recountTunggakan(Integer.toString(i));
@@ -254,6 +263,7 @@ public class PelangganServiceImpl implements PelangganService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pelanggan recountTunggakan(Pelanggan pelanggan) throws DataDuplicationException {
 		pelanggan.countTunggakan();
 

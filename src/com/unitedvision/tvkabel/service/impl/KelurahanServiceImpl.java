@@ -25,6 +25,7 @@ public class KelurahanServiceImpl implements KelurahanService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		kelurahanRepository.delete(id);
 	}

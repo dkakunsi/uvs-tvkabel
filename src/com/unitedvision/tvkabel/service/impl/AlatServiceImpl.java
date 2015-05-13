@@ -3,6 +3,8 @@ package com.unitedvision.tvkabel.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.Alat;
@@ -14,6 +16,8 @@ import com.unitedvision.tvkabel.repository.AlatRepository;
 import com.unitedvision.tvkabel.repository.KelurahanRepository;
 import com.unitedvision.tvkabel.service.AlatService;
 
+@Service
+@Transactional(readOnly = true)
 public class AlatServiceImpl implements AlatService {
 	
 	@Autowired
@@ -27,6 +31,7 @@ public class AlatServiceImpl implements AlatService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Alat add(Alat alat) throws ApplicationException {
 		alat.setStatus(Status.AKTIF);
 		
@@ -34,11 +39,13 @@ public class AlatServiceImpl implements AlatService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Alat save(Alat alat) throws ApplicationException {
 		return alatRepository.save(alat);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Alat remove(Integer id) throws ApplicationException {
 		Alat alat = get(id);
 		
@@ -46,6 +53,7 @@ public class AlatServiceImpl implements AlatService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Alat remove(Alat alat) throws ApplicationException {
 		alat.setStatus(Status.AKTIF);
 		
@@ -53,6 +61,7 @@ public class AlatServiceImpl implements AlatService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Alat subtitute(Integer idLama, Integer idBaru) throws ApplicationException {
 		Alat alatLama = get(idLama);
 		Alat alatBaru = get(idBaru);

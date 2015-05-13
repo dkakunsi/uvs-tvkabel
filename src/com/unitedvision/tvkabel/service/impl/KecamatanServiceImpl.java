@@ -25,6 +25,7 @@ public class KecamatanServiceImpl implements KecamatanService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		kecamatanRepository.delete(id);
 	}

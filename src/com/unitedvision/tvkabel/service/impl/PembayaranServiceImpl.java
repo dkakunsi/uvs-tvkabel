@@ -39,6 +39,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	private PembayaranRepository pembayaranRepository;
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void pay(Pelanggan pelanggan) throws ApplicationException {
 		Pegawai pegawai = pegawaiService.getOne(pelanggan.getPerusahaan());
 		
@@ -55,6 +56,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pembayaran pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws ApplicationException {
 		Pembayaran last;
 		if (jumlahBulan > 1) {
@@ -71,6 +73,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	};
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pembayaran payList(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws NotPayableCustomerException ,UnpaidBillException ,EntityNotExistException ,DataDuplicationException, EmptyIdException {
 		List<Pembayaran> listPembayaran = createListPembayaran(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
 		
@@ -104,6 +107,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pembayaran pay(Pembayaran pembayaran) throws NotPayableCustomerException, UnpaidBillException, EntityNotExistException, DataDuplicationException {
 		pembayaran = validateBeforePay(pembayaran);
 		pembayaran = pembayaranRepository.save(pembayaran);
@@ -137,11 +141,13 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pembayaran updatePayment(Pembayaran pembayaran) {
 		return pembayaranRepository.save(pembayaran);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pembayaran updatePayment(Integer id, Long total) throws EntityNotExistException {
 		Pembayaran pembayaran = getOne(id);
 		pembayaran.setJumlahBayar(total);
@@ -157,6 +163,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) throws ApplicationException {
 		Pembayaran pembayaran = pembayaranRepository.findOne(id);
 		delete(pembayaran);

@@ -24,6 +24,7 @@ public class KotaServiceImpl implements KotaService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		kotaRepository.delete(id);
 	}

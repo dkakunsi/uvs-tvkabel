@@ -23,6 +23,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	private PegawaiRepository pegawaiRepository;
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai add(Pegawai pegawai) throws ApplicationException {
 		pegawai.setStatus(Status.AKTIF);
 		
@@ -41,16 +42,19 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Integer id) {
 		pegawaiRepository.delete(id);
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai remove(Integer id) throws EntityNotExistException, StatusChangeException {
 		return remove(pegawaiRepository.findOne(id));
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai remove(Pegawai pegawai) throws EntityNotExistException, StatusChangeException {
 		pegawai.remove();
 		return pegawaiRepository.save(pegawai);
