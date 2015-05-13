@@ -59,6 +59,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 	@Transactional(readOnly = false)
 	public Pembayaran pay(Pelanggan pelanggan, Pegawai pegawai, long jumlahPembayaran, int jumlahBulan) throws ApplicationException {
 		Pembayaran last;
+		
 		if (jumlahBulan > 1) {
 			last = payList(pelanggan, pegawai, jumlahPembayaran, jumlahBulan);
 		} else {
@@ -88,11 +89,13 @@ public class PembayaranServiceImpl implements PembayaranService {
 		Tagihan tagihan = getPayableTagihan(pelanggan);
 
 		List<Pembayaran> listPembayaran = new ArrayList<>();
+		
 		//Add the first payment
 		listPembayaran.add(new Pembayaran(0, "", DateUtil.getNow(), pelanggan, pegawai, jumlahPembayaran, tagihan));
 
 		//Add the second and so on
 		for (int i = 2; i <= jumlahBulan; i++) {
+			
 			//increase tagihan as the second payment
 			tagihan = Tagihan.copy(tagihan);
 			tagihan.increase();
@@ -210,6 +213,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 		Month bulanAkhir = tagihanAkhir.getBulan();
 		
 		List<Pembayaran> merged;
+		
 		if (tahunAwal == tahunAkhir) {
 			merged = pembayaranRepository.findByPelangganAndTagihan_TahunAndTagihan_BulanBetween(pelanggan, tahunAwal, bulanAwal, bulanAkhir);
 		} else {
@@ -236,9 +240,11 @@ public class PembayaranServiceImpl implements PembayaranService {
 	public Pembayaran getLast(Pelanggan pelanggan) {
 		try {
 			Pembayaran pembayaran = pembayaranRepository.findFirstByPelangganOrderByIdDesc(pelanggan);
+			
 			if (pembayaran == null)
 				return null;
 			return pembayaran.copy();
+			
 		} catch (EmptyIdException e) { 
 			return null;
 		}
@@ -249,6 +255,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 		Pembayaran pembayaran = getLast(pelanggan);
 
 		Tagihan tagihan;
+		
 		if (pembayaran != null) {
 			Tagihan lastTagihan = pembayaran.getTagihan();
 			
@@ -278,6 +285,7 @@ public class PembayaranServiceImpl implements PembayaranService {
 		 * @throws EmptyIdException 
 		 */
 		public static List<Pembayaran> createEmptyListPembayaran() {
+			
 			List<Pembayaran> listPembayaran = new ArrayList<>();
 			
 			for (int i = Month.JANUARY.getValue(); i <= Month.DECEMBER.getValue(); i++) {
@@ -303,9 +311,11 @@ public class PembayaranServiceImpl implements PembayaranService {
 			Pembayaran pembayaranEntity = listPembayaran.get(0);
 			
 			if (pembayaranEntity.getBulan() != Month.JANUARY) {
+				
 				for (int i = Month.JANUARY.getValue(); i < pembayaranEntity.getBulan().getValue(); i++) {
 					listPembayaran.add(0, createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
 				}
+				
 			}
 		}
 		
@@ -318,9 +328,11 @@ public class PembayaranServiceImpl implements PembayaranService {
 			Pembayaran pembayaranEntity = listPembayaran.get(listPembayaran.size() - 1);
 
 			if (pembayaranEntity.getBulan() != Month.DECEMBER) {
+				
 				for (int i = pembayaranEntity.getBulan().getValue(); i < Month.DECEMBER.getValue(); i++) {
 					listPembayaran.add(createDefaultPembayaran(pembayaranEntity.getTahun(), pembayaranEntity.getBulan()));
 				}
+				
 			}
 		}
 		
@@ -361,14 +373,11 @@ public class PembayaranServiceImpl implements PembayaranService {
 		for (Pelanggan pelanggan : list) {
 			
 			List<Pembayaran> listPembayaran;
+			
 			try {
-				
 				listPembayaran = get(pelanggan, hariAwal, hariAkhir);
-				
 			} catch (EntityNotExistException e) {
-				
 				listPembayaran = new ArrayList<>();
-				
 			}
 			
 			pelanggan.setListPembayaran(listPembayaran);
@@ -389,15 +398,14 @@ public class PembayaranServiceImpl implements PembayaranService {
  		for (Pelanggan pelanggan : list) {
  			
  			List<Pembayaran> listPembayaran;
+ 			
 			try {
 				
 				listPembayaran = get(pelanggan, tahun);
 	 			PembayaranServiceImpl.Verifier.verifyListPembayaran(listPembayaran, tahun, pelanggan);
 	 			
 			} catch (EntityNotExistException e) {
-				
 				listPembayaran = PembayaranServiceImpl.Verifier.createEmptyListPembayaran();
-				
 			}
 			
  			pelanggan.setListPembayaran(listPembayaran); 
@@ -406,5 +414,4 @@ public class PembayaranServiceImpl implements PembayaranService {
  		 
  		return list; 
 	}
-
 }
