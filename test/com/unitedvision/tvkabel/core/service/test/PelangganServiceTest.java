@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.tvkabel.configuration.ApplicationConfig;
 import com.unitedvision.tvkabel.entity.Alamat;
+import com.unitedvision.tvkabel.entity.History;
+import com.unitedvision.tvkabel.entity.Kecamatan;
 import com.unitedvision.tvkabel.entity.Kelurahan;
 import com.unitedvision.tvkabel.entity.Kontak;
+import com.unitedvision.tvkabel.entity.Kota;
 import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Pembayaran;
@@ -28,15 +32,16 @@ import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.exception.StatusChangeException;
+import com.unitedvision.tvkabel.repository.KecamatanRepository;
+import com.unitedvision.tvkabel.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.repository.KotaRepository;
+import com.unitedvision.tvkabel.repository.PegawaiRepository;
 import com.unitedvision.tvkabel.repository.PelangganRepository;
-import com.unitedvision.tvkabel.service.KelurahanService;
-import com.unitedvision.tvkabel.service.PegawaiService;
+import com.unitedvision.tvkabel.service.HistoryService;
 import com.unitedvision.tvkabel.service.PelangganService;
 import com.unitedvision.tvkabel.service.PembayaranService;
 import com.unitedvision.tvkabel.service.PerusahaanService;
-import com.unitedvision.tvkabel.util.CodeUtil;
 import com.unitedvision.tvkabel.util.DateUtil;
-import com.unitedvision.tvkabel.util.CodeUtil.CodeGenerator;
 
 @RunWith (SpringJUnit4ClassRunner.class)
 @ContextConfiguration (classes = {ApplicationConfig.class})
@@ -46,35 +51,105 @@ public class PelangganServiceTest {
 	@Autowired
 	private PelangganService pelangganService;
 	@Autowired
-	private PegawaiService pegawaiService;
+	private PerusahaanService perusahaanService;
 	@Autowired
 	private PembayaranService pembayaranService;
 	@Autowired
-	private KelurahanService kelurahanService;
-	@Autowired
-	private PerusahaanService perusahaanService;
+	private HistoryService historyService;
 
 	@Autowired
-	private PelangganRepository pelangganRepo;
+	private PelangganRepository pelangganRepository;
+	@Autowired
+	private PegawaiRepository pegawaiRepository;
+	@Autowired
+	private KelurahanRepository kelurahanRepository;
+	@Autowired
+	private KotaRepository kotaRepository;
+	@Autowired
+	private KecamatanRepository kecamatanRepository;
+	
+	private Perusahaan perusahaan;
+	private Kelurahan kelurahan;
+	private Pelanggan pelanggan;
+	
+	@Before
+	public void setup() throws ApplicationException {
+		Kota kota = new Kota();
+		kota.setNama("Manado");
+		
+		kotaRepository.save(kota);
+		
+		Kecamatan kecamatan = new Kecamatan();
+		kecamatan.setKota(kota);
+		kecamatan.setNama("Mapanget");
+		
+		kecamatanRepository.save(kecamatan);
+		
+		kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
+		
+		kelurahanRepository.save(kelurahan);
+		
+		perusahaan = new Perusahaan();
+		perusahaan.setKode("DEFAULT");
+		perusahaan.setNama("TVK. Global Vision");
+		perusahaan.setNamaPT("PT. Aspetika Manasa SULUT");
+		perusahaan.setStatus(Perusahaan.Status.AKTIF);
+		
+		Alamat alamat = new Alamat();
+		alamat.setKelurahan(kelurahan);
+		alamat.setLingkungan(1);
+		perusahaan.setAlamat(alamat);
+		
+		Kontak kontak = new Kontak();
+		kontak.setEmail("admin@globalvision.com");
+		kontak.setHp("082323787878");
+		perusahaan.setKontak(kontak);
+		
+		perusahaan.generateKode(0);
+		
+		perusahaanService.regist(perusahaan);
+		
+        alamat = new Alamat();
+        alamat.setKelurahan(kelurahan);
+        alamat.setLingkungan(1);
+        
+        kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		Detail detail = new Detail(DateUtil.getNow(), 1, 50000, 0);
+
+		pelanggan = new Pelanggan();
+		pelanggan.setKode("0101001");
+		pelanggan.setPerusahaan(perusahaan);
+		pelanggan.setNama("Kel. Pelanggan");
+		pelanggan.setNomorBuku("1");
+		pelanggan.setAlamat(alamat);
+		pelanggan.setKontak(kontak);
+		pelanggan.setDetail(detail);
+		
+		pelangganService.add(pelanggan);
+	}
 	
 	@Test
 	public void insertPelanggan_Success() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
         Alamat alamat = new Alamat();
+        alamat.setKelurahan(kelurahan);
+        alamat.setLingkungan(1);
+        
         Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+		Detail detail = new Detail(DateUtil.getNow(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setKode("0101002");
+		pelanggan.setNama("Kel. Pelanggan 2");
+		pelanggan.setNomorBuku("2");
+		pelanggan.setAlamat(alamat);
+		pelanggan.setKontak(kontak);
+		pelanggan.setDetail(detail);
 		
-		Pelanggan pelanggan = newPelanggan;
-		Pelanggan saved = pelangganService.save(pelanggan);
-		
-		assertNotNull(saved);
+		pelangganService.add(pelanggan);
 
-		//Check Tanggal Mulai
-		Date date = saved.getTanggalMulai();
+		Date date = pelanggan.getTanggalMulai();
 		Date now = DateUtil.getSimpleNow();
 		assertEquals(DateUtil.getYear(now), DateUtil.getYear(date));
 		assertEquals(DateUtil.getMonth(now), DateUtil.getMonth(date));
@@ -83,17 +158,25 @@ public class PelangganServiceTest {
 
 	@Test
 	public void insertPelanggan_KodeException() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
         Alamat alamat = new Alamat();
+        alamat.setKelurahan(kelurahan);
+        alamat.setLingkungan(1);
+        
         Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+		Detail detail = new Detail(DateUtil.getNow(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, "XXX", perusahaan, "WS05001", "Belum Ada", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setKode("0101001");
+		pelanggan.setNama("Kel. Pelanggan 2");
+		pelanggan.setNomorBuku("2");
+		pelanggan.setAlamat(alamat);
+		pelanggan.setKontak(kontak);
+		pelanggan.setDetail(detail);
+		
+		pelangganService.add(pelanggan);
 
 		try {
-			pelangganService.save(newPelanggan);
+			pelangganService.save(pelanggan);
 		} catch (ApplicationException e) {
 			String message = e.getMessage();
 			assertEquals("Kode yang anda masukkan sudah digunakan.", message);
@@ -102,17 +185,25 @@ public class PelangganServiceTest {
 
 	@Test
 	public void insertPelanggan_NomorBukuException() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
         Alamat alamat = new Alamat();
+        alamat.setKelurahan(kelurahan);
+        alamat.setLingkungan(1);
+        
         Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+		Detail detail = new Detail(DateUtil.getNow(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, "---", perusahaan, "XXX", "Belum Ada", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setKode("0101002");
+		pelanggan.setNama("Kel. Pelanggan 2");
+		pelanggan.setNomorBuku("1");
+		pelanggan.setAlamat(alamat);
+		pelanggan.setKontak(kontak);
+		pelanggan.setDetail(detail);
 		
+		pelangganService.add(pelanggan);
+
 		try {
-			pelangganService.save(newPelanggan);
+			pelangganService.save(pelanggan);
 		} catch (ApplicationException e) {
 			String message = e.getMessage();
 			assertEquals("Nomor Buku yang anda masukkan sudah digunakan.", message);
@@ -121,17 +212,25 @@ public class PelangganServiceTest {
 
 	@Test
 	public void insertPelanggan_NamaException() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
         Alamat alamat = new Alamat();
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
+        alamat.setKelurahan(kelurahan);
+        alamat.setLingkungan(1);
+        
+        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
+		Detail detail = new Detail(DateUtil.getNow(), 1, 50000, 0);
 
-		Pelanggan newPelanggan = new Pelanggan(0, "-------", perusahaan, "---", "Kel. Walewangko-Mandagi", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
+		Pelanggan pelanggan = new Pelanggan();
+		pelanggan.setKode("0101002");
+		pelanggan.setNama("Kel. Pelanggan");
+		pelanggan.setNomorBuku("2");
+		pelanggan.setAlamat(alamat);
+		pelanggan.setKontak(kontak);
+		pelanggan.setDetail(detail);
 		
+		pelangganService.add(pelanggan);
+
 		try {
-			pelangganService.save(newPelanggan);
+			pelangganService.save(pelanggan);
 		} catch (ApplicationException e) {
 			String message = e.getMessage();
 			assertEquals("Nama yang anda masukkan sudah digunakan.", message);
@@ -139,208 +238,138 @@ public class PelangganServiceTest {
 	}
 
 	@Test
-	@Ignore
-	public void updatePelanggan_Success() throws ApplicationException { }
-
-	@Test
-	public void updatePelanggan_KodeException() throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		pelanggan.setKode("WS02018");
-		pelangganService.save(pelanggan);
-	}
-
-	@Test
-	public void updatePelanggan_NomorBukuException() throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		pelanggan.setNomorBuku("17");
-		pelangganService.save(pelanggan);
-	}
-
-	@Test
-	public void updatePelanggan_NamaException() throws ApplicationException {
-		Pelanggan pelanggan = pelangganService.getOne(35);
-		pelanggan.setNama("Engelbert Koagow");
-		pelangganService.save(pelanggan);
-	}
-
-	@Test
 	public void bannedWorks() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getOne(17);
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		assertNotNull(saved);
-
-		//BANNED PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.banned(pelanggan, "BANNED");
-
-		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
+		String keterangan = "Menunggak";
+		pelangganService.banned(pelanggan, keterangan);
 
 		Assert.assertEquals(Status.PUTUS, pelanggan.getStatus());
-		Assert.assertEquals(2, pelangganBanned.getTunggakan());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
+		
+		List<History> listHistory = historyService.get(pelanggan);
+		
+		assertNotEquals(0, listHistory.size());
+		assertEquals(keterangan, listHistory.get(0).getKeterangan());
 	}
 	
 	@Test(expected = StatusChangeException.class)
 	public void banBannedPelanggan() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(DateUtil.getDate("12/1/2014"), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		
-		assertNotNull(saved);
-
-		//BANNED PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.banned(pelanggan, "BANNED");
-
-		Pelanggan pelangganBanned = pelangganService.getOne(pelanggan.getId());
+		pelangganService.banned(pelanggan, "Menunggakan");
 
 		Assert.assertEquals(Status.PUTUS, pelanggan.getStatus());
-		Assert.assertEquals(1, pelangganBanned.getTunggakan());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
 
 		//REBEND PROCESS
-		pelanggan.setStatus(Status.PUTUS);
-		
 		pelangganService.banned(pelanggan, "BANNED");
 	}
 	
 	@Test
 	public void passivateWorks() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		
-		assertNotNull(saved);
-
-		//PASSIVATE PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.passivate(pelanggan, "BANNED");
-
-		Pelanggan pelangganPassive = pelangganService.getOne(pelanggan.getId());
+		String keterangan = "Pindah Rumah";
+		
+		pelangganService.passivate(pelanggan, keterangan);
 
 		Assert.assertEquals(Status.BERHENTI, pelanggan.getStatus());
-		Assert.assertEquals(pelanggan.getTunggakan(), pelangganPassive.getTunggakan());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
+		
+		List<History> listHistory = historyService.get(pelanggan);
+		
+		assertNotEquals(0, listHistory.size());
+		assertEquals(keterangan, listHistory.get(0).getKeterangan());
 	}
 
 	@Test(expected = StatusChangeException.class)
 	public void passivatePassivePelanggan() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-        Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		
-		assertNotNull(saved);
-
-		//PASSIVATE PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.passivate(pelanggan, "BANNED");
-
-		Pelanggan pelangganPassive = pelangganService.getOne(pelanggan.getId());
+		pelangganService.passivate(pelanggan, "Pindah Rumah");
 
 		Assert.assertEquals(Status.BERHENTI, pelanggan.getStatus());
-		Assert.assertEquals(pelanggan.getTunggakan(), pelangganPassive.getTunggakan());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
 
 		//REPASSIVATE PROCESS
-		Pelanggan repassivatePelanggan = pelangganService.getOne(pelangganPassive.getId());
-		repassivatePelanggan.setStatus(Status.BERHENTI);
-		
-		pelangganService.passivate(repassivatePelanggan, "BANNED");
+		pelangganService.passivate(pelanggan, "PASSIVATED");
 	}
 
 	@Test
 	public void activateWorks() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		
-		assertNotNull(saved);
-
-		//ACTIVATE PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.BERHENTI);
 		
-		pelangganService.activate(pelanggan, "ACTIVE");
-
-		Pelanggan pelangganActive = pelangganService.getOne(pelanggan.getId());
+		String keterangan = "Gabung Lagi";
+		
+		pelangganService.activate(pelanggan, keterangan);
 
 		Assert.assertEquals(Status.AKTIF, pelanggan.getStatus());
-		Assert.assertEquals(0, pelangganActive.getTunggakan());
-		Assert.assertEquals(DateUtil.getSimpleNow().getTime(), DateUtil.getSimpleDate(pelangganActive.getTanggalMulai()).getTime());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
+		Assert.assertEquals(DateUtil.getSimpleNow().getTime(), DateUtil.getSimpleDate(pelanggan.getTanggalMulai()).getTime());
+		
+		List<History> listHistory = historyService.get(pelanggan);
+		
+		assertNotEquals(0, listHistory.size());
+		assertEquals(keterangan, listHistory.get(0).getKeterangan());
 	}
 	
 	@Test(expected = StatusChangeException.class)
 	public void activateActivePelanggan() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getByKode("COM1");
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-        Alamat alamat = new Alamat();
-		Kontak kontak = new Kontak("823586", "081377653421", "email@gmail.com");
-		Detail detail = new Detail(new Date(), 1, 50000, 0);
-
-		Pelanggan newPelanggan = new Pelanggan(0, "1", perusahaan, "PLGT", "Pelanggan Test", "Pengamen",
-				kelurahan, alamat, kontak, detail, Status.AKTIF);
-		
-		Pelanggan saved = pelangganService.save(newPelanggan);
-		
-		assertNotNull(saved);
-
-		//ACTIVATE PROCESS
-		Pelanggan pelanggan = pelangganService.getOne(saved.getId());
 		pelanggan.setStatus(Status.BERHENTI);
 		
-		pelangganService.activate(pelanggan, "BANNED");
-
-		Pelanggan pelangganActive = pelangganService.getOne(pelanggan.getId());
+		pelangganService.activate(pelanggan, "Gabung Lagi");
 
 		Assert.assertEquals(Status.AKTIF, pelanggan.getStatus());
-		Assert.assertEquals(0, pelangganActive.getTunggakan());
-		Assert.assertEquals(DateUtil.getSimpleNow().getTime(), DateUtil.getSimpleDate(pelangganActive.getTanggalMulai()).getTime());
+		Assert.assertEquals(0, pelanggan.getTunggakan());
+		Assert.assertEquals(DateUtil.getSimpleNow().getTime(), DateUtil.getSimpleDate(pelanggan.getTanggalMulai()).getTime());
 
 		//REACTIVATE PROCESS
-		Pelanggan reactivatePelanggan = pelangganService.getOne(pelangganActive.getId());
-		reactivatePelanggan.setStatus(Status.AKTIF);
+		pelanggan.setStatus(Status.AKTIF);
 		
-		pelangganService.activate(reactivatePelanggan, "BANNED");
+		pelangganService.activate(pelanggan, "BANNED");
+	}
+	
+	@Test
+	public void testGetByPerusahaanAndKodeAndStatus() throws ApplicationException {
+		assertNotEquals(0, pelangganRepository.count());
+
+		String kode = "0101001";
+		Status status = Status.AKTIF;
+
+		assertEquals(kode, pelanggan.getKode());
+		assertEquals(status, pelanggan.getStatus());
+		
+		List<Pelanggan> list = pelangganService.getByKode(perusahaan, kode, status);
+		
+		assertNotEquals(0, list.size());
+	}
+
+	@Test (expected = EntityNotExistException.class)
+	public void testGetOne() throws EntityNotExistException {
+		Pelanggan pelanggan = pelangganService.getOne(0);
+		
+		assertNotNull(pelanggan);
+	}
+	
+	@Test (expected = EntityNotExistException.class)
+	public void testGet() throws ApplicationException {
+		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.REMOVED);
+		
+		assertNotNull(listPelanggan);
+		assertNotEquals(0, listPelanggan.size());
+	}
+	
+	@Test
+	public void testGetByTanggal_Like() throws ApplicationException {
+		String tanggal = "13";
+		tanggal = DateUtil.getDayString(tanggal);
+		
+		List<Pelanggan> listPelanggan = pelangganService.get(Status.AKTIF, tanggal);
+		
+		assertNotNull(listPelanggan);
+		assertNotEquals(0, listPelanggan.size());
+		assertEquals(1, listPelanggan.size());
 	}
 
 	@Test
@@ -359,6 +388,7 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRecountTunggakan() throws ApplicationException {
 		Pelanggan pelanggan = pelangganService.getOne(35);
 		
@@ -370,91 +400,13 @@ public class PelangganServiceTest {
 	}
 	
 	@Test
-	public void testGetByPerusahaanAndKodeAndStatus() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getOne(17);
-		String kode = "WS01";
-		Status status = Status.AKTIF;
-
-		List<? extends Pelanggan> list = pelangganService.getByKode(perusahaan, kode, status);
-		
-		assertNotEquals(0, list.size());
-	}
-	
-	@Test
 	@Ignore
-	public void testResetKode() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getOne(17);
-		Kelurahan kelurahan = kelurahanService.getOne(22);
-		
-		pelangganService.resetKode(perusahaan, kelurahan, 1);
-
-		Pelanggan pelanggan = pelangganService.getOne(70);
-		assertEquals("WS01001", pelanggan.getKode());
-
-		Pelanggan pelanggan2 = pelangganService.getOne(74);
-		assertEquals("WS01002", pelanggan2.getKode());
-
-		Pelanggan pelanggan3 = pelangganService.getOne(95);
-		assertEquals("WS01003", pelanggan3.getKode());
-
-		Pelanggan pelanggan4 = pelangganService.getOne(110);
-		assertEquals("WS01004", pelanggan4.getKode());
-
-		Pelanggan pelanggan5 = pelangganService.getOne(162);
-		assertEquals("WS01005", pelanggan5.getKode());
-
-		Pelanggan pelanggan6 = pelangganService.getOne(214);
-		assertEquals("WS01010", pelanggan6.getKode());
-	}
-	
-	@Test
-	public void testResetKode_Pelanggan() throws ApplicationException {
-		CodeUtil.CodeGenerator codeGenerator = new CodeGenerator();
-
-		Pelanggan pelanggan = pelangganService.getOne(37);
-		String generatedKode = codeGenerator.createKode(pelanggan);
-		assertNotEquals(generatedKode, pelanggan.getKode());
-		
-		pelanggan.setKode(generatedKode);
-		Pelanggan pelangganUpdated = pelangganService.getOne(37);
-		assertEquals(generatedKode, pelangganUpdated.getKode());
-	}
-	
-	@Test (expected = EntityNotExistException.class)
-	public void testGetOne() throws EntityNotExistException {
-		Pelanggan pelanggan = pelangganService.getOne(0);
-		
-		assertNotNull(pelanggan);
-	}
-	
-	@Test (expected = EntityNotExistException.class)
-	public void testGet() throws ApplicationException {
-		Perusahaan perusahaan = perusahaanService.getOne(17);
-		List<Pelanggan> listPelanggan = pelangganService.get(perusahaan, Status.REMOVED);
-		
-		assertNotNull(listPelanggan);
-		assertNotEquals(0, listPelanggan.size());
-	}
-	
-	@Test
-	public void testGetByTanggal_Like() throws ApplicationException {
-		String tanggal = "22";
-		tanggal = DateUtil.getDayString(tanggal);
-		
-		List<Pelanggan> listPelanggan = pelangganService.get(Status.AKTIF, tanggal);
-		
-		assertNotNull(listPelanggan);
-		assertNotEquals(0, listPelanggan.size());
-		assertEquals(1, listPelanggan.size());
-	}
-	
-	@Test
 	public void testRecountTunggakan_WithTanggal() throws ApplicationException {
-		String tanggal = "1";
+		String tanggal = "13";
 		
 		pelangganService.recountTunggakan(tanggal);
 
-		Pegawai pegawai = pegawaiService.getOne(14);
+		Pegawai pegawai = pegawaiRepository.getOne(14);
 		Date now = DateUtil.getNow();
 		List<Pembayaran> listPembayaran = pembayaranService.get(pegawai, now, now);
 		

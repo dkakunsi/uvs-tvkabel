@@ -45,6 +45,8 @@ public class PelangganServiceImpl implements PelangganService {
 	@Override
 	@Transactional(readOnly = false)
 	public Pelanggan add(Pelanggan pelanggan) throws DataDuplicationException {
+		pelanggan.setStatus(Status.AKTIF);
+		
 		return save(pelanggan);
 	}
 

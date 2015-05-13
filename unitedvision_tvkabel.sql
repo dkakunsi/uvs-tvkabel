@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS pelanggan (
   id int(11) NOT NULL AUTO_INCREMENT,
   kode varchar(100) NOT NULL,
   nomor_buku varchar(11) DEFAULT '0',
-  id_perusahaan int(11) DEFAULT NULL,
+  id_perusahaan int(11) NOT NULL,
   nama varchar(255) NOT NULL,
   profesi varchar(255) DEFAULT NULL,
   id_kelurahan int(11) DEFAULT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS pelanggan (
   UNIQUE KEY nomor (nomor_buku, id_perusahaan),
   KEY id_kelurahan (id_kelurahan),
   KEY id_perusahaan (id_perusahaan),
-  FOREIGN KEY perusahaan (id_perusahaan) REFERENCES perusahaan(id) ON DELETE SET NULL,
+  FOREIGN KEY perusahaan (id_perusahaan) REFERENCES perusahaan(id) ON DELETE CASCADE,
   FOREIGN KEY kelurahan (id_kelurahan) REFERENCES kelurahan(id) ON DELETE SET NULL,
   FOREIGN KEY source (id_source) REFERENCES alat(id) ON DELETE SET NULL
 ) ENGINE=InnoDb;
