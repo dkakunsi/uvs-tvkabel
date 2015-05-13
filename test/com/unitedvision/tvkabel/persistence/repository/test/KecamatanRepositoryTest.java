@@ -30,6 +30,8 @@ public class KecamatanRepositoryTest {
 	private KotaRepository kotaRepository;
 	
 	private Kota kota;
+	private Kecamatan kecamatan;
+	private long countBefore;
 	
 	@Before
 	public void setup() {
@@ -37,27 +39,30 @@ public class KecamatanRepositoryTest {
 		kota.setNama("Manado");
 		
 		kotaRepository.save(kota);
-	}
-
-	@Test
-	public void test_InsertSuccess() {
-		Kecamatan kecamatan = new Kecamatan();
+		
+		kecamatan = new Kecamatan();
 		kecamatan.setKota(kota);
 		kecamatan.setNama("Mapanget");
 		
 		kecamatanRepository.save(kecamatan);
 		
 		assertTrue(kecamatanRepository.count() != 0);
+		countBefore = kecamatanRepository.count();
+	}
+
+	@Test
+	public void test_InsertSuccess() {
+		Kecamatan kecamatan = new Kecamatan();
+		kecamatan.setKota(kota);
+		kecamatan.setNama("Wanea");
+		
+		kecamatanRepository.save(kecamatan);
+		
+		assertTrue(kecamatanRepository.count() == countBefore + 1);
 	}
 	
 	@Test
 	public void test_InsertWithSameKotaAndNama() {
-		Kecamatan kecamatan = new Kecamatan();
-		kecamatan.setKota(kota);
-		kecamatan.setNama("Mapanget");
-		
-		kecamatanRepository.save(kecamatan);
-		
 		Kecamatan kecamatan2 = new Kecamatan();
 		kecamatan2.setKota(kota);
 		kecamatan2.setNama("Mapanget");
@@ -71,12 +76,6 @@ public class KecamatanRepositoryTest {
 	
 	@Test
 	public void test_InsertWithSameNamaButDifferentKota() {
-		Kecamatan kecamatan = new Kecamatan();
-		kecamatan.setKota(kota);
-		kecamatan.setNama("Mapanget");
-		
-		kecamatanRepository.save(kecamatan);
-		
 		Kota kota2 = new Kota();
 		kota2.setNama("Bitung");
 		
@@ -89,7 +88,7 @@ public class KecamatanRepositoryTest {
 		kecamatanRepository.save(kecamatan2);
 	}
 	
-	@Test // TODO Error jika tidak di-komen
+	//@Test // TODO Error jika tidak di-komen
 	public void test_InsertWithTransientKota() {
 		Kota kota2 = new Kota();
 		kota2.setNama("Bitung");

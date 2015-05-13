@@ -25,6 +25,8 @@ import com.unitedvision.tvkabel.entity.Pegawai.Kredensi;
 import com.unitedvision.tvkabel.entity.Pegawai.Role;
 import com.unitedvision.tvkabel.entity.Pegawai.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EmptyCodeException;
+import com.unitedvision.tvkabel.exception.EmptyIdException;
 import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.repository.KecamatanRepository;
 import com.unitedvision.tvkabel.repository.KelurahanRepository;
@@ -49,9 +51,10 @@ public class PegawaiRepositoryTest {
 	private PegawaiRepository pegawaiRepository;
 
 	private Perusahaan perusahaan;
+	private Pegawai pegawai;
 	
 	@Before
-	public void setup() {
+	public void setup() throws ApplicationException {
 		Kota kota = new Kota();
 		kota.setNama("Manado");
 		
@@ -87,35 +90,35 @@ public class PegawaiRepositoryTest {
 		perusahaan.generateKode(0);
 		
 		perusahaanRepository.save(perusahaan);
+		
+		pegawai = new Pegawai();
+		pegawai.setId(0);
+		pegawai.setKode("01001");
+		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
+		pegawai.setNama("ADMIN");
+		pegawai.setPerusahaan(perusahaan);
+		pegawai.setStatus(Pegawai.Status.AKTIF);
+
+		pegawaiRepository.save(pegawai);
 	}
 	
 	@Test
 	public void test_InsertSuccess() throws ApplicationException {
 		Pegawai pegawai = new Pegawai();
 		pegawai.setId(0);
-		pegawai.setKode("01001");
-		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
-		pegawai.setNama("ADMIN");
+		pegawai.setKode("01002");
+		pegawai.setKredensi(new Kredensi("user", "admin", Role.OPERATOR));
+		pegawai.setNama("USER");
 		pegawai.setPerusahaan(perusahaan);
 		pegawai.setStatus(Pegawai.Status.AKTIF);
 
 		pegawaiRepository.save(pegawai);
 		
-		assertTrue(pegawaiRepository.count() != 0);
+		assertTrue(pegawaiRepository.count() == 2);
 	}
 	
 	@Test
 	public void test_InsertWithSameUsername() throws ApplicationException {
-		Pegawai pegawai = new Pegawai();
-		pegawai.setId(0);
-		pegawai.setKode("01001");
-		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
-		pegawai.setNama("ADMIN");
-		pegawai.setPerusahaan(perusahaan);
-		pegawai.setStatus(Pegawai.Status.AKTIF);
-
-		pegawaiRepository.save(pegawai);
-
 		Pegawai pegawai2 = new Pegawai();
 		pegawai2.setId(0);
 		pegawai2.setKode("01002");
@@ -135,16 +138,6 @@ public class PegawaiRepositoryTest {
 	
 	@Test
 	public void test_InsertWithSameKode() throws ApplicationException {
-		Pegawai pegawai = new Pegawai();
-		pegawai.setId(0);
-		pegawai.setKode("01001");
-		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
-		pegawai.setNama("ADMIN");
-		pegawai.setPerusahaan(perusahaan);
-		pegawai.setStatus(Pegawai.Status.AKTIF);
-
-		pegawaiRepository.save(pegawai);
-		
 		Pegawai pegawai2 = new Pegawai();
 		pegawai2.setId(0);
 		pegawai2.setKode("01001");
@@ -164,16 +157,6 @@ public class PegawaiRepositoryTest {
 	
 	@Test
 	public void test_InsertWithSameNama() throws ApplicationException {
-		Pegawai pegawai = new Pegawai();
-		pegawai.setId(0);
-		pegawai.setKode("01001");
-		pegawai.setKredensi(new Kredensi("admin", "admin", Role.OPERATOR));
-		pegawai.setNama("ADMIN");
-		pegawai.setPerusahaan(perusahaan);
-		pegawai.setStatus(Pegawai.Status.AKTIF);
-
-		pegawaiRepository.save(pegawai);
-		
 		Pegawai pegawai2 = new Pegawai();
 		pegawai2.setId(0);
 		pegawai2.setKode("01001");
@@ -192,14 +175,14 @@ public class PegawaiRepositoryTest {
 	}
 
 	@Test
-	public void testFindByUsernameAndStatusAndKredensi_Role() throws EntityNotExistException {
-		String username = "john";
+	public void testFindByUsernameAndStatus() throws EntityNotExistException, EmptyIdException, EmptyCodeException {
+		String username = "admin";
 		Status status = Status.AKTIF;
 		
-		Pegawai pegawai = pegawaiRepository.findByKredensi_UsernameAndStatus(username, status);
+		Pegawai pegawaiLoaded = pegawaiRepository.findByKredensi_UsernameAndStatus(username, status);
 
-		assertNotNull(pegawai);
-		assertEquals(14, pegawai.getId());
+		assertNotNull(pegawaiLoaded);
+		assertEquals(pegawai.getId(), pegawaiLoaded.getId());
 	}
 
 	@Test (expected = EntityNotExistException.class)
@@ -212,9 +195,8 @@ public class PegawaiRepositoryTest {
 	
 	@Test
 	public void testCountByPerusahaanAndStatusAndKodeContaining() {
-		Perusahaan perusahaan = perusahaanRepository.findOne(17);
 		Status status = Status.AKTIF;
-		String kode = "PG";
+		String kode = "01";
 		
 		long hasil = pegawaiRepository.countByPerusahaanAndStatusAndKodeContaining(perusahaan, status, kode);
 		
@@ -223,9 +205,8 @@ public class PegawaiRepositoryTest {
 
 	@Test
 	public void testCountByPerusahaanAndStatusAndNamaContaining() {
-		Perusahaan perusahaan = perusahaanRepository.findOne(17);
 		Status status = Status.AKTIF;
-		String nama = "John";
+		String nama = "ADMIN";
 		
 		long hasil = pegawaiRepository.countByPerusahaanAndStatusAndNamaContaining(perusahaan, status, nama);
 		

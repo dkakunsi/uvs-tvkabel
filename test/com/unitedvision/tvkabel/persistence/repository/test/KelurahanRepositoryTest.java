@@ -36,6 +36,7 @@ public class KelurahanRepositoryTest {
 	
 	private Kecamatan kecamatan;
 	private Kota kota;
+	private Kelurahan kelurahan;
 	
 	@Before
 	public void setup() {
@@ -49,25 +50,25 @@ public class KelurahanRepositoryTest {
 		kecamatan.setNama("Mapanget");
 		
 		kecamatanRepository.save(kecamatan);
+		
+		kelurahan = new Kelurahan();
+		kelurahan.setKecamatan(kecamatan);
+		kelurahan.setNama("Paniki Bawah");
+		
+		kelurahanRepository.save(kelurahan);
 	}
 	
 	@Test
 	public void test_InsertSuccess() {
 		Kelurahan kelurahan = new Kelurahan();
 		kelurahan.setKecamatan(kecamatan);
-		kelurahan.setNama("Paniki Bawah");
+		kelurahan.setNama("Paniki Atas");
 		
 		kelurahanRepository.save(kelurahan);
 	}
 
 	@Test
 	public void test_InsertWithSameKecamatanAndNama() {
-		Kelurahan kelurahan = new Kelurahan();
-		kelurahan.setKecamatan(kecamatan);
-		kelurahan.setNama("Paniki Bawah");
-		
-		kelurahanRepository.save(kelurahan);
-		
 		Kelurahan kelurahan2 = new Kelurahan();
 		kelurahan2.setKecamatan(kecamatan);
 		kelurahan2.setNama("Paniki Bawah");
@@ -81,12 +82,6 @@ public class KelurahanRepositoryTest {
 
 	@Test
 	public void test_InsertWithSameNamaButDifferentKecamatan() {
-		Kelurahan kelurahan = new Kelurahan();
-		kelurahan.setKecamatan(kecamatan);
-		kelurahan.setNama("Paniki Bawah");
-		
-		kelurahanRepository.save(kelurahan);
-
 		Kecamatan kecamatan2 = new Kecamatan();
 		kecamatan2.setKota(kota);
 		kecamatan2.setNama("Wanea");

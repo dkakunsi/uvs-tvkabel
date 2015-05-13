@@ -43,7 +43,7 @@ public class KotaRepositoryTest {
 		kotaRepository.save(kota);
 		
 		Kota kota2 = new Kota();
-		kota.setNama("MAnado");
+		kota.setNama("Manado");
 		
 		try {
 			kotaRepository.save(kota2);
