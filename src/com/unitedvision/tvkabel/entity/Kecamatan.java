@@ -104,6 +104,20 @@ public final class Kecamatan extends Region {
 	public void setListKelurahan(List<Kelurahan> listKelurahan) {
 		this.listKelurahan = listKelurahan;
 	}
+	
+	public Kelurahan addKelurahan(Kelurahan kelurahan) {
+		getListKelurahan().add(kelurahan);
+		kelurahan.setKecamatan(this);
+		
+		return kelurahan;
+	}
+	
+	public Kelurahan removeKelurahan(Kelurahan kelurahan) {
+		getListKelurahan().remove(kelurahan);
+		kelurahan.setKecamatan(null);
+		
+		return kelurahan;
+	}
 
 	@JsonIgnore
 	@Transient

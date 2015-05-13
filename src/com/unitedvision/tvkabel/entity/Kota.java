@@ -87,6 +87,20 @@ public final class Kota extends Region {
 	public void setListKecamatan(List<Kecamatan> listKecamatan) {
 		this.listKecamatan = listKecamatan;
 	}
+	
+	public Kecamatan addKecamatan(Kecamatan kecamatan) {
+		getListKecamatan().add(kecamatan);
+		kecamatan.setKota(this);
+		
+		return kecamatan;
+	}
+	
+	public Kecamatan removeKecamatan(Kecamatan kecamatan) {
+		getListKecamatan().remove(kecamatan);
+		kecamatan.setKota(null);
+		
+		return kecamatan;
+	}
 
 	@Override
 	public int hashCode() {

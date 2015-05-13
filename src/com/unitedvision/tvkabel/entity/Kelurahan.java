@@ -109,6 +109,20 @@ public final class Kelurahan extends Region {
 	public void setListPerusahaan(List<Perusahaan> listPerusahaan) {
 		this.listPerusahaan = listPerusahaan;
 	}
+	
+	public Perusahaan addPerusahaan(Perusahaan perusahaan) {
+		getListPerusahaan().add(perusahaan);
+		perusahaan.getAlamat().setKelurahan(this);
+		
+		return perusahaan;
+	}
+	
+	public Perusahaan removePerusahaan(Perusahaan perusahaan) {
+		getListPerusahaan().remove(perusahaan);
+		perusahaan.getAlamat().setKelurahan(null);
+		
+		return perusahaan;
+	}
 
 	/**
 	 * Returns the list of {@link Pelanggan} instances.
@@ -129,6 +143,20 @@ public final class Kelurahan extends Region {
 	 */
 	public void setListPelanggan(List<Pelanggan> listPelanggan) {
 		this.listPelanggan = listPelanggan;
+	}
+	
+	public Pelanggan addPelanggan(Pelanggan pelanggan) {
+		getListPelanggan().add(pelanggan);
+		pelanggan.getAlamat().setKelurahan(this);
+		
+		return pelanggan;
+	}
+	
+	public Pelanggan removePelanggan(Pelanggan pelanggan) {
+		getListPelanggan().remove(pelanggan);
+		pelanggan.getAlamat().setKelurahan(null);
+		
+		return pelanggan;
 	}
 	
 	@JsonIgnore

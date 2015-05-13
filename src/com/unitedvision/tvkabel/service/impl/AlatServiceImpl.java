@@ -10,10 +10,13 @@ import com.unitedvision.tvkabel.entity.Alamat;
 import com.unitedvision.tvkabel.entity.Alat;
 import com.unitedvision.tvkabel.entity.Alat.Status;
 import com.unitedvision.tvkabel.entity.Kelurahan;
+import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Perusahaan;
 import com.unitedvision.tvkabel.exception.ApplicationException;
+import com.unitedvision.tvkabel.exception.EntityNotExistException;
 import com.unitedvision.tvkabel.repository.AlatRepository;
 import com.unitedvision.tvkabel.repository.KelurahanRepository;
+import com.unitedvision.tvkabel.repository.PelangganRepository;
 import com.unitedvision.tvkabel.service.AlatService;
 
 @Service
@@ -24,6 +27,8 @@ public class AlatServiceImpl implements AlatService {
 	private AlatRepository alatRepository;
 	@Autowired
 	private KelurahanRepository kelurahanRepository;
+	@Autowired
+	private PelangganRepository pelangganRepository;
 
 	@Override
 	public Alat get(Integer id) throws ApplicationException {
@@ -72,8 +77,37 @@ public class AlatServiceImpl implements AlatService {
 		alatLama.setAlamat(alamatBaru);
 		alatBaru.setAlamat(alamatLama);
 		
+		updateReferencedAlat(alatLama, alatBaru);
+		updateReferencedPelanggan(alatLama, alatBaru);
+		
 		save(alatLama);
 		save(alatBaru);
+		
+		return alatBaru;
+	}
+	
+	private Alat updateReferencedPelanggan(Alat alatLama, Alat alatBaru) throws EntityNotExistException {
+		List<Pelanggan> listPelanggan = pelangganRepository.findBySource(alatLama);
+		
+		for (Pelanggan pelanggan : listPelanggan) {
+			alatLama.removePelanggan(pelanggan);
+			alatBaru.addPelanggan(pelanggan);
+		}
+		
+		pelangganRepository.save(listPelanggan);
+		
+		return alatBaru;
+	}
+	
+	private Alat updateReferencedAlat(Alat alatLama, Alat alatBaru) throws EntityNotExistException {
+		List<Alat> listAlat = alatRepository.findBySource(alatLama);
+		
+		for (Alat alat : listAlat) {
+			alatLama.removeAlat(alat);
+			alatBaru.addAlat(alat);
+		}
+		
+		alatRepository.save(listAlat);
 		
 		return alatBaru;
 	}

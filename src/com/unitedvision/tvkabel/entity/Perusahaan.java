@@ -198,6 +198,20 @@ public final class Perusahaan extends CodableDomain {
 	public void setListPelanggan(List<Pelanggan> listPelanggan) {
 		this.listPelanggan = listPelanggan;
 	}
+	
+	public Pelanggan addePelanggan(Pelanggan pelanggan) {
+		getListPelanggan().add(pelanggan);
+		pelanggan.setPerusahaan(this);
+		
+		return pelanggan;
+	}
+	
+	public Pelanggan removePelanggan(Pelanggan pelanggan) {
+		getListPelanggan().remove(pelanggan);
+		pelanggan.setPerusahaan(null);
+		
+		return pelanggan;
+	}
 
 	/**
 	 * Return list of {@link Pegawai} instances.
@@ -217,6 +231,20 @@ public final class Perusahaan extends CodableDomain {
 	public void setListPegawai(List<Pegawai> listPegawai) {
 		this.listPegawai = listPegawai;
 	}
+	
+	public Pegawai addPegawai(Pegawai pegawai) {
+		getListPegawai().add(pegawai);
+		pegawai.setPerusahaan(this);
+		
+		return pegawai;
+	}
+	
+	public Pegawai removePegawai(Pegawai pegawai) {
+		getListPegawai().remove(pegawai);
+		pegawai.setPerusahaan(null);
+		
+		return pegawai;
+	}
 
 	@JsonIgnore
 	@OneToMany(targetEntity = Alat.class, mappedBy = "perusahaan", fetch = FetchType.LAZY,
@@ -227,6 +255,19 @@ public final class Perusahaan extends CodableDomain {
 
 	public void setListAlat(List<Alat> listAlat) {
 		this.listAlat = listAlat;
+	}
+	public Alat addAlat(Alat alat) {
+		getListAlat().add(alat);
+		alat.setPerusahaan(this);
+		
+		return alat;
+	}
+	
+	public Alat removeAlat(Alat alat) {
+		getListAlat().remove(alat);
+		alat.setPerusahaan(this);
+		
+		return alat;
 	}
 	
 	/**

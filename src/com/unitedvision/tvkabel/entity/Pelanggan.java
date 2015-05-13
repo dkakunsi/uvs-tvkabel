@@ -287,6 +287,20 @@ public final class Pelanggan extends CodableDomain implements Removable {
 	public void setListPembayaran(List<Pembayaran> listPembayaran) {
 		this.listPembayaran = listPembayaran;
 	}
+	
+	public Pembayaran addPembayaran(Pembayaran pembayaran) {
+		getListPembayaran().add(pembayaran);
+		pembayaran.setPelanggan(this);
+		
+		return pembayaran;
+	}
+	
+	public Pembayaran removePembayaran(Pembayaran pembayaran) {
+		getListPembayaran().remove(pembayaran);
+		pembayaran.setPelanggan(null);
+		
+		return pembayaran;
+	}
 
 	/**
 	 * Return daftar history pelanggan.
@@ -302,6 +316,20 @@ public final class Pelanggan extends CodableDomain implements Removable {
 
 	public void setListHistory(List<History> listHistory) {
 		this.listHistory = listHistory;
+	}
+	
+	public History addHistory(History history) {
+		getListHistory().add(history);
+		history.setPelanggan(this);
+		
+		return history;
+	}
+	
+	public History removeHistory(History history) {
+		getListHistory().remove(history);
+		history.setPelanggan(null);
+		
+		return history;
 	}
 
 	/**

@@ -184,6 +184,20 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 		this.listPembayaran = listPembayaran;
 	}
 	
+	public Pembayaran addPembayaran(Pembayaran pembayaran) {
+		getListPembayaran().add(pembayaran);
+		pembayaran.setPegawai(this);
+		
+		return pembayaran;
+	}
+	
+	public Pembayaran removePembayaran(Pembayaran pembayaran) {
+		getListPembayaran().remove(pembayaran);
+		pembayaran.setPegawai(null);
+		
+		return pembayaran;
+	}
+	
 	@JsonIgnore
 	@OneToMany(targetEntity = Token.class, mappedBy = "pegawai", fetch = FetchType.LAZY, 
 			cascade = CascadeType.REFRESH)
@@ -193,6 +207,20 @@ public final class Pegawai extends CodableDomain implements Operator, Removable 
 
 	public void setListToken(List<Token> listToken) {
 		this.listToken = listToken;
+	}
+	
+	public Token addToken(Token token) {
+		getListToken().add(token);
+		token.setPegawai(this);
+		
+		return token;
+	}
+	
+	public Token removeToken(Token token) {
+		getListToken().remove(token);
+		token.setPegawai(null);
+		
+		return token;
 	}
 
 	@Override
