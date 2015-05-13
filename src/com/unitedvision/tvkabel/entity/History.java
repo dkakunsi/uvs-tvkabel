@@ -3,6 +3,8 @@ package com.unitedvision.tvkabel.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,10 +36,7 @@ public class History extends Domain {
 	private Status status;
 	private String keterangan;
 	
-	private long jumlahAktif;
-	private long jumlahPutus;
-	private long jumlahBerhenti;
-	private long jumlahGratis;
+	private HistoryJumlah historyJumlah;
 	
 	public History() {
 		super();
@@ -96,62 +95,102 @@ public class History extends Domain {
 	public void setKeterangan(String keterangan) {
 		this.keterangan = keterangan;
 	}
-
-	@Column(name = "jumlah_aktif")
-	public long getJumlahAktif() {
-		return jumlahAktif;
+	
+	@Embedded
+	public HistoryJumlah getHistoryJumlah() {
+		return historyJumlah;
 	}
 
-	public void setJumlahAktif(long jumlahAktif) {
-		this.jumlahAktif = jumlahAktif;
+	public void setHistoryJumlah(HistoryJumlah historyJumlah) {
+		this.historyJumlah = historyJumlah;
 	}
 
-	@Column(name = "jumlah_putus")
-	public long getJumlahPutus() {
-		return jumlahPutus;
-	}
+	@Embeddable
+	public static final class HistoryJumlah {
+		private long jumlahAktif;
+		private long jumlahPutus;
+		private long jumlahBerhenti;
+		private long jumlahGratis;
 
-	public void setJumlahPutus(long jumlahPutus) {
-		this.jumlahPutus = jumlahPutus;
-	}
+		@Column(name = "jumlah_aktif")
+		public long getJumlahAktif() {
+			return jumlahAktif;
+		}
 
-	@Column(name = "jumlah_berhenti")
-	public long getJumlahBerhenti() {
-		return jumlahBerhenti;
-	}
+		public void setJumlahAktif(long jumlahAktif) {
+			this.jumlahAktif = jumlahAktif;
+		}
 
-	public void setJumlahBerhenti(long jumlahBerhenti) {
-		this.jumlahBerhenti = jumlahBerhenti;
-	}
+		@Column(name = "jumlah_putus")
+		public long getJumlahPutus() {
+			return jumlahPutus;
+		}
 
-	@Column(name = "jumlah_gratis")
-	public long getJumlahGratis() {
-		return jumlahGratis;
-	}
+		public void setJumlahPutus(long jumlahPutus) {
+			this.jumlahPutus = jumlahPutus;
+		}
 
-	public void setJumlahGratis(long jumlahGratis) {
-		this.jumlahGratis = jumlahGratis;
-	}
+		@Column(name = "jumlah_berhenti")
+		public long getJumlahBerhenti() {
+			return jumlahBerhenti;
+		}
 
-	@Override
-	public String toString() {
-		return "History [id=" + id + ", pelanggan=" + pelanggan + ", tanggal="
-				+ tanggal + ", status=" + status + ", keterangan=" + keterangan
-				+ ", jumlahAktif=" + jumlahAktif + ", jumlahPutus="
-				+ jumlahPutus + ", jumlahBerhenti=" + jumlahBerhenti
-				+ ", jumlahGratis=" + jumlahGratis + "]";
+		public void setJumlahBerhenti(long jumlahBerhenti) {
+			this.jumlahBerhenti = jumlahBerhenti;
+		}
+
+		@Column(name = "jumlah_gratis")
+		public long getJumlahGratis() {
+			return jumlahGratis;
+		}
+
+		public void setJumlahGratis(long jumlahGratis) {
+			this.jumlahGratis = jumlahGratis;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ (int) (jumlahAktif ^ (jumlahAktif >>> 32));
+			result = prime * result
+					+ (int) (jumlahBerhenti ^ (jumlahBerhenti >>> 32));
+			result = prime * result
+					+ (int) (jumlahGratis ^ (jumlahGratis >>> 32));
+			result = prime * result
+					+ (int) (jumlahPutus ^ (jumlahPutus >>> 32));
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			HistoryJumlah other = (HistoryJumlah) obj;
+			if (jumlahAktif != other.jumlahAktif)
+				return false;
+			if (jumlahBerhenti != other.jumlahBerhenti)
+				return false;
+			if (jumlahGratis != other.jumlahGratis)
+				return false;
+			if (jumlahPutus != other.jumlahPutus)
+				return false;
+			return true;
+		}
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + (int) (jumlahAktif ^ (jumlahAktif >>> 32));
+		int result = super.hashCode();
 		result = prime * result
-				+ (int) (jumlahBerhenti ^ (jumlahBerhenti >>> 32));
-		result = prime * result + (int) (jumlahGratis ^ (jumlahGratis >>> 32));
-		result = prime * result + (int) (jumlahPutus ^ (jumlahPutus >>> 32));
+				+ ((historyJumlah == null) ? 0 : historyJumlah.hashCode());
+		result = prime * result + id;
 		result = prime * result
 				+ ((keterangan == null) ? 0 : keterangan.hashCode());
 		result = prime * result
@@ -165,20 +204,17 @@ public class History extends Domain {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		History other = (History) obj;
+		if (historyJumlah == null) {
+			if (other.historyJumlah != null)
+				return false;
+		} else if (!historyJumlah.equals(other.historyJumlah))
+			return false;
 		if (id != other.id)
-			return false;
-		if (jumlahAktif != other.jumlahAktif)
-			return false;
-		if (jumlahBerhenti != other.jumlahBerhenti)
-			return false;
-		if (jumlahGratis != other.jumlahGratis)
-			return false;
-		if (jumlahPutus != other.jumlahPutus)
 			return false;
 		if (keterangan == null) {
 			if (other.keterangan != null)

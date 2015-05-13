@@ -32,7 +32,7 @@ public class Alat extends CodableDomain {
 	private List<Pelanggan> listPelanggan;
 	
 	public enum Tipe {
-		BOSTER
+		BOOSTER
 	}
 	
 	public enum Status {

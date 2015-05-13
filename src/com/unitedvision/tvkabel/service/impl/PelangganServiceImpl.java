@@ -15,6 +15,7 @@ import com.unitedvision.tvkabel.entity.Pegawai;
 import com.unitedvision.tvkabel.entity.Pelanggan;
 import com.unitedvision.tvkabel.entity.Pembayaran;
 import com.unitedvision.tvkabel.entity.Perusahaan;
+import com.unitedvision.tvkabel.entity.History.HistoryJumlah;
 import com.unitedvision.tvkabel.entity.Pelanggan.Status;
 import com.unitedvision.tvkabel.exception.ApplicationException;
 import com.unitedvision.tvkabel.exception.DataDuplicationException;
@@ -190,11 +191,14 @@ public class PelangganServiceImpl implements PelangganService {
 		history.setTanggal(DateUtil.getNow());
 		history.setKeterangan(keterangan);
 		
-		history.setJumlahAktif(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.AKTIF));
-		history.setJumlahPutus(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.PUTUS));
-		history.setJumlahBerhenti(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.BERHENTI));
-		history.setJumlahGratis(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.GRATIS));
+		HistoryJumlah historyJumlah = new HistoryJumlah();
+		historyJumlah.setJumlahAktif(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.AKTIF));
+		historyJumlah.setJumlahPutus(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.PUTUS));
+		historyJumlah.setJumlahBerhenti(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.BERHENTI));
+		historyJumlah.setJumlahGratis(pelangganRepository.countByPerusahaanAndStatus(pelanggan.getPerusahaan(), Status.GRATIS));
 
+		history.setHistoryJumlah(historyJumlah);
+		
 		return historyRepository.save(history);
 	}
 	
